@@ -1,5 +1,4 @@
 # Twitolu
-
 ### Organize, visualize and socialize your Twitter feed.
 =======
 
@@ -79,19 +78,22 @@ buildTweets = function(tweetLink, tweetText, tweetTag){
 
 #### searchInit()
 
-The search functionality is based on a DOM search.
+Twitolu's search functionality is based on a DOM search.
 
+* Create an event handler for hitting the RETURN/ENTER button
 * Create an event handler for the "search" button
 * Read the value of the seach field
 * Run a case-insensitive regular expression on each tweet for that value 
 * Toggle the visibility on tweets that match the regex
 * Show the number of tweets that match the search
+* Create an event handler to clear the search results
+
 
 ```
 searchInit = function (elem) {
 	$('input').keypress(function (evt) {
 		var charCode = evt.charCode || evt.keyCode;
-		if (charCode == 13) { //Enter key's keycode
+		if (charCode == 13) { 
 			$('.searchNow').click();
 		}
 	});	
@@ -111,17 +113,18 @@ searchInit = function (elem) {
 		return false;
 	});	
 	$('.clearSearch').click(function(){	
-		$('#filter').val('');
-		$(elem).show();
-		$('#filter-count').hide();	
-		$('.tweetItem').removeClass('favorite');	
-		$('.shareLink').html('Send');
+		clearSearch();
 	});
 };
 ```
 
 
-#### searchByTag()
+#### searchByTag(tag)
+
+This is a helper function that takes the category, or `tag`, as an argument by which to filter the search results.
+
+* Search all tweets for an instance of `tag`
+* Toggle "active" and "inactive" states on tweets that contain `tag`
 
 ```
 searchByTag = function(tag){ 
@@ -144,8 +147,283 @@ searchByTag = function(tag){
 };
 ```
 
-createWordCloud()
-emailTweets()
-toggleFavorites()
-shareFavorites()
+#### createWordCloud()
+
+This is a helper function involved in creating the word cloud. THIS WILL PROBABLY BE DEPRICATED IN THE NEXT VERSION. 
+
+```
+createWordCloud = function(){
+	var cloud = [],
+		cloud2 = [];
+	$('.tweetItem p').each(function(){
+		var x = $(this).text().split('.')[0];
+		cloud.push(x);
+	});
+	cloud.sort();
+	var last = cloud[0];
+	for (var i=1; i<cloud.length; i++) {
+	   if (cloud[i] == last) {
+	   	cloud2.push(last);
+	   	};
+	   last = cloud[i];
+	}
+	countCloudItems(cloud2);
+};
+```
+
+#### emailTweets(shareContent)
+
+This function takes the argument `shareContent`
+* 
+
+```
+emailTweets = function(shareContent){	
+	var content = encodeURIComponent(shareContent);
+	window.location = 'mailto:' 
+		+ ' ' 
+		+ '?subject=' + 'Cool Stuff in Web Development'
+		+ '&body=Jani says:' 
+		+ '%0D%0A%0D%0A-----%0D%0A%0D%0A'
+		+ content
+		+ '%0D%0A%0D%0A-----%0D%0A%0D%0A' 
+		+ 'Find more cool stuff in the UX diary of Jani Momolu Anderson at http://janianderson.com/#diary';
+}
+```
+
+#### toggleFavorites()
+
+```
+toggleFavorites = function ($_elem, activeClass){
+	var $_thisParent = $_elem.closest('.tweetItem');	
+	if ($_thisParent.hasClass(activeClass) == false){
+		$_thisParent.addClass(activeClass);
+	} else {
+		$_thisParent.removeClass(activeClass);
+	}
+	if ($('.favorite').size()==1){
+		$('.shareLink').text('');
+		$('.favorite .shareLink').html('Send');		
+	} 	
+	else if ($('.favorite').size()>1){
+		$('.shareLink').text('');
+		$('.favorite .shareLink').html('Send All &hearts;');
+	} else {
+		$('.shareLink').text('Send');
+	}
+}
+```
+
+
+#### shareFavorites()
+
+```
+shareFavorites = function($_this){
+	
+	var tweetsToSend = [],
+  		tweetContent = $_this.closest('.tweetItem').text().replace('%20%E2%86%91%E2%99%A5Send','');
+		
+	function closeMe(){
+		$('#zerostate').fadeOut(function(){
+			$('#zerostate').remove();
+		});
+	}
+	
+	if ($('.favorite, #zerostate').length <= 0){		
+		var shareContent = tweetContent;
+		emailTweets(shareContent);
+		$('.close').click(function(){closeMe()});
+		
+	} else {
+		$('.favorite').each(function(){
+			var	tweetContent = $(this).find('p').text();
+			var	tweetContentLink = $(this).find('.openTweet').attr('href');	
+			tweetsToSend.push([tweetContent + tweetContentLink]);			
+		});	
+		var x = tweetsToSend.join('\n\n').toString();		
+		emailTweets(x);
+	}
+		
+}
+```
+
+#### appInit()
+
+```
+appInit = function(){
+	searchInit('#tweets li:not(.cloud)');		
+	
+	$('.favoriteLink').click(function(){
+		toggleFavorites($(this),'favorite');
+	});	
+	
+	$('.shareLink').click(function(){
+		shareFavorites($(this));
+	});	
+	
+	$('.gotoTop').click(function(){
+		$('html, body').animate({ scrollTop: 0 }, "slow");		
+	});	
+	$('#tweets li').each(function(){
+		NEWchangeMeToRandomColor($(this));
+	});	
+	$('.onlyFaves').click(function(){
+		showOnlyFavoirties();
+	});	
+    $('.tag').click(function(){
+	    $('#filter').val($(this).text());
+      hideWordCloud('.cloud');
+	    $('.searchNow').click();
+	    $('html, body').animate({ scrollTop: 0 }, "slow");	
+    });	
+    $('#toggleWordCloud').click(function(){
+	    toggleWordCloud('.cloud');
+    });	
+}
+```
+
+
+#### cloudInit()
+
+
+```
+cloudInit = function(){
+  $('.cloud').click(function(){
+    $('#filter').val($(this).text());
+    $('.searchNow').click();
+    $('html, body').animate({ scrollTop: 0 }, "slow");	
+    hideWordCloud('.cloud');
+  });	
+}
+```
+
+
+
+#### clearSearch()
+
+
+```
+clearSearch = function() {
+	$('#filter').val('');
+	$('.tags .content').empty();
+	$('#filter-count').hide();	
+	$('.shareLink').html('Send');
+};
+```
+
+
+
+#### showWordCloud()
+
+
+```
+showWordCloud = function(cloudLinks) {
+  $(cloudLinks).addClass('visible');
+}
+```
+
+
+
+#### hideWordCloud()
+
+
+```
+hideWordCloud = function(cloudLinks) {
+  $(cloudLinks).removeClass('visible');
+}
+```
+
+
+
+#### toggleWordCloud()
+
+
+```
+toggleWordCloud = function(cloudLinks){
+	if ($(cloudLinks).hasClass('visible')==true) {
+		hideWordCloud(cloudLinks);	
+	} else {
+		showWordCloud(cloudLinks);
+	}
+}
+```
+
+
+
+#### countCloudItems()
+
+
+```
+toggleWordCloud = function(cloudLinks){
+	if ($(cloudLinks).hasClass('visible')==true) {
+		hideWordCloud(cloudLinks);	
+	} else {
+		showWordCloud(cloudLinks);
+	}
+}
+```
+
+
+
+#### buildTweetList()
+
+
+```
+buildTweetList = function() {
+	$.ajax({
+		url: "/LINKTOYOURPROJECTROOT/twitolu/tmhOAuth-master/tweets_json.php?count=200",
+		type: "GET",
+		dataType: "json",
+		success: function(result){
+			for (i in result) {
+				var tweetId = i,
+					tweetText = result[i].text,
+					tweetTag = result[i].text.split('. ')[0],
+					tweetURLS = result[i].entities.urls;
+				for (x in tweetURLS) {
+					var tweetLink = tweetURLS[x].url;
+					buildTweets(tweetLink, tweetText, tweetTag);				
+				}	
+			}			
+			appInit();
+			createWordCloud();
+			$('.loading').fadeOut(function(){
+				$(this).remove();
+				$('#tweets .container').show();
+			});
+		},
+		error: function(err){
+			alert("Error with JSON");
+		}
+	});
+};
+```
+
+
+
+#### showOnlyFavoirties()
+
+
+```
+showOnlyFavoirties = function(){
+	$('.tweetItem').not('.favorite').hide();	
+}
+```
+
+
+
+#### NEWchangeMeToRandomColor()
+The original code for this function can be found here:
+[http://paulirish.com/2009/random-hex-color-code-snippets/]	
+
+
+```
+NEWchangeMeToRandomColor = function(elem){
+	var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16); 
+	var bgcolor = (!bgcolor) ? randomColor : bgcolor ;
+	$(elem).css({'background-color': bgcolor});		
+};
+```
+
+
+
 
