@@ -2,6 +2,7 @@ Twitolu
 =======
 
 ### Organize, visualize and socialize your Twitter feed.
+### PLEASE NOTE: These docs are in-progress and will be finished shortly.
 
 
 I've used Twitter for years. I prefer the medium of microblogging to quickly create snippets of the cool things I see online every day and share them easily.However, there aren't many tools that allow me to look back through my tweet history to remind me what I tweeted last week or last month.
