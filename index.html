@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>twitter search app / jani momolu anderson / front-end developer / chicago, il</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width">
+	<link rel="shortcut icon" href="http://janianderson.com/imx/_nav/favicon.ico">
+	<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="/homepage.css" />
+	<link rel="stylesheet" type="text/css" href="/homepage_new.css" />
+	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
+</head>
+<body>
+	<div class="main">
+		<ul class="mainNavToggle">
+			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
+		</ul>	
+		<div id="tweets" class="content-section">
+			<div class="tags sidebar">
+				<h2>UX Diary</h2>
+				<div class="search-box border-box">
+					<div class="wrap border-box">
+						<input id="filter" class="border-box" name="filter">
+					</div>
+					<a class="searchNow border-box">Search<p id="filter-count"></p></a>
+					<button class="clearSearch border-box">Reset</button>	
+					<a class="onlyFaves border-box">Show &hearts; Only</a>		
+					<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
+				</div>
+				<div class="loading"><img src="/imx/_nav/ajax-loader.gif" /></div>
+				<div id="wordCloud"></div>
+			</div>	
+			<ul class="container"></ul>
+		</div>				
+	</div>
+
+</body>
+<!-- The SCRIPTS -->	
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
+<!--<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>-->
+<script type="text/javascript" src="twitterApp.js"></script>
+<script src="/js/appMainController.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-8132193-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script type="text/javascript">
+		buildTweetList();
+</script>
+</html>
