@@ -48,10 +48,16 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 
 buildTweets()
 
+* Each tweet is transformed into a tile
+* Tiles allow me to manipulate each tweet seperately or in groups
+* Group several tiles as Favorites
+* Send the content of each tile as an email
+* Send a group of Favorites as a single email 
+* Create category links that will search for all tweets that match that category
+
 ```
 buildTweets = function(tweetLink, tweetText, tweetTag){	
 	var tweet = tweetText.replace(tweetLink,'');
-	//console.log('tweetTag.length =', tweetTag.length);
 	if (tweetTag.length >= 30) {
 		tweetTag = '';
 	} else {
@@ -70,7 +76,73 @@ buildTweets = function(tweetLink, tweetText, tweetTag){
 }
 ```
 
+searchInit()
+
+The search functionality is based on a DOM search.
+
+* Create an event handler for the "search" button
+* Read the value of the seach field
+* Run a case-insensitive regular expression on each tweet for that value 
+* Toggle the visibility on tweets that match the regex
+* Show the number of tweets that match the search
+
+```
+searchInit = function (elem) {
+	$('input').keypress(function (evt) {
+		var charCode = evt.charCode || evt.keyCode;
+		if (charCode == 13) { //Enter key's keycode
+			$('.searchNow').click();
+		}
+	});	
+	$('.searchNow').click(function () {
+		var filter = $('#filter').val(),
+				count = 0;
+		$(elem).each(function () {
+			if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+				$(this).hide();
+			} else {
+				$(this).show();
+				count++;
+			}
+		});	
+		var numberItems = count;
+		$('#filter-count').text(count).show();
+		return false;
+	});	
+	$('.clearSearch').click(function(){	
+		$('#filter').val('');
+		$(elem).show();
+		$('#filter-count').hide();	
+		$('.tweetItem').removeClass('favorite');	
+		$('.shareLink').html('Send');
+	});
+};
+```
+
+
 searchByTag()
+
+```
+searchByTag = function(tag){ 
+	var count = 0;
+	$('.content li:not(:contains(' + tag + '))').each(function(){
+		$(this).hide();
+	});
+	$('.content li:contains(' + tag + ')').each(function(){
+		count++;
+		$(this).show();
+		$('#filter-count').text(count).show();
+	});
+	$('.tags a').each(function(){
+		if ( $(this).attr('rel') !== tag && $(this).hasClass('active') === false){
+			$(this).addClass('inactive');
+		} else {
+			$(this).addClass('active').removeClass('inactive');	
+		}
+	});	
+};
+```
+
 createWordCloud()
 emailTweets()
 toggleFavorites()
