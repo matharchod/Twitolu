@@ -1,23 +1,25 @@
-# Twitolu
-### Organize, visualize and socialize your Twitter feed.
+Twitolu
 =======
 
+### Organize, visualize and socialize your Twitter feed.
 
-I have used Twitter since it first became available to the public. 
-I like the medium of microblogging to quickly create snippets of the cool things I see online every day.
-However, there aren't many tools that allow me to look back through my tweet history to remind me what I was doing last week.
+
+I've used Twitter for years. I prefer the medium of microblogging to quickly create snippets of the cool things I see online every day and share them easily.However, there aren't many tools that allow me to look back through my tweet history to remind me what I tweeted last week or last month.
 
 I use a period-delimited format to organize my tweets into categories.
 Twitolu takes advantage of this format and creates an interactive word cloud that creates links based on these categories.
 I can click on a category in the word cloud and see only the tweets that match those categories.
-I can also group tweets into lists (Favorites) and share those lists via email.
+I can also group tweets into lists of Favorites and share those Favorites via email.
 This is valuable to me as a means of recalling important links as well as sharing those links with collegues.
 
-## Functionality
+## Basic Functionality
 * Retrieve my most recent tweets (maximum of 200) from Twitter
 * Organize those tweets into categories
 * Transform each tweet into a tile with controls for sharing its content
 * Allow text searching of my most recent tweets 
+
+## Setup and Dependencies
+Twitolu uses PHP to authorize a connection to Twitter and retrieve your most recent tweets in JSON format. I'm using [thmOAuth](https://github.com/themattharris/tmhOAuth), an OAuth library written in PHP by @themattharris.
 
 ## Main Functions
 These functions represent the major aspects of the app. 
