@@ -20,7 +20,7 @@ This is valuable to me as a means of recalling important links as well as sharin
 * Allow text searching of my most recent tweets 
 
 ## Main Functions
-These functions represent the major aspects of the app. I use helper functions to give me more flexibility in the UI by allowing me to invoke functionality more granularly.
+These functions represent the major aspects of the app. 
 
 * buildTweets()
 * searchByTag()
@@ -30,6 +30,8 @@ These functions represent the major aspects of the app. I use helper functions t
 * shareFavorites()
 
 ## Helper Functions
+I use helper functions to give me more flexibility in the UI by allowing me to invoke functionality more granularly.
+
 * appInit()
 * cloudInit()
 * searchInit()
@@ -41,3 +43,36 @@ These functions represent the major aspects of the app. I use helper functions t
 * buildTweetList()
 * showOnlyFavoirties()
 * NEWchangeMeToRandomColor()
+
+## Descriptions
+
+buildTweets()
+
+```
+buildTweets = function(tweetLink, tweetText, tweetTag){	
+	var tweet = tweetText.replace(tweetLink,'');
+	//console.log('tweetTag.length =', tweetTag.length);
+	if (tweetTag.length >= 30) {
+		tweetTag = '';
+	} else {
+		tweetTag = tweetTag;
+	}
+	$('#tweets .container').append('<li class="tweetItem">' 
+		+ '<p>' + tweet + '</p><span>'
+		+ '<div class="table">'
+		+ '<a class="gotoTop" style="width:0px;">&uarr;</a>'
+		+ '<a class="favoriteLink" style="width:0px;">&hearts;</a>'
+		+ '<a class="shareLink">Send</a>'
+		+ '<a class="tag">' + tweetTag + '</a>'
+		+ '<a href="' + tweetLink + '" class="openTweet" style="width:50px;">' + tweetLink + '</a>' 
+		+ '</div>'				
+		+ '</span><span class="shade"></span></li>');		
+}
+```
+
+searchByTag()
+createWordCloud()
+emailTweets()
+toggleFavorites()
+shareFavorites()
+
