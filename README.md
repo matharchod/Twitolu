@@ -48,8 +48,15 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 
 #### buildTweets()
 
+Twitolu uses JSON to create a set of "tiles". Tiles allow me to manipulate each tweet seperately or in groups. Each tile contains:
+* a tweet
+* its category (or `tag`)
+* a link to mark it as a Favorite
+* a Send link to share it as an email
+* the URL contained in the tweet
+* a link that takes the user back to the top of the page (for mobile users)
+
 * Each tweet is transformed into a tile
-* Tiles allow me to manipulate each tweet seperately or in groups
 * Group several tiles as Favorites
 * Send the content of each tile as an email
 * Send a group of Favorites as a single email 
@@ -76,9 +83,9 @@ buildTweets = function(tweetLink, tweetText, tweetTag){
 }
 ```
 
-#### searchInit()
+#### searchInit(elem)
 
-Twitolu's search functionality is based on a DOM search.
+Twitolu's search functionality is based on a DOM search. This function takes `elem` as an argument representing the wrapped set of DOM elements on which to perform the search.
 
 * Create an event handler for hitting the RETURN/ENTER button
 * Create an event handler for the "search" button
@@ -173,24 +180,27 @@ createWordCloud = function(){
 
 #### emailTweets(shareContent)
 
-This function takes the argument `shareContent`
-* 
+This function takes the argument `shareContent`, which contains the tweets you wish to share via email.
+
+* Encode the URLs in `shareContent` for email 
+* Open the user's default email program
+* Create the email 
 
 ```
 emailTweets = function(shareContent){	
 	var content = encodeURIComponent(shareContent);
 	window.location = 'mailto:' 
 		+ ' ' 
-		+ '?subject=' + 'Cool Stuff in Web Development'
-		+ '&body=Jani says:' 
+		+ '?subject=' + 'Cool Stuff from Twitolu'
+		+ '&body=Twitolu says:' 
 		+ '%0D%0A%0D%0A-----%0D%0A%0D%0A'
 		+ content
 		+ '%0D%0A%0D%0A-----%0D%0A%0D%0A' 
-		+ 'Find more cool stuff in the UX diary of Jani Momolu Anderson at http://janianderson.com/#diary';
 }
 ```
 
 #### toggleFavorites()
+
 
 ```
 toggleFavorites = function ($_elem, activeClass){
