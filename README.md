@@ -56,7 +56,8 @@ Twitolu uses JSON to create a set of "tiles". Tiles allow me to manipulate each 
 * the URL contained in the tweet
 * a link that takes the user back to the top of the page (for mobile users)
 
-* Each tweet is transformed into a tile
+This function performs the following operations:
+* Transform each tweet into a tile
 * Group several tiles as Favorites
 * Send the content of each tile as an email
 * Send a group of Favorites as a single email 
