@@ -1,4 +1,5 @@
 # Twitolu
+
 ### Organize, visualize and socialize your Twitter feed.
 =======
 
@@ -46,7 +47,7 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 
 ## Descriptions
 
-buildTweets()
+#### buildTweets()
 
 * Each tweet is transformed into a tile
 * Tiles allow me to manipulate each tweet seperately or in groups
@@ -76,7 +77,7 @@ buildTweets = function(tweetLink, tweetText, tweetTag){
 }
 ```
 
-searchInit()
+#### searchInit()
 
 The search functionality is based on a DOM search.
 
@@ -120,7 +121,7 @@ searchInit = function (elem) {
 ```
 
 
-searchByTag()
+#### searchByTag()
 
 ```
 searchByTag = function(tag){ 
