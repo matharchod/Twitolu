@@ -1,7 +1,6 @@
 Twitolu
-=======
-
 Organize, visualize and socialize your Twitter feed.
+=======
 
 
 I have used Twitter since it first became available to the public. 
@@ -21,22 +20,24 @@ This is valuable to me as a means of recalling important links as well as sharin
 * Allow text searching of my most recent tweets 
 
 ## Main Functions
+These functions represent the major aspects of the app. I use helper functions to give me more flexibility in the UI by allowing me to invoke functionality more granularly.
+
 * buildTweets()
 * searchByTag()
-* clearSearch()
 * createWordCloud()
-* toggleWordCloud()
 * emailTweets()
-* shareFavorites()
 * toggleFavorites()
-* showOnlyFavoirties()
+* shareFavorites()
 
 ## Helper Functions
 * appInit()
 * cloudInit()
 * searchInit()
+* clearSearch()
 * showWordCloud()
 * hideWordCloud()
+* toggleWordCloud()
 * countCloudItems()
 * buildTweetList()
+* showOnlyFavoirties()
 * NEWchangeMeToRandomColor()
