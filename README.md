@@ -13,3 +13,16 @@ However, there aren't many tools that allow you to look back through history to 
 * seperates them into categories
 * transforms each one into a tile with controls for sharing their content
 * allows searching 
+
+## Functions
+* appInit()
+* cloudInit()
+* searchInit()
+* toggleWordCloud()
+* clearSearch()
+* buildTweets()
+* showOnlyFavoirties()
+* createWordCloud()
+* NEWchangeMeToRandomColor()
+* shareFavorites()
+* searchByTag()

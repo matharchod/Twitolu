@@ -8,6 +8,20 @@
 //transforms each one into a tile with controls for sharing their content
 //allows searching 
 
+//Functions:
+//appInit
+//cloudInit
+//searchInit
+//toggleWordCloud
+//clearSearch
+//buildTweets
+//showOnlyFavoirties
+//createWordCloud
+//NEWchangeMeToRandomColor
+//shareFavorites
+//searchByTag
+
+
  
 //I use two functions called appInit and cloudInit to initialize all of my event listeners.
 //This allows me to bootstrap the controls when I load page elements asnycronously.
