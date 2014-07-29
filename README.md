@@ -33,23 +33,23 @@ These functions represent the major aspects of the app.
 * [searchByTag()](https://github.com/matharchod/Twitolu#searchbytagtag)
 * [createWordCloud()](https://github.com/matharchod/Twitolu#createwordcloud)
 * [emailTweets()](https://github.com/matharchod/Twitolu#emailtweetssharecontent)
-* toggleFavorites()
-* shareFavorites()
+* [toggleFavorites()](https://github.com/matharchod/Twitolu#togglefavorites_elem-activeclass)
+* [shareFavorites()](https://github.com/matharchod/Twitolu#sharefavorites_this)
 
 ## Helper Functions
 I use helper functions to give me more flexibility in the UI by allowing me to invoke functionality more granularly.
 
-* appInit()
-* cloudInit()
+* [appInit()](https://github.com/matharchod/Twitolu#appinit)
+* [cloudInit()](https://github.com/matharchod/Twitolu#cloudinit)
 * [searchInit()](https://github.com/matharchod/Twitolu#searchinitelem)
-* clearSearch()
-* showWordCloud()
-* hideWordCloud()
-* toggleWordCloud()
-* countCloudItems()
+* [clearSearch()](https://github.com/matharchod/Twitolu#clearsearch)
+* [showWordCloud()](https://github.com/matharchod/Twitolu#showwordcloudcloudlinks)
+* [hideWordCloud()](https://github.com/matharchod/Twitolu#hidewordcloudcloudlinks)
+* [toggleWordCloud()](https://github.com/matharchod/Twitolu#togglewordcloudcloudlinks)
+* [countCloudItems(](https://github.com/matharchod/Twitolu#countclouditemscloudlinks))
 * [buildTweetList()](https://github.com/matharchod/Twitolu#buildtweetlist)
-* showOnlyFavoirties()
-* NEWchangeMeToRandomColor()
+* [showOnlyFavoirties()](https://github.com/matharchod/Twitolu#showonlyfavoirties)
+* [NEWchangeMeToRandomColor()](https://github.com/matharchod/Twitolu#newchangemetorandomcolorelem)
 
 ## Descriptions
 Twitolu uses JSON to create a set of "tiles". Tiles allow you to manipulate each tweet seperately or in groups. 
