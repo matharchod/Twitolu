@@ -393,6 +393,8 @@ clearSearch = function() {
 
 #### showWordCloud(cloudLinks)
 
+A helper function that hides the word cloud. 
+Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of category, or `tag`, links
 
 ```
 showWordCloud = function(cloudLinks) {
@@ -404,6 +406,8 @@ showWordCloud = function(cloudLinks) {
 
 #### hideWordCloud(cloudLinks)
 
+A helper function that hides the word cloud.
+Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of category, or `tag`, links
 
 ```
 hideWordCloud = function(cloudLinks) {
@@ -415,6 +419,8 @@ hideWordCloud = function(cloudLinks) {
 
 #### toggleWordCloud(cloudLinks)
 
+Toggles the visibility of word cloud. 
+Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of category, or `tag`, links
 
 ```
 toggleWordCloud = function(cloudLinks){
@@ -430,14 +436,40 @@ toggleWordCloud = function(cloudLinks){
 
 #### countCloudItems(cloudLinks)
 
+Sorts and counts the items in the word cloud and accepts `arr` as an argument, where `arr` represents the array of items retrieved as categories from the tweet list. THIS WILL BE REPLACED WITH LESS BLOATED CODE IN THE NEXT VERSION.
 
 ```
-toggleWordCloud = function(cloudLinks){
-	if ($(cloudLinks).hasClass('visible')==true) {
-		hideWordCloud(cloudLinks);	
-	} else {
-		showWordCloud(cloudLinks);
-	}
+countCloudItems = function (arr) {
+  var a = [], 
+  b = [], 
+  prev;
+	theCloud = [];
+  arr.sort();
+  for ( var i = 0; i < arr.length; i++ ) {
+      if ( arr[i] !== prev ) {
+          a.push(arr[i]);
+          b.push(1);         
+      } else {	
+          b[b.length-1]++;
+      }
+      prev = arr[i];
+  }
+	theCloud.push({'words':a},{'count':b});
+	theNewCloud = [];
+	for (i in theCloud[0].words){ 
+		  theNewCloud.push({id:theCloud[0].words[i], value:theCloud[1].count[i]});
+    } 
+    theNewCloud.sort(function(a, b) { return b.value - a.value });    
+    for (i in theNewCloud){
+	    if (theNewCloud[i].value <= 1) {	    
+	    } else {
+  			$('#wordCloud').append('<div class="cloud">'
+    			+ theNewCloud[i].id
+    			+ '</div>'
+  			);
+	    }
+    }
+	cloudInit();
 }
 ```
 
@@ -445,6 +477,7 @@ toggleWordCloud = function(cloudLinks){
 
 #### showOnlyFavoirties()
 
+Hides all tiles that are NOT marked as Favorites. 
 
 ```
 showOnlyFavoirties = function(){
@@ -454,9 +487,11 @@ showOnlyFavoirties = function(){
 
 
 
-#### NEWchangeMeToRandomColor()
+#### NEWchangeMeToRandomColor(elem)
 
-The original code from Paul Irish for this function can be found [here](http://paulirish.com/2009/random-hex-color-code-snippets/):
+A helper function that generates a random color for the backgroundof a tile.
+Accepts the argument `elem`, representing the DOM element you want to add the color to. 
+[The original code for this function from Paul Irish can be found here](http://paulirish.com/2009/random-hex-color-code-snippets/).
 
 
 ```
