@@ -189,11 +189,13 @@ createWordCloud = function(){
 
 #### emailTweets(shareContent)
 
-This function takes the argument `shareContent`, which contains the tweets you wish to share via email.
+Accepts the argument `shareContent`, which contains the tweets you wish to share via email.
 
+
+This funciton performs the following operations:
 * Encode the URLs in `shareContent` for email 
 * Open the user's default email program
-* Create the email 
+* Create an email with the Subject and Body populated with `shareContent`
 
 ```
 emailTweets = function(shareContent){	
@@ -210,6 +212,9 @@ emailTweets = function(shareContent){
 
 #### toggleFavorites()
 
+Accepts the arguments `$_elem` and `activeClass`:
+* `$_elem`: the DOM element you selected
+* `activeClass`: the CSS class you wish to use as the active class for the toggled DOM element
 
 ```
 toggleFavorites = function ($_elem, activeClass){
@@ -234,6 +239,8 @@ toggleFavorites = function ($_elem, activeClass){
 
 
 #### shareFavorites()
+
+Accepts the argument `$_this`, which represents the selected element.
 
 ```
 shareFavorites = function($_this){
@@ -266,6 +273,8 @@ shareFavorites = function($_this){
 ```
 
 #### appInit()
+Initializes most of the event listeners on the page.
+This methodology allows Twitolu to bootstrap these controls when DOM elements load asnycronously.
 
 ```
 appInit = function(){
@@ -302,7 +311,7 @@ appInit = function(){
 
 
 #### cloudInit()
-
+Initializes Twitolu's word cloud functionality
 
 ```
 cloudInit = function(){
