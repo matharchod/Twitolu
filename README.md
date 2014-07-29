@@ -63,6 +63,8 @@ Each tile contains:
 * a link that takes the user back to the top of the page (primarily for mobile users)
 * a "shade" which adds a tint to the background color of the tile (for aesthetics)
 
+=======
+
 #### buildTweets(tweetLink, tweetText, tweetTag)
 
 This function accepts three arguments:
