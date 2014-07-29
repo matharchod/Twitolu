@@ -259,11 +259,11 @@ emailTweets = function(shareContent){
 }
 ```
 
-#### toggleFavorites()
+#### toggleFavorites($_elem, activeClass)
 
 Accepts the arguments `$_elem` and `activeClass`:
-* `$_elem`: the DOM element you selected
-* `activeClass`: the CSS class you wish to use as the active class for the toggled DOM element
+* `$_elem`: the selected DOM element 
+* `activeClass`: the CSS class you wish to use as the active class for `$_elem`
 
 ```
 toggleFavorites = function ($_elem, activeClass){
@@ -287,7 +287,7 @@ toggleFavorites = function ($_elem, activeClass){
 ```
 
 
-#### shareFavorites()
+#### shareFavorites($_this)
 
 Accepts the argument `$_this`, which represents the selected element.
 
@@ -391,7 +391,7 @@ clearSearch = function() {
 
 
 
-#### showWordCloud()
+#### showWordCloud(cloudLinks)
 
 
 ```
@@ -402,7 +402,7 @@ showWordCloud = function(cloudLinks) {
 
 
 
-#### hideWordCloud()
+#### hideWordCloud(cloudLinks)
 
 
 ```
@@ -413,7 +413,7 @@ hideWordCloud = function(cloudLinks) {
 
 
 
-#### toggleWordCloud()
+#### toggleWordCloud(cloudLinks)
 
 
 ```
@@ -428,7 +428,7 @@ toggleWordCloud = function(cloudLinks){
 
 
 
-#### countCloudItems()
+#### countCloudItems(cloudLinks)
 
 
 ```
