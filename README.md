@@ -5,13 +5,17 @@ Twitolu
 ### PLEASE NOTE: These docs are in-progress and will be finished shortly.
 
 
-I've used Twitter for years. I prefer the medium of microblogging to quickly create snippets of the cool things I see online every day and share them easily.However, there aren't many tools that allow me to look back through my tweet history to remind me what I tweeted last week or last month.
+I've used Twitter for years, and I prefer the medium of microblogging as a way to quickly create snippets of the cool things I see online every day. However, there aren't many tools that allow me to visualize my tweet history and remind me of what I was doing last week. I use Twitter as a kind of diary: it's a running log of the random thoughts that occupy my mind from day-to-day.
 
-I use a period-delimited format to organize my tweets into categories.
-Twitolu takes advantage of this format and creates an interactive word cloud that creates links based on these categories.
-I can click on a category in the word cloud and see only the tweets that match those categories.
+I use a period-delimited format to organize my tweets into categories, or tags.
+Twitolu takes advantage of this format and creates an interactive word cloud that creates links based on these tags.
+I can click on tags in the word cloud and see only the tweets that match those tags.
 I can also group tweets into lists of Favorites and share those Favorites via email.
-This is valuable to me as a means of recalling important links as well as sharing those links with collegues.
+
+Twitolu is valuable to me as a means of:
+* creating a crumbtrail of links I've visited recently
+* recalling important research items or inspirational links
+* sharing cool stuff with people I know
 
 ## Basic Functionality
 * Retrieve my most recent tweets (maximum of 200) from Twitter
@@ -51,7 +55,9 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 
 #### buildTweets(tweetLink, tweetText, tweetTag)
 
-Twitolu uses JSON to create a set of "tiles". Tiles allow me to manipulate each tweet seperately or in groups. Each tile contains:
+Twitolu uses JSON to create a set of "tiles". Tiles allow me to manipulate each tweet seperately or in groups. 
+
+Each tile contains:
 * the tweet text content
 * the tweet category, or `tag`
 * a link to mark the tweet as a Favorite
@@ -90,6 +96,48 @@ buildTweets = function(tweetLink, tweetText, tweetTag){
 		+ '</div>'				
 		+ '</span><span class="shade"></span></li>');		
 }
+```
+
+
+#### buildTweetList()
+
+Twitolu uses the [thmOAuth PHP script](https://github.com/themattharris/tmhOAuth) to retrieve your latest Tweets from Twitter. 
+
+This function performs the following functions:
+* Use PHP to retrieve a list of tweets in JSON format 
+* Use the first word or phrase from the tweet as the category for the tile
+* Create the link for this tile using the URL from the tweet  
+
+
+```
+buildTweetList = function() {
+	$.ajax({
+		url: "/LINKTOYOURPROJECTROOT/twitolu/tmhOAuth-master/tweets_json.php?count=200",
+		type: "GET",
+		dataType: "json",
+		success: function(result){
+			for (i in result) {
+				var tweetId = i,
+					tweetText = result[i].text,
+					tweetTag = result[i].text.split('. ')[0],
+					tweetURLS = result[i].entities.urls;
+				for (x in tweetURLS) {
+					var tweetLink = tweetURLS[x].url;
+					buildTweets(tweetLink, tweetText, tweetTag);				
+				}	
+			}			
+			appInit();
+			createWordCloud();
+			$('.loading').fadeOut(function(){
+				$(this).remove();
+				$('#tweets .container').show();
+			});
+		},
+		error: function(err){
+			alert("Error with JSON");
+		}
+	});
+};
 ```
 
 #### searchInit(elem)
@@ -137,8 +185,10 @@ searchInit = function (elem) {
 
 #### searchByTag(tag)
 
-This is a helper function that takes the category, or `tag`, as an argument by which to filter the search results.
+This is a DOM search which creates a jQuery-wrapped set of elements in which to limit the search. 
+It accepts the `tag` argument, which represents the category of each tweet.
 
+This funtion performs the following operations:
 * Search all tweets for an instance of `tag`
 * Toggle "active" and "inactive" states on tweets that contain `tag`
 
@@ -165,7 +215,7 @@ searchByTag = function(tag){
 
 #### createWordCloud()
 
-This is a helper function involved in creating the word cloud. THIS WILL PROBABLY BE DEPRICATED IN THE NEXT VERSION. 
+A helper function involved in creating the word cloud. THIS WILL PROBABLY BE DEPRICATED IN THE NEXT VERSION. 
 
 ```
 createWordCloud = function(){
@@ -190,7 +240,6 @@ createWordCloud = function(){
 #### emailTweets(shareContent)
 
 Accepts the argument `shareContent`, which contains the tweets you wish to share via email.
-
 
 This funciton performs the following operations:
 * Encode the URLs in `shareContent` for email 
@@ -273,6 +322,7 @@ shareFavorites = function($_this){
 ```
 
 #### appInit()
+
 Initializes most of the event listeners on the page.
 This methodology allows Twitolu to bootstrap these controls when DOM elements load asnycronously.
 
@@ -311,6 +361,7 @@ appInit = function(){
 
 
 #### cloudInit()
+
 A helper function which initializes Twitolu's word cloud functionality
 
 ```
@@ -328,14 +379,13 @@ cloudInit = function(){
 
 #### clearSearch()
 
-
+A helper function which resets the application to its zero state.
 
 ```
 clearSearch = function() {
 	$('#filter').val('');
 	$('.tags .content').empty();
 	$('#filter-count').hide();	
-	$('.shareLink').html('Send');
 };
 ```
 
@@ -393,48 +443,6 @@ toggleWordCloud = function(cloudLinks){
 
 
 
-#### buildTweetList()
-Twitolu uses the [thmOAuth PHP script](https://github.com/themattharris/tmhOAuth) to retrieve your latest Tweets from Twitter. 
-
-This function performs the following functions:
-
-* Use PHP to retrieve a list of tweets in JSON format 
-* Use the first word or phrase from the tweet as the category for the tile
-* Create the link for this tile using the URL from the tweet  
-
-```
-buildTweetList = function() {
-	$.ajax({
-		url: "/LINKTOYOURPROJECTROOT/twitolu/tmhOAuth-master/tweets_json.php?count=200",
-		type: "GET",
-		dataType: "json",
-		success: function(result){
-			for (i in result) {
-				var tweetId = i,
-					tweetText = result[i].text,
-					tweetTag = result[i].text.split('. ')[0],
-					tweetURLS = result[i].entities.urls;
-				for (x in tweetURLS) {
-					var tweetLink = tweetURLS[x].url;
-					buildTweets(tweetLink, tweetText, tweetTag);				
-				}	
-			}			
-			appInit();
-			createWordCloud();
-			$('.loading').fadeOut(function(){
-				$(this).remove();
-				$('#tweets .container').show();
-			});
-		},
-		error: function(err){
-			alert("Error with JSON");
-		}
-	});
-};
-```
-
-
-
 #### showOnlyFavoirties()
 
 
@@ -449,7 +457,6 @@ showOnlyFavoirties = function(){
 #### NEWchangeMeToRandomColor()
 
 The original code from Paul Irish for this function can be found [here](http://paulirish.com/2009/random-hex-color-code-snippets/):
-
 
 
 ```
