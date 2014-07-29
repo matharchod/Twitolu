@@ -29,10 +29,10 @@ Twitolu uses PHP to authorize a connection to Twitter and retrieve your most rec
 ## Main Functions
 These functions represent the major aspects of the app. 
 
-* buildTweets()
-* searchByTag()
-* createWordCloud()
-* emailTweets()
+* [buildTweets()](https://github.com/matharchod/Twitolu#buildtweetstweetlink-tweettext-tweettag)
+* [searchByTag()](https://github.com/matharchod/Twitolu#searchbytagtag)
+* [createWordCloud()](https://github.com/matharchod/Twitolu#createwordcloud)
+* [emailTweets()](https://github.com/matharchod/Twitolu#emailtweetssharecontent)
 * toggleFavorites()
 * shareFavorites()
 
@@ -41,21 +41,18 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 
 * appInit()
 * cloudInit()
-* searchInit()
+* [searchInit()](https://github.com/matharchod/Twitolu#searchinitelem)
 * clearSearch()
 * showWordCloud()
 * hideWordCloud()
 * toggleWordCloud()
 * countCloudItems()
-* buildTweetList()
+* [buildTweetList()](https://github.com/matharchod/Twitolu#buildtweetlist)
 * showOnlyFavoirties()
 * NEWchangeMeToRandomColor()
 
 ## Descriptions
-
-#### buildTweets(tweetLink, tweetText, tweetTag)
-
-Twitolu uses JSON to create a set of "tiles". Tiles allow me to manipulate each tweet seperately or in groups. 
+Twitolu uses JSON to create a set of "tiles". Tiles allow you to manipulate each tweet seperately or in groups. 
 
 Each tile contains:
 * the tweet text content
@@ -64,6 +61,9 @@ Each tile contains:
 * a Send link to share the tweet as an email
 * the URL contained in the tweet
 * a link that takes the user back to the top of the page (primarily for mobile users)
+* a "shade" which adds a tint to the background color of the tile (for aesthetics)
+
+#### buildTweets(tweetLink, tweetText, tweetTag)
 
 This function accepts three arguments:
 * tweetLink: The URL contained in the tile 
@@ -142,7 +142,8 @@ buildTweetList = function() {
 
 #### searchInit(elem)
 
-Twitolu's search functionality is based on a DOM search. This function takes `elem` as an argument representing the wrapped set of DOM elements on which to perform the search.
+Twitolu's search functionality is based on a DOM search. 
+Accepts the argument `elem`, representing the wrapped set of DOM elements on which to perform the search.
 
 * Create an event handler for hitting the RETURN/ENTER button
 * Create an event handler for the "search" button
@@ -185,8 +186,8 @@ searchInit = function (elem) {
 
 #### searchByTag(tag)
 
-This is a DOM search which creates a jQuery-wrapped set of elements in which to limit the search. 
-It accepts the `tag` argument, which represents the category of each tweet.
+Creates a jQuery-wrapped set of elements in which to limit the search. 
+Accepts the argument `tag`, representing the category of each tweet.
 
 This funtion performs the following operations:
 * Search all tweets for an instance of `tag`
@@ -239,7 +240,7 @@ createWordCloud = function(){
 
 #### emailTweets(shareContent)
 
-Accepts the argument `shareContent`, which contains the tweets you wish to share via email.
+Accepts the argument `shareContent`, representing the tweets you wish to share via email.
 
 This funciton performs the following operations:
 * Encode the URLs in `shareContent` for email 
@@ -289,7 +290,7 @@ toggleFavorites = function ($_elem, activeClass){
 
 #### shareFavorites($_this)
 
-Accepts the argument `$_this`, which represents the selected element.
+Accepts the argument `$_this`, representing the selected element.
 
 ```
 shareFavorites = function($_this){
@@ -436,7 +437,7 @@ toggleWordCloud = function(cloudLinks){
 
 #### countCloudItems(cloudLinks)
 
-Sorts and counts the items in the word cloud and accepts `arr` as an argument, where `arr` represents the array of items retrieved as categories from the tweet list. THIS WILL BE REPLACED WITH LESS BLOATED CODE IN THE NEXT VERSION.
+Sorts and counts the items in the word cloud and accepts `arr` as an argument, representing the array of items retrieved as categories from the tweet list. THIS WILL BE REPLACED WITH LESS BLOATED CODE IN THE NEXT VERSION.
 
 ```
 countCloudItems = function (arr) {
