@@ -49,15 +49,20 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 
 ## Descriptions
 
-#### buildTweets()
+#### buildTweets(tweetLink, tweetText, tweetTag)
 
 Twitolu uses JSON to create a set of "tiles". Tiles allow me to manipulate each tweet seperately or in groups. Each tile contains:
-* a tweet
-* its category (or `tag`)
-* a link to mark it as a Favorite
-* a Send link to share it as an email
+* the tweet text content
+* the tweet category, or `tag`
+* a link to mark the tweet as a Favorite
+* a Send link to share the tweet as an email
 * the URL contained in the tweet
-* a link that takes the user back to the top of the page (for mobile users)
+* a link that takes the user back to the top of the page (primarily for mobile users)
+
+This function accepts three arguments:
+* tweetLink: The URL contained in the tile 
+* tweetText: The text content of the tile (minus the tweetLink) 
+* tweetTag: The category, or `tag`, of the tile
 
 This function performs the following operations:
 * Transform each tweet into a tile
