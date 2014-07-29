@@ -311,7 +311,7 @@ appInit = function(){
 
 
 #### cloudInit()
-Initializes Twitolu's word cloud functionality
+A helper function which initializes Twitolu's word cloud functionality
 
 ```
 cloudInit = function(){
@@ -327,6 +327,7 @@ cloudInit = function(){
 
 
 #### clearSearch()
+
 
 
 ```
@@ -393,7 +394,13 @@ toggleWordCloud = function(cloudLinks){
 
 
 #### buildTweetList()
+Twitolu uses the [thmOAuth PHP script](https://github.com/themattharris/tmhOAuth) to retrieve your latest Tweets from Twitter. 
 
+This function performs the following functions:
+
+* Use PHP to retrieve a list of tweets in JSON format 
+* Use the first word or phrase from the tweet as the category for the tile
+* Create the link for this tile using the URL from the tweet  
 
 ```
 buildTweetList = function() {
@@ -440,8 +447,9 @@ showOnlyFavoirties = function(){
 
 
 #### NEWchangeMeToRandomColor()
-The original code for this function can be found here:
-[http://paulirish.com/2009/random-hex-color-code-snippets/]	
+
+The original code from Paul Irish for this function can be found [here](http://paulirish.com/2009/random-hex-color-code-snippets/):
+
 
 
 ```
