@@ -2,7 +2,7 @@ Twitolu
 =======
 
 ### Organize, visualize and socialize your Twitter feed.
-### PLEASE NOTE: Twitolu is in alpha. These docs are a work-in-progress and will be finished shortly. The next version of Twitolu will use Angular.JS to organize the codebase and eliminate unnecessary global variables. 
+#### PLEASE NOTE: Twitolu is in alpha. These docs are a work-in-progress and will be finished shortly. The next version of Twitolu will use Angular.JS to organize the codebase and eliminate unnecessary global variables. 
 
 
 I've used Twitter for years, and I prefer the medium of microblogging as a way to quickly create snippets of the cool things I see online every day. However, there aren't many tools that allow me to visualize my tweet history and remind me of what I was doing last week. I use Twitter as a kind of diary: it's a running log of the random thoughts that occupy my mind from day-to-day.
@@ -24,7 +24,7 @@ Twitolu is valuable to me as a means of:
 * Allow text searching of my most recent tweets 
 
 ## Demo
-### PLEASE NOTE: This version of Twitolu is best viewed on mobile devices.
+#### PLEASE NOTE: This version of Twitolu is best viewed on mobile devices.
 
 Visit my portfolio site and UX diary to see Twitolu in action: 
 [http://janianderson.com/twitterApp/]
