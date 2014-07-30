@@ -2,7 +2,7 @@ Twitolu
 =======
 
 ### Organize, visualize and socialize your Twitter feed.
-### PLEASE NOTE: These docs are in-progress and will be finished shortly.
+### PLEASE NOTE: Twitolu is in alpha. These docs are a work-in-progress and will be finished shortly. The next version of Twitolu will use Angular.JS to organize the codebase and eliminate unnecessary global variables. 
 
 
 I've used Twitter for years, and I prefer the medium of microblogging as a way to quickly create snippets of the cool things I see online every day. However, there aren't many tools that allow me to visualize my tweet history and remind me of what I was doing last week. I use Twitter as a kind of diary: it's a running log of the random thoughts that occupy my mind from day-to-day.
@@ -124,11 +124,11 @@ I use helper functions to give me more flexibility in the UI by allowing me to i
 * [NEWchangeMeToRandomColor()](https://github.com/matharchod/Twitolu#newchangemetorandomcolorelem)
 
 ## Descriptions
-Twitolu uses JSON to create a set of "tiles". Tiles allow you to manipulate each tweet seperately or in groups. 
+Twitolu uses JSON to transform your tweets into a set of "tiles". Tiles allow you to manipulate tweets seperately or in groups. 
 
 Each tile contains:
 * the tweet text content
-* the tweet category, or `tag`
+* the tweet category, or tag
 * a link to mark the tweet as a Favorite
 * a Send link to share the tweet as an email
 * the URL contained in the tweet
@@ -149,7 +149,7 @@ This function performs the following operations:
 * Group several tiles as Favorites
 * Send the content of each tile as an email
 * Send a group of Favorites as a single email 
-* Create category links that will search for all tweets that match that category
+* Create category links that will search for all tiles that match that category
 
 ```
 buildTweets = function(tweetLink, tweetText, tweetTag){	
@@ -217,14 +217,14 @@ buildTweetList = function() {
 #### searchInit(elem)
 
 Twitolu's search functionality is based on a DOM search. 
-Accepts the argument `elem`, representing the wrapped set of DOM elements on which to perform the search.
+Accepts the argument `elem`, representing the wrapped set of tiles on which to perform the search.
 
 * Create an event handler for hitting the RETURN/ENTER button
-* Create an event handler for the "search" button
+* Create an event handler for the SEARCH button
 * Read the value of the seach field
-* Run a case-insensitive regular expression on each tweet for that value 
-* Toggle the visibility on tweets that match the regex
-* Show the number of tweets that match the search
+* Run a case-insensitive regular expression on each tile for that value 
+* Toggle the visibility on tiles that match the regex
+* Show the number of tiles that match the search
 * Create an event handler to clear the search results
 
 
@@ -314,7 +314,7 @@ createWordCloud = function(){
 
 #### emailTweets(shareContent)
 
-Accepts the argument `shareContent`, representing the tweets you wish to share via email.
+Accepts the argument `shareContent`, representing the tiles you wish to share via email.
 
 This funciton performs the following operations:
 * Encode the URLs in `shareContent` for email 
@@ -337,7 +337,7 @@ emailTweets = function(shareContent){
 #### toggleFavorites($_elem, activeClass)
 
 Accepts the arguments `$_elem` and `activeClass`:
-* `$_elem`: the selected DOM element 
+* `$_elem`: a selected tile
 * `activeClass`: the CSS class you wish to use as the active class for `$_elem`
 
 ```
@@ -364,7 +364,7 @@ toggleFavorites = function ($_elem, activeClass){
 
 #### shareFavorites($_this)
 
-Accepts the argument `$_this`, representing the selected element.
+Accepts the argument `$_this`, representing the selected tile.
 
 ```
 shareFavorites = function($_this){
@@ -469,7 +469,7 @@ clearSearch = function() {
 #### showWordCloud(cloudLinks)
 
 A helper function that hides the word cloud. 
-Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of category, or `tag`, links
+Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of tags.
 
 ```
 showWordCloud = function(cloudLinks) {
@@ -482,7 +482,7 @@ showWordCloud = function(cloudLinks) {
 #### hideWordCloud(cloudLinks)
 
 A helper function that hides the word cloud.
-Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of category, or `tag`, links
+Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of tags.
 
 ```
 hideWordCloud = function(cloudLinks) {
@@ -495,7 +495,7 @@ hideWordCloud = function(cloudLinks) {
 #### toggleWordCloud(cloudLinks)
 
 Toggles the visibility of word cloud. 
-Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of category, or `tag`, links
+Accepts the argument `cloudLinks`, representing the jQuery-wrapped set of tags.
 
 ```
 toggleWordCloud = function(cloudLinks){
@@ -511,7 +511,7 @@ toggleWordCloud = function(cloudLinks){
 
 #### countCloudItems(cloudLinks)
 
-Sorts and counts the items in the word cloud and accepts `arr` as an argument, representing the array of items retrieved as categories from the tweet list. THIS WILL BE REPLACED WITH LESS BLOATED CODE IN THE NEXT VERSION.
+Sorts and counts the items in the word cloud and accepts `arr` as an argument, representing the array of items retrieved as tags from the tweet list. THIS WILL BE REPLACED WITH LESS BLOATED CODE IN THE NEXT VERSION.
 
 ```
 countCloudItems = function (arr) {
