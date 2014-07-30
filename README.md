@@ -32,7 +32,7 @@ Visit my portfolio site and UX diary to see Twitolu in action:
 ## Setup and Dependencies
 Twitolu is simple to set up. Most of the technology for the app is JavaScript, jQuery and CSS, with a dash of PHP to connect with Twitter. You will need a [Twitter Developer Account](https://dev.twitter.com/) to connect to Twitter and retrieve your latest tweets in JSON format.
 
-Twitolu cosists of four parts:
+Twitolu cosists of five parts:
 
 1. [index.html](https://github.com/matharchod/Twitolu#indexhtml)
 2. [twitterApp.js](https://github.com/matharchod/Twitolu#twitterAppjs)
