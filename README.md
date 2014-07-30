@@ -23,8 +23,61 @@ Twitolu is valuable to me as a means of:
 * Transform each tweet into a tile with controls for sharing its content
 * Allow text searching of my most recent tweets 
 
+## Demo
+PLEASE NOTE: This version of Twitolu is best viewed on mobile devices.
+
+Visit my portfolio site and UX diary to see Twitolu in action: 
+[http://janianderson.com/twitterApp/]
+
 ## Setup and Dependencies
 Twitolu uses PHP to authorize a connection to Twitter and retrieve your most recent tweets in JSON format. I'm using [thmOAuth](https://github.com/themattharris/tmhOAuth), an OAuth library written in PHP by @themattharris.
+
+Twitolu cosists of four parts:
+1. `index.html`: The HTML markup for Twitolu is all of the HTML for this project is contained in one template file.
+2. `twitterApp.js`: There are only a few functions that make up the front-end of Twitolu. All of the JavaScript for this project is contained in one file.
+3. twitterStyles.css
+4. tmhOAuth
+
+`index.html`
+```
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Twitolu / a twitter search app / by jani momolu anderson / front-end developer / chicago, il</title>
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
+</head>
+<body>
+	<div class="main">
+		<ul class="mainNavToggle">
+			<li><a class="navToggle">&times;</a></li>
+		</ul>	
+		<div id="tweets" class="content-section">
+			<div class="tags sidebar">
+				<h2>UX Diary</h2>
+				<div class="search-box border-box">
+					<div class="wrap border-box">
+						<input id="filter" class="border-box" name="filter">
+					</div>
+					<a class="searchNow border-box">Search<p id="filter-count"></p></a>
+					<button class="clearSearch border-box">Reset</button>	
+					<a class="onlyFaves border-box">Show &hearts; Only</a>		
+					<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
+				</div>
+				<div class="loading"><img src="/imx/_nav/ajax-loader.gif" /></div>
+				<div id="wordCloud"></div>
+			</div>	
+			<ul class="container"></ul>
+		</div>				
+	</div>
+</body>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="twitterApp.js"></script>
+<script type="text/javascript">
+		buildTweetList();
+</script>
+</html>
+```
 
 ## Main Functions
 These functions represent the major aspects of the app. 
