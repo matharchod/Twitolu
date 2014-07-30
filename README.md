@@ -24,7 +24,7 @@ Twitolu is valuable to me as a means of:
 * Allow text searching of my most recent tweets 
 
 ## Demo
-PLEASE NOTE: This version of Twitolu is best viewed on mobile devices.
+### PLEASE NOTE: This version of Twitolu is best viewed on mobile devices.
 
 Visit my portfolio site and UX diary to see Twitolu in action: 
 [http://janianderson.com/twitterApp/]
@@ -33,12 +33,16 @@ Visit my portfolio site and UX diary to see Twitolu in action:
 Twitolu uses PHP to authorize a connection to Twitter and retrieve your most recent tweets in JSON format. I'm using [thmOAuth](https://github.com/themattharris/tmhOAuth), an OAuth library written in PHP by @themattharris.
 
 Twitolu cosists of four parts:
-* 1. `index.html`: The HTML markup for Twitolu is all of the HTML for this project is contained in one template file.
-* 2. `twitterApp.js`: There are only a few functions that make up the front-end of Twitolu. All of the JavaScript for this project is contained in one file.
-* 3. twitterStyles.css
-* 4. tmhOAuth
+1. `index.html`
 
-`index.html`
+2. `twitterApp.js`
+
+3. twitterStyles.css
+
+4. tmhOAuth
+
+### index.html
+The main HTML wrapper and controls, including the search box, are contained in this template file.
 ```
 <!DOCTYPE HTML>
 <html>
@@ -78,6 +82,16 @@ Twitolu cosists of four parts:
 </script>
 </html>
 ```
+
+### twitterApp.js
+There are only a few functions that make up the front-end of Twitolu, so all of the JavaScript is contained in one JS file.
+[View twitterApp.js](https://github.com/matharchod/Twitolu/blob/master/twitterApp.js)
+
+### twitterStyles.css
+Twitolu uses less than 300 lines of CSS for page styling, so all of the CSS is contained in one stylesheet.
+[View twitterStyles.css](https://github.com/matharchod/Twitolu/blob/master/twitterStyles.css)
+
+
 
 ## Main Functions
 These functions represent the major aspects of the app. 
@@ -545,7 +559,7 @@ showOnlyFavoirties = function(){
 
 #### NEWchangeMeToRandomColor(elem)
 
-A helper function that generates a random color for the backgroundof a tile.
+A helper function that generates a random color for the background of a tile.
 Accepts the argument `elem`, representing the DOM element you want to add the color to. 
 [The original code for this function from Paul Irish can be found here](http://paulirish.com/2009/random-hex-color-code-snippets/).
 
