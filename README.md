@@ -30,53 +30,54 @@ Visit my portfolio site and UX diary to see Twitolu in action:
 [http://janianderson.com/twitterApp/]
 
 ## Setup and Dependencies
-Twitolu uses PHP to authorize a connection to Twitter and retrieve your most recent tweets in JSON format. I'm using [thmOAuth](https://github.com/themattharris/tmhOAuth), an OAuth library written in PHP by @themattharris.
+Twitolu is simple to set up. Most of the technology for the app is JavaScript, jQuery and CSS, with a dash of PHP to connect with Twitter. You will need a [Twitter Developer Account](https://dev.twitter.com/) to connect to Twitter and retrieve your latest tweets in JSON format.
 
 Twitolu cosists of four parts:
 
-1. index.html
-2. twitterApp.js
-3. twitterStyles.css
-4. tmhOAuth
+1. [index.html](https://github.com/matharchod/Twitolu#indexhtml)
+2. [twitterApp.js](https://github.com/matharchod/Twitolu#twitterAppjs)
+3. [twitterStyles.css](https://github.com/matharchod/Twitolu#twitterStylescss)
+4. [tmhOAuth](https://github.com/matharchod/Twitolu#tmhOAuth), an OAuth library written in PHP by @themattharris
+5. [jQuery](https://github.com/matharchod/Twitolu#jQuery)
 
 ### index.html
-The main HTML wrapper and controls, including the search box, are contained in this template file.
+The main HTML wrapper and controls are contained in this template file.
 ```
 <!DOCTYPE HTML>
 <html>
 <head>
 	<title>Twitolu / a twitter search app / by jani momolu anderson / front-end developer / chicago, il</title>
-	<meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="width=device-width"> // This version of Twitolu is best viewd on mobile devices
 	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
 </head>
 <body>
 	<div class="main">
 		<ul class="mainNavToggle">
-			<li><a class="navToggle">&times;</a></li>
+			<li><a class="navToggle">&times;</a></li> //Closes the app
 		</ul>	
 		<div id="tweets" class="content-section">
-			<div class="tags sidebar">
+			<div class="tags sidebar"> 
 				<h2>UX Diary</h2>
-				<div class="search-box border-box">
+				<div class="search-box border-box"> 
 					<div class="wrap border-box">
-						<input id="filter" class="border-box" name="filter">
+						<input id="filter" class="border-box" name="filter"> //Search box 
 					</div>
-					<a class="searchNow border-box">Search<p id="filter-count"></p></a>
-					<button class="clearSearch border-box">Reset</button>	
-					<a class="onlyFaves border-box">Show &hearts; Only</a>		
-					<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
+					<a class="searchNow border-box">Search<p id="filter-count"></p></a> //Search button
+					<button class="clearSearch border-box">Reset</button>	//Reset button
+					<a class="onlyFaves border-box">Show &hearts; Only</a>	//Show Only Favorites button
+					<a id="toggleWordCloud" class="border-box">Word Cloud</a>	//Toggle Word Cloud button
 				</div>
 				<div class="loading"><img src="/imx/_nav/ajax-loader.gif" /></div>
-				<div id="wordCloud"></div>
+				<div id="wordCloud"></div> //Word Cloud container
 			</div>	
-			<ul class="container"></ul>
+			<ul class="container"></ul> //Tweet Tiles container
 		</div>				
 	</div>
 </body>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> //jQuery file
 <script type="text/javascript" src="twitterApp.js"></script>
 <script type="text/javascript">
-		buildTweetList();
+		buildTweetList(); //Initialize Twitolu on the page
 </script>
 </html>
 ```
@@ -89,7 +90,13 @@ There are only a few functions that make up the front-end of Twitolu, so all of 
 Twitolu uses less than 300 lines of CSS for page styling, so all of the CSS is contained in one stylesheet.
 [View twitterStyles.css](https://github.com/matharchod/Twitolu/blob/master/twitterStyles.css)
 
+### tmhOAuth
+Twitolu uses [thmOAuth](https://github.com/themattharris/tmhOAuth), an OAuth library written in PHP by @themattharris, to authorize a connection to Twitter and retrieve your most recent tweets in JSON format.
 
+### jQuery
+Twitolu uses [jQuery 1.x](http://jquery.com/download/).
+
+=======
 
 ## Main Functions
 These functions represent the major aspects of the app. 
@@ -133,9 +140,9 @@ Each tile contains:
 #### buildTweets(tweetLink, tweetText, tweetTag)
 
 This function accepts three arguments:
-* tweetLink: The URL contained in the tile 
-* tweetText: The text content of the tile (minus the tweetLink) 
-* tweetTag: The category, or `tag`, of the tile
+* `tweetLink`: The URL contained in the tile 
+* `tweetText`: The text content of the tile (minus the tweetLink) 
+* `tweetTag`: The category, or tag, of the tile
 
 This function performs the following operations:
 * Transform each tweet into a tile
@@ -155,11 +162,11 @@ buildTweets = function(tweetLink, tweetText, tweetTag){
 	$('#tweets .container').append('<li class="tweetItem">' 
 		+ '<p>' + tweet + '</p><span>'
 		+ '<div class="table">'
-		+ '<a class="gotoTop" style="width:0px;">&uarr;</a>'
-		+ '<a class="favoriteLink" style="width:0px;">&hearts;</a>'
+		+ '<a class="gotoTop">&uarr;</a>'
+		+ '<a class="favoriteLink">&hearts;</a>'
 		+ '<a class="shareLink">Send</a>'
 		+ '<a class="tag">' + tweetTag + '</a>'
-		+ '<a href="' + tweetLink + '" class="openTweet" style="width:50px;">' + tweetLink + '</a>' 
+		+ '<a href="' + tweetLink + '" class="openTweet">' + tweetLink + '</a>' 
 		+ '</div>'				
 		+ '</span><span class="shade"></span></li>');		
 }
