@@ -33,12 +33,10 @@ Visit my portfolio site and UX diary to see Twitolu in action:
 Twitolu uses PHP to authorize a connection to Twitter and retrieve your most recent tweets in JSON format. I'm using [thmOAuth](https://github.com/themattharris/tmhOAuth), an OAuth library written in PHP by @themattharris.
 
 Twitolu cosists of four parts:
-1. `index.html`
 
-2. `twitterApp.js`
-
+1. index.html
+2. twitterApp.js
 3. twitterStyles.css
-
 4. tmhOAuth
 
 ### index.html
