@@ -19,12 +19,131 @@
 //createWordCloud
 //NEWchangeMeToRandomColor
 //shareFavorites
-//searchByTag
+//searchByTag 
 
 
- 
-//I use two functions called appInit and cloudInit to initialize all of my event listeners.
-//This allows me to bootstrap the controls when I load page elements asnycronously.
+//Use PHP to get a list of tweets in JSON format
+//Use the first word or phrase from the tweet as the category for that tweet
+//Use the URL from the tweet as the link for its tile 
+var Twitolu = (function () {
+		
+	var TileFactory = function () {
+		
+		//Create place to collect tiles for future reference
+		var TilesCollection = [];
+		
+		//Use AJAX to get the latest tweets
+		$.ajax({
+			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			type: "GET",
+			dataType: "json",
+			success: function(result){
+				for (i in result) {
+					
+					var fixSpecials = function(txt) {
+						return (txt).replace(/&amp;/g,"&");
+					}
+					
+					var Text_obj = fixSpecials(result[i].text);
+						URL_obj = result[i].entities.urls[0],
+						Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
+						Media_obj = result[i].entities.media;
+						
+					
+					//REMOVE LINK FROM TEXT
+					var Text = function() {
+						//use display url to find link in text and remove it
+						return Text_obj.split('http')[0];
+					}
+					
+					//IF A URL IS UNDEFINED
+					var URL = function() {
+						if (URL_obj === undefined) {
+							//show the first URL found in the string
+							return 'http' + Text_obj.split('http')[1];
+						} else {
+							//show the display url
+							return URL_obj.url;
+						}
+					}
+					
+					//IF A TAG IS NOT PRESENT
+					var Tag = function() {
+						if (Tag_obj.length >= 30) {
+							//return an empty string
+							return '';
+						} else {
+							//return the tag
+							return Tag_obj;
+						}
+					}
+					
+					//Use the factory to create each tile
+					var tile = {
+												
+							text: Text(),
+							tag: Tag(),
+							URL: URL(),
+							date: result[i].created_at,
+							media: result[i].entities.media,
+							popularity: result[i].favorite_count
+			            
+			            } 
+					 
+					// Test to confirm our tile was created using the itemClass/prototype Tile
+					// Outputs: true
+					//console.log( tile instanceof Tile );
+					
+					TilesCollection.push(tile);
+					 
+					//console.log( tilesCollection );
+	
+				}			
+			},
+			error: function(err){
+				alert("Error with JSON");
+				console.log(err);
+			}
+		});
+		
+		console.log( "TilesCollection: ", TilesCollection );
+		
+		return TilesCollection;
+		
+	}
+	
+	var RecipientFactory = function () {
+		
+		
+	} 
+	 
+	 	
+	var Archive = function (type, item, itemId) {
+		
+		this.addItems = function(type, item) {
+			console.log('item added');
+		};
+		this.removeItems = function(type, itemId) {
+			console.log('item removed');
+		};
+		this.viewItems = function(type, itemId) {
+			console.log('item viewed');
+		};
+		
+	}
+	
+	//PUBLIC METHODS
+	return {
+		
+		Archive: Archive,
+		TileFactory: TileFactory,
+		RecipientFactory: RecipientFactory
+	
+	}
+	
+})();
+
+
 appInit = function(){
 	searchInit('#tweets li:not(.cloud)');		
 	
@@ -81,40 +200,6 @@ clearSearch = function() {
 	$('.tags .content').empty();
 	$('#filter-count').hide();	
 	$('.shareLink').html('Send');
-};
-
-//Use PHP to get a list of tweets in JSON format
-//Use the first word or phrase from the tweet as the category for that tweet
-//Use the URL from the tweet as the link for its tile 
-buildTweetList = function() {
-	$.ajax({
-		url: "/_dev/twitterApp/tmhOAuth-master/tweets_json.php?count=200",
-		type: "GET",
-		dataType: "json",
-		success: function(result){
-			for (i in result) {
-				var tweetId = i,
-					tweetText = result[i].text,
-					tweetTag = result[i].text.split('. ')[0],
-					tweetURLS = result[i].entities.urls;
-				for (x in tweetURLS) {
-					var tweetLink = tweetURLS[x].url;
-				//	console.log('tweetLink : ' + tweetLink);
-					buildTweets(tweetLink, tweetText, tweetTag);				
-				}	
-			}			
-			appInit();
-			createWordCloud();
-			$('.loading').fadeOut(function(){
-				$(this).remove();
-				$('#tweets .container').show();
-			});
-		},
-		error: function(err){
-			alert("Error with JSON");
-			console.log(err);
-		}
-	});
 };
 
 //Each tweet is transformed into a tile

@@ -5,13 +5,10 @@
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<meta name="viewport" content="width=device-width">
-	<link rel="shortcut icon" href="http://janianderson.com/imx/_nav/favicon.ico">
 	<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="/homepage.css" />
-	<link rel="stylesheet" type="text/css" href="/homepage_new.css" />
 	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
 </head>
 <body>
@@ -31,22 +28,41 @@
 					<a class="onlyFaves border-box">Show &hearts; Only</a>		
 					<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
 				</div>
-				<div class="loading"><img src="/imx/_nav/ajax-loader.gif" /></div>
+				
+				<div id="app-4">
+				  <ol>
+				    <li class="tweetItem" v-for="tile in tilesCollection">
+				      
+						<p><a v-bind:href="tile.URL">{{ tile.text }}</a></p>
+						
+						<span>
+							<div class="table">
+								<a class="gotoTop" style="width:0px;">&uarr;</a>
+								<a class="favoriteLink" style="width:0px;">&hearts;</a>
+								<a class="shareLink">Send</a>
+								<a class="tag">{{ tile.tag }}</a>
+							</div>				
+						</span>
+						
+						<span class="shade"></span>
+
+				    </li>
+				  </ol>
+				</div>
+				
 				<div id="wordCloud"></div>
 			</div>	
-			<ul class="container"></ul>
+			<div class="container">
+			</div>
 		</div>				
 	</div>
 
 </body>
 <!-- The SCRIPTS -->	
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
-<!--<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>-->
-<script type="text/javascript" src="twitterApp.js"></script>
-<script src="/js/appMainController.js"></script>
+<script type="text/javascript" src="twitolu.js"></script>
+<script type="text/javascript" src="vue.js"></script>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -61,6 +77,17 @@
 
 </script>
 <script type="text/javascript">
-		buildTweetList();
+	
+var tilesCollection = Twitolu.TileFactory();
+
+var app4 = new Vue({
+	el: '#app-4',
+	data: function () {
+		return {
+			tilesCollection
+		}
+	}
+});	
+ 		 	
 </script>
 </html>
