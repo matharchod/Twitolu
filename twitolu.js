@@ -26,11 +26,10 @@
 //Use the first word or phrase from the tweet as the category for that tweet
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
+	
+	var TwitterCall = function () {
 		
-	var TileFactory = function () {
-		
-		//Create place to collect tiles for future reference
-		TilesCollection = [];
+		var result = [];
 		
 		//Use AJAX to get the latest tweets
 		$.ajax({
@@ -39,64 +38,7 @@ var Twitolu = (function () {
 			dataType: "json",
 			async: true,
 			success: function(result){
-				for (i in result) {
-					
-					var fixSpecials = function(txt) {
-						return (txt).replace(/&amp;/g,"&");
-					}
-					
-					var Text_obj = fixSpecials(result[i].text);
-						URL_obj = result[i].entities.urls[0],
-						Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
-						Media_obj = result[i].entities.media;
-						
-					
-					//REMOVE LINK FROM TEXT
-					var Text = function() {
-						//use display url to find link in text and remove it
-						return Text_obj.split('http')[0];
-					}
-					
-					//IF A URL IS UNDEFINED
-					var URL = function() {
-						if (URL_obj === undefined) {
-							//show the first URL found in the string
-							return 'http' + Text_obj.split('http')[1];
-						} else {
-							//show the display url
-							return URL_obj.url;
-						}
-					}
-					
-					//IF A TAG IS NOT PRESENT
-					var Tag = function() {
-						if (Tag_obj.length >= 20) {
-							//return an empty string
-							return;
-						} else {
-							//return the tag
-							return Tag_obj;
-						}
-					}
-					
-					//Use the factory to create each tile
-					var tile = {
-												
-							text: Text(),
-							tag: Tag(),
-							URL: URL(),
-							date: result[i].created_at,
-							media: result[i].entities.media,
-							popularity: result[i].favorite_count
-			            
-			            } 
-					
-					TilesCollection.push(tile);
-					 
-					//console.log( tilesCollection );
-	
-				}
-									
+			 	result = result;					
 			},
 			error: function(err){
 				alert("Error with JSON: " + err);
@@ -104,24 +46,16 @@ var Twitolu = (function () {
 			}
 						
 		});
+		
+		return result;
 				
-		//console.log( "TilesCollection: ", TilesCollection ); 
-		
-		return TilesCollection
-		
 	}
-	
-	
-	
-	var RecipientFactory = function () {
-		
-		
-	} 
 	
 	var WordCloud = function () {
 		
-		wordCloud = [];
-		
+		var wordCloud = [],
+			TilesCollection = TwitterCall();
+							
 		var cloud = [],
 			duplicate = cloud[0];
 		
@@ -153,7 +87,84 @@ var Twitolu = (function () {
 		return wordCloud;
 		
 	}
-	 
+		
+	var TileFactory = function () {
+		
+		//Create place to collect tiles for future reference
+		var TilesCollection = [],
+			result = TwitterCall();
+		
+		for (i in result) {
+			
+			var fixSpecials = function(txt) {
+				return (txt).replace(/&amp;/g,"&");
+			}
+			
+			var Text_obj = fixSpecials(result[i].text);
+				URL_obj = result[i].entities.urls[0],
+				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
+				Media_obj = result[i].entities.media;
+				
+			
+			//REMOVE LINK FROM TEXT
+			var Text = function() {
+				//use display url to find link in text and remove it
+				return Text_obj.split('http')[0];
+			}
+			
+			//IF A URL IS UNDEFINED
+			var URL = function() {
+				if (URL_obj === undefined) {
+					//show the first URL found in the string
+					return 'http' + Text_obj.split('http')[1];
+				} else {
+					//show the display url
+					return URL_obj.url;
+				}
+			}
+			
+			//IF A TAG IS NOT PRESENT
+			var Tag = function() {
+				if (Tag_obj.length >= 20) {
+					//return an empty string
+					return;
+				} else {
+					//return the tag
+					return Tag_obj;
+				}
+			}
+			
+			//Use the factory to create each tile
+			var tile = {
+										
+					text: Text(),
+					tag: Tag(),
+					URL: URL(),
+					date: result[i].created_at,
+					media: result[i].entities.media,
+					popularity: result[i].favorite_count
+	            
+	            } 
+			
+			TilesCollection.push(tile);
+			 
+			//console.log( tilesCollection );
+
+		}
+		
+		return TilesCollection
+						
+		//console.log( "TilesCollection: ", TilesCollection ); 
+		
+	}
+	
+	
+	
+	var RecipientFactory = function () {
+		
+		
+	} 
+		 
 	 	
 	var Archive = function (type, item, itemId) {
 		
