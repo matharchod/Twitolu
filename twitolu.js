@@ -30,13 +30,14 @@ var Twitolu = (function () {
 	var TileFactory = function () {
 		
 		//Create place to collect tiles for future reference
-		var TilesCollection = [];
+		TilesCollection = [];
 		
 		//Use AJAX to get the latest tweets
 		$.ajax({
 			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
 			type: "GET",
 			dataType: "json",
+			async: true,
 			success: function(result){
 				for (i in result) {
 					
@@ -69,9 +70,9 @@ var Twitolu = (function () {
 					
 					//IF A TAG IS NOT PRESENT
 					var Tag = function() {
-						if (Tag_obj.length >= 30) {
+						if (Tag_obj.length >= 20) {
 							//return an empty string
-							return '';
+							return;
 						} else {
 							//return the tag
 							return Tag_obj;
@@ -89,33 +90,69 @@ var Twitolu = (function () {
 							popularity: result[i].favorite_count
 			            
 			            } 
-					 
-					// Test to confirm our tile was created using the itemClass/prototype Tile
-					// Outputs: true
-					//console.log( tile instanceof Tile );
 					
 					TilesCollection.push(tile);
 					 
 					//console.log( tilesCollection );
 	
-				}			
+				}
+									
 			},
 			error: function(err){
-				alert("Error with JSON");
+				alert("Error with JSON: " + err);
 				console.log(err);
 			}
+						
 		});
+				
+		//console.log( "TilesCollection: ", TilesCollection ); 
 		
-		console.log( "TilesCollection: ", TilesCollection );
-		
-		return TilesCollection;
+		return TilesCollection
 		
 	}
+	
+	
 	
 	var RecipientFactory = function () {
 		
 		
 	} 
+	
+	var WordCloud = function () {
+		
+		wordCloud = [];
+		
+		var cloud = [],
+			duplicate = cloud[0];
+		
+		for (i in TilesCollection) {
+
+			cloud.push(TilesCollection[i].tag);
+						
+		}
+		
+		cloud.sort();
+				
+		for (i in cloud) {
+			
+			if (cloud[i] !== duplicate) {
+								
+				wordCloud.push(duplicate);
+								
+				//console.log('Duplicate : ' + duplicate);
+			} 
+			
+			duplicate = cloud[i];
+						
+		}
+		
+		wordCloud = wordCloud.splice(1); //remove undefined tags
+						
+		//console.log('wordCloud', wordCloud);
+				
+		return wordCloud;
+		
+	}
 	 
 	 	
 	var Archive = function (type, item, itemId) {
@@ -137,7 +174,8 @@ var Twitolu = (function () {
 		
 		Archive: Archive,
 		TileFactory: TileFactory,
-		RecipientFactory: RecipientFactory
+		RecipientFactory: RecipientFactory,
+		WordCloud: WordCloud
 	
 	}
 	
@@ -234,57 +272,6 @@ showOnlyFavoirties = function(){
 
 showAllTweets = function(){
 	$('.tweetItem').show();	
-}
-
-createWordCloud = function(){
-	var cloud = [],
-		cloud2 = [];
-	$('.tweetItem p').each(function(){
-		var x = $(this).text().split('.')[0];
-		cloud.push(x);
-	});
-	cloud.sort();
-	var last = cloud[0];
-	for (var i=1; i<cloud.length; i++) {
-	   if (cloud[i] == last) {
-	   	cloud2.push(last);
-	   	//console.log('Duplicate : ' + last);
-	   	};
-	   last = cloud[i];
-	}
-	countCloudItems(cloud2);
-};
-
-countCloudItems = function (arr) {
-    var a = [], b = [], prev;
-	theCloud = [];
-    arr.sort();
-    for ( var i = 0; i < arr.length; i++ ) {
-        if ( arr[i] !== prev ) {
-            a.push(arr[i]);
-            b.push(1);         
-        } else {	
-            b[b.length-1]++;
-        }
-        prev = arr[i];
-    }
-	theCloud.push({'words':a},{'count':b});
-	//console.log(theCloud[0].words);
-	theNewCloud = [];
-	for (i in theCloud[0].words){ 
-		theNewCloud.push({id:theCloud[0].words[i], value:theCloud[1].count[i]});
-    } 
-    theNewCloud.sort(function(a, b) { return b.value - a.value });    
-    for (i in theNewCloud){
-	    if (theNewCloud[i].value <= 1) {} else {
-			//console.log(theNewCloud[i].id, theNewCloud[i].value);
-			$('#wordCloud').append('<div class="cloud">'
-			+ theNewCloud[i].id
-			+ '</div>');
-	    }
-    }
-	cloudInit();
-	console.log(theNewCloud);
 }
 
 NEWchangeMeToRandomColor = function(elem){
