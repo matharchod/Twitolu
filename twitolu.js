@@ -27,44 +27,47 @@
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
 	
+	//USE A CLOSURE FOR PERSISTENT STORAGE OF TWITTER JSON
 	var Tweets = function (result) {
-						
+		//if there is no result, return the current value		
 		if (!result) {
-			
 			x = x;
-			
 			return function(){
-								
-				//console.log('Tweets', x)
-				
 				return x;
-				
 			}();
-			
+		//if there is a result, return the result	
 		} else {
-			
 			x = result;
-			
 			return function(){
-								
-				//console.log('Tweets', x)
-				
 				return x;
-				
 			}();
-			
 		}
-		
 	}
-				
-	var getTweets = function () {
+	
+	var TweetTags = function (result) {
+		//if there is no result, return the current value		
+		if (!result) {
+			x = x;
+			return function(){
+				return x;
+			}();
+		//if there is a result, return the result	
+		} else {
+			x = result;
+			return function(){
+				return x;
+			}();
+		}
+	}
+
+	var getTweets = (function () {
 				
 		//Use AJAX to get the latest tweets
 		$.ajax({
 			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
 			type: "GET",
 			dataType: "json",
-			async: true,
+			async: false,
 			success: function(result){
 			 	return Tweets(result);					
 			},
@@ -74,21 +77,20 @@ var Twitolu = (function () {
 			}
 						
 		});
-		
 				
-	}
-	
+	})();
+				
 	var WordCloud = function () {
 		
 		var wordCloud = [],
-			Tweets = Twitolu.Tweets();
+			Tweets = this.Tweets();
 							
 		var cloud = [],
 			duplicate = cloud[0];
 		
 		for (i in Tweets) {
 
-			cloud.push(Tweets[i].tag);
+			cloud.push(Tweets[i]);
 						
 		}
 		
@@ -106,6 +108,8 @@ var Twitolu = (function () {
 		}
 		
 		wordCloud = wordCloud.splice(1); //remove undefined tags
+		
+		TweetTags(wordCloud);
 						
 		//console.log('wordCloud', wordCloud);
 				
@@ -117,7 +121,7 @@ var Twitolu = (function () {
 		
 		//Create place to collect tiles for future reference
 		var TilesCollection = [],
-			result = getTweets();
+			result = this.Tweets();
 		
 		for (i in result) {
 			
