@@ -27,10 +27,38 @@
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
 	
-	var TwitterCall = function () {
+	var Tweets = function (result) {
+						
+		if (!result) {
+			
+			x = x;
+			
+			return function(){
+								
+				//console.log('Tweets', x)
+				
+				return x;
+				
+			}();
+			
+		} else {
+			
+			x = result;
+			
+			return function(){
+								
+				//console.log('Tweets', x)
+				
+				return x;
+				
+			}();
+			
+		}
 		
-		var result = [];
-		
+	}
+				
+	var getTweets = function () {
+				
 		//Use AJAX to get the latest tweets
 		$.ajax({
 			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
@@ -38,8 +66,7 @@ var Twitolu = (function () {
 			dataType: "json",
 			async: true,
 			success: function(result){
-				console.log("TwitterCall",result);
-			 	return result;					
+			 	return Tweets(result);					
 			},
 			error: function(err){
 				console.log(err);
@@ -54,14 +81,14 @@ var Twitolu = (function () {
 	var WordCloud = function () {
 		
 		var wordCloud = [],
-			TilesCollection = TwitterCall();
+			Tweets = Twitolu.Tweets();
 							
 		var cloud = [],
 			duplicate = cloud[0];
 		
-		for (i in TilesCollection) {
+		for (i in Tweets) {
 
-			cloud.push(TilesCollection[i].tag);
+			cloud.push(Tweets[i].tag);
 						
 		}
 		
@@ -70,9 +97,7 @@ var Twitolu = (function () {
 		for (i in cloud) {
 			
 			if (cloud[i] !== duplicate) {
-								
 				wordCloud.push(duplicate);
-								
 				//console.log('Duplicate : ' + duplicate);
 			} 
 			
@@ -92,7 +117,7 @@ var Twitolu = (function () {
 		
 		//Create place to collect tiles for future reference
 		var TilesCollection = [],
-			result = TwitterCall();
+			result = getTweets();
 		
 		for (i in result) {
 			
@@ -166,16 +191,19 @@ var Twitolu = (function () {
 	} 
 		 
 	 	
-	var Archive = function (type, item, itemId) {
-		
+	var Archive = function (type, item) {
+				
 		this.addItems = function(type, item) {
-			console.log('item added');
+			var x = localStorage.setItem('type', JSON.stringify(item));
+			console.log('item added', this.viewItems());
 		};
-		this.removeItems = function(type, itemId) {
-			console.log('item removed');
+		var removeItems = function(type, item) {
+			var x = localStorage.setItem('type', JSON.stringify(item));
+			console.log('item removed', x);
 		};
-		this.viewItems = function(type, itemId) {
-			console.log('item viewed');
+		var viewItems = function(type, itemId) {
+			var x = localStorage.gettItem('type', JSON.stringify(item));
+			console.log('item viewed', x);
 		};
 		
 	}
@@ -183,6 +211,7 @@ var Twitolu = (function () {
 	//PUBLIC METHODS
 	return {
 		
+		Tweets: Tweets,
 		Archive: Archive,
 		TileFactory: TileFactory,
 		RecipientFactory: RecipientFactory,
