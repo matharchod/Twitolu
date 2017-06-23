@@ -38,16 +38,16 @@ var Twitolu = (function () {
 			dataType: "json",
 			async: true,
 			success: function(result){
-			 	result = result;					
+				console.log("TwitterCall",result);
+			 	return result;					
 			},
 			error: function(err){
-				alert("Error with JSON: " + err);
 				console.log(err);
+				alert("Error with JSON: " + err);
 			}
 						
 		});
 		
-		return result;
 				
 	}
 	
