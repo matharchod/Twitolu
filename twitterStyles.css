@@ -181,7 +181,13 @@ body {
 		padding: 5% 5% 15% 5%;
 		font-size: 110%;
 		min-width: 200px;
-	}	
+	}
+	#WordCloud li {
+		display: inline-block;
+	    padding: 0.5em;
+	    font-size: 1em;
+	    min-width: inherit;
+  	}	
 	.wrap {
 		width: 100%;
 		padding: 5%;

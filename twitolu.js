@@ -1,32 +1,9 @@
-//Flitter
-//I created this app to help me orgnize, visualize and socialize my Twitter feed.
-//I have used Twitter since it first became available to the public. 
-//I like the medium of microblogging to quickly create snippets of the cool things I see online every day.
-//However, there aren't many tools that allow you to look back through history to remind you what you were thinking about last week.
-//This app retrieves my last 200 tweets
-//seperates them into categories
-//transforms each one into a tile with controls for sharing their content
-//allows searching 
-
-//Functions:
-//appInit
-//cloudInit
-//searchInit
-//toggleWordCloud
-//clearSearch
-//buildTweets
-//showOnlyFavoirties
-//createWordCloud
-//NEWchangeMeToRandomColor
-//shareFavorites
-//searchByTag 
-
-
 //Use PHP to get a list of tweets in JSON format
 //Use the first word or phrase from the tweet as the category for that tweet
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
 
+	//Create persistent storage for Tweets in a closure
 	var Tweets = (function (result) {	
 		
 		var x;
@@ -42,6 +19,7 @@ var Twitolu = (function () {
 		
 	})();
 	
+	//Make a synchronous call to get Tweets
 	var getTweets = (function () {
 				
 		//Use AJAX to get the latest tweets
@@ -61,7 +39,8 @@ var Twitolu = (function () {
 		});
 				
 	})();
-							
+	
+	//Create a word cloud from the tags extracted from the Tweet text						
 	var WordCloud = function () {
 		
 		var wordCloud = [],
@@ -69,11 +48,7 @@ var Twitolu = (function () {
 							
 		var cloud = [],
 			duplicate = cloud[0];
-			
-		var fixSpecials = function(txt) {
-			return (txt).replace(/&amp;/g,"&");
-		}
-				
+							
 		for (i in Tweets) {
 			
 			var x = Tweets[i].text.split('. ')[0];
@@ -84,8 +59,9 @@ var Twitolu = (function () {
 				//return an empty string
 				console.log('too long: ' + x);
 			} else {
-				//return the tag
-				cloud.push(x);
+				//correct special characters
+				//and return the tag
+				cloud.push((x).replace(/&amp;/g,"&"));
 			}
 									
 		}
@@ -110,11 +86,11 @@ var Twitolu = (function () {
 		return wordCloud;
 		
 	}
-		
+	
+	
+	//Use the Tweets to create tiles	
 	var TileFactory = function () {
-		
-		//getTweets();
-		
+				
 		//Create place to collect tiles for future reference
 		var TilesCollection = [],
 			result = Tweets();
@@ -122,7 +98,7 @@ var Twitolu = (function () {
 		for (i in result) {
 			
 			var fixSpecials = function(txt) {
-				return (txt).replace(/&amp;/g,"&");
+				return (txt).replace(/&amp;/g,"&");//corrects ampersands
 			}
 			
 			var Text_obj = fixSpecials(result[i].text);
