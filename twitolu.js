@@ -31,19 +31,13 @@ var Twitolu = (function () {
 		
 		var x;
 		
-		return function (result) {
-			
+		return function (result) {			
 			if (!result) {
-				
 				return x;
-				
 			} else {
-				
 				x = result;
-				return x;
-				
+				return x;	
 			}
-			
 		}
 		
 	})();
@@ -84,9 +78,11 @@ var Twitolu = (function () {
 			
 			var x = Tweets[i].text.split('. ')[0];
 			
-			if (x >= 20) {
+			//console.log(x.length);
+			
+			if (x.length >= 20 || x == 'undefined') {
 				//return an empty string
-				return;
+				console.log('too long: ' + x);
 			} else {
 				//return the tag
 				cloud.push(x);
@@ -226,179 +222,12 @@ var Twitolu = (function () {
 })();
 
 
-appInit = function(){
-	searchInit('#tweets li:not(.cloud)');		
-	
-	$('.favoriteLink').click(function(){
-		toggleFavorites($(this),'favorite');
-	});	
-	
-	$('.shareLink').click(function(){
-		shareFavorites($(this));
-	});	
-	
-	$('.gotoTop').click(function(){
-		$('html, body').animate({ scrollTop: 0 }, "slow");		
-	});	
-	$('#tweets li').each(function(){
-		NEWchangeMeToRandomColor($(this));
-	});	
-	$('.onlyFaves').click(function(){
-		showOnlyFavoirties();
-	});	
-    $('.tag').click(function(){
-	    $('#filter').val($(this).text());
-      hideWordCloud('.cloud');
-	    $('.searchNow').click();
-	    $('html, body').animate({ scrollTop: 0 }, "slow");	
-    });	
-    $('#toggleWordCloud').click(function(){
-	    toggleWordCloud('.cloud');
-    });	
-}
-
-cloudInit = function(){
-  $('.cloud').click(function(){
-    $('#filter').val($(this).text());
-    $('.searchNow').click();
-    $('html, body').animate({ scrollTop: 0 }, "slow");	
-    hideWordCloud('.cloud');
-  });	
-}
-
-toggleWordCloud = function(cloudLinks){
-	if ($(cloudLinks).hasClass('visible')==true) {
-		hideWordCloud(cloudLinks);	
-	} else {
-		showWordCloud(cloudLinks);
-	}
-}
-
-showWordCloud = function(cloudLinks){$(cloudLinks).addClass('visible')}
-hideWordCloud = function(cloudLinks){$(cloudLinks).removeClass('visible')}
-
-clearSearch = function() {
-	$('#filter').val('');
-	$('.tags .content').empty();
-	$('#filter-count').hide();	
-	$('.shareLink').html('Send');
-};
-
-//Each tweet is transformed into a tile
-//Tiles allow me to manipulate each tweet seperately or in groups
-//Group several tiles as Favorites
-//Send the content of each tile as an email
-//Send a group of Favorites as a single email 
-//Create category links that will search for all tweets that match that category
-buildTweets = function(tweetLink, tweetText, tweetTag){	
-	var tweet = tweetText.replace(tweetLink,'');
-	//console.log('tweetTag.length =', tweetTag.length);
-	if (tweetTag.length >= 30) {
-		tweetTag = '';
-	} else {
-		tweetTag = tweetTag;
-	}
-	$('#tweets .container').append('<li class="tweetItem">' 
-		+ '<p>' + tweet + '</p><span>'
-		+ '<div class="table">'
-		+ '<a class="gotoTop" style="width:0px;">&uarr;</a>'
-		+ '<a class="favoriteLink" style="width:0px;">&hearts;</a>'
-		+ '<a class="shareLink">Send</a>'
-		+ '<a class="tag">' + tweetTag + '</a>'
-		+ '<a href="' + tweetLink + '" class="openTweet" style="width:50px;">' + tweetLink + '</a>' 
-		+ '</div>'				
-		+ '</span><span class="shade"></span></li>');		
-}
-
-showOnlyFavoirties = function(){
-	$('.tweetItem').not('.favorite').hide();	
-}
-
-showAllTweets = function(){
-	$('.tweetItem').show();	
-}
-
 NEWchangeMeToRandomColor = function(elem){
 	//http://paulirish.com/2009/random-hex-color-code-snippets/	
 	var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16); 
 	var bgcolor = (!bgcolor) ? randomColor : bgcolor ;
 	$(elem).css({'background-color': bgcolor});		
 };
-
-shareFavorites = function($_this){
-	
-	var tweetsToSend = [];
-	var	tweetContent = $_this.closest('.tweetItem').text().replace('%20%E2%86%91%E2%99%A5Send','');
-		
-	function closeMe(){
-		$('#zerostate').fadeOut(function(){
-			$('#zerostate').remove();
-		});
-	}
-	
-	if ($('.favorite, #zerostate').length <= 0){		
-		var shareContent = tweetContent;
-		
-		emailTweets(shareContent);
-		
-		console.log(shareContent);
-		/*
-		$_this.parent().prepend('<li id="zerostate">' 
-		+ '<a class="close">&times;</a>'
-		+ '<p>Click something, fool!</p>'
-		+ '</li>');
-		*/
-		
-		$('.close').click(function(){closeMe()});
-		
-	} else {
-		$('.favorite').each(function(){
-			var	tweetContent = $(this).find('p').text();
-			var	tweetContentLink = $(this).find('.openTweet').attr('href');	
-			tweetsToSend.push([tweetContent + tweetContentLink]);			
-		});	
-		var x = tweetsToSend.join('\n\n').toString();
-		//var y = encodeURIComponent(x);
-		//var y = x.replace(/&/ig,'&');
-		
-		emailTweets(x);
-		//%0D%0A
-		console.log('tweetsToSend = \n', x);
-		
-	}
-		
-}
-
-emailTweets = function(shareContent){	
-	var content = encodeURIComponent(shareContent);
-	window.location = 'mailto:' 
-		+ ' ' 
-		+ '?subject=' + 'Cool Stuff in Web Development'
-		+ '&body=Jani says:' 
-		+ '%0D%0A%0D%0A-----%0D%0A%0D%0A'
-		+ content
-		+ '%0D%0A%0D%0A-----%0D%0A%0D%0A' 
-		+ 'Find more cool stuff in the UX diary of Jani Momolu Anderson at http://janianderson.com/#diary';
-}
-
-toggleFavorites = function ($_elem, activeClass){
-	var $_thisParent = $_elem.closest('.tweetItem');	
-	if ($_thisParent.hasClass(activeClass) == false){
-		$_thisParent.addClass(activeClass);
-	} else {
-		$_thisParent.removeClass(activeClass);
-	}
-	if ($('.favorite').size()==1){
-		$('.shareLink').text('');
-		$('.favorite .shareLink').html('Send');		
-	} 	
-	else if ($('.favorite').size()>1){
-		$('.shareLink').text('');
-		$('.favorite .shareLink').html('Send All &hearts;');
-	} else {
-		$('.shareLink').text('Send');
-	}
-}
 
 //SEARCH
 searchInit = function (elem) {

@@ -28,7 +28,11 @@
 					<a class="onlyFaves border-box">Show &hearts; Only</a>		
 					<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
 				</div>
-				
+				<div id="WordCloud">
+					<ul>
+						<li v-for="word in wordCloud">{{ word }}</li>
+					</ul>
+				</div>
 				<div id="TileBoard">
 				  <ol>
 				    <li class="tweetItem" v-for="tile in tilesCollection">
@@ -50,7 +54,6 @@
 				  </ol>
 				</div>
 				
-				<div id="wordCloud"></div>
 			</div>	
 			<div class="container">
 			</div>
@@ -79,7 +82,7 @@
 <script type="text/javascript">
 	
 	var tilesCollection = Twitolu.TileFactory();
-	//var wordCloud = Twitolu.WordCloud();		 
+	var wordCloud = Twitolu.WordCloud();		 
 	 	
 	var TileBoard = new Vue({
 		el: '#TileBoard',
@@ -90,7 +93,6 @@
 		}
 	});	
 	
-	/*
 	var WordCloud = new Vue({
 		el: '#WordCloud',
 		data: function () {
@@ -99,7 +101,7 @@
 			}
 		}
 	});	
-	*/
+	
  		 	
 </script>
 </html>
