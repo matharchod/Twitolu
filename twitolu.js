@@ -19,12 +19,209 @@
 //createWordCloud
 //NEWchangeMeToRandomColor
 //shareFavorites
-//searchByTag
+//searchByTag 
 
 
- 
-//I use two functions called appInit and cloudInit to initialize all of my event listeners.
-//This allows me to bootstrap the controls when I load page elements asnycronously.
+//Use PHP to get a list of tweets in JSON format
+//Use the first word or phrase from the tweet as the category for that tweet
+//Use the URL from the tweet as the link for its tile 
+var Twitolu = (function () {
+	
+	var Tweets = function (result) {
+						
+		if (!result) {
+			
+			x = x;
+			
+			return function(){
+								
+				//console.log('Tweets', x)
+				
+				return x;
+				
+			}();
+			
+		} else {
+			
+			x = result;
+			
+			return function(){
+								
+				//console.log('Tweets', x)
+				
+				return x;
+				
+			}();
+			
+		}
+		
+	}
+				
+	var getTweets = function () {
+				
+		//Use AJAX to get the latest tweets
+		$.ajax({
+			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			type: "GET",
+			dataType: "json",
+			async: true,
+			success: function(result){
+			 	return Tweets(result);					
+			},
+			error: function(err){
+				console.log(err);
+				alert("Error with JSON: " + err);
+			}
+						
+		});
+		
+				
+	}
+	
+	var WordCloud = function () {
+		
+		var wordCloud = [],
+			Tweets = Twitolu.Tweets();
+							
+		var cloud = [],
+			duplicate = cloud[0];
+		
+		for (i in Tweets) {
+
+			cloud.push(Tweets[i].tag);
+						
+		}
+		
+		cloud.sort();
+				
+		for (i in cloud) {
+			
+			if (cloud[i] !== duplicate) {
+				wordCloud.push(duplicate);
+				//console.log('Duplicate : ' + duplicate);
+			} 
+			
+			duplicate = cloud[i];
+						
+		}
+		
+		wordCloud = wordCloud.splice(1); //remove undefined tags
+						
+		//console.log('wordCloud', wordCloud);
+				
+		return wordCloud;
+		
+	}
+		
+	var TileFactory = function () {
+		
+		//Create place to collect tiles for future reference
+		var TilesCollection = [],
+			result = getTweets();
+		
+		for (i in result) {
+			
+			var fixSpecials = function(txt) {
+				return (txt).replace(/&amp;/g,"&");
+			}
+			
+			var Text_obj = fixSpecials(result[i].text);
+				URL_obj = result[i].entities.urls[0],
+				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
+				Media_obj = result[i].entities.media;
+				
+			
+			//REMOVE LINK FROM TEXT
+			var Text = function() {
+				//use display url to find link in text and remove it
+				return Text_obj.split('http')[0];
+			}
+			
+			//IF A URL IS UNDEFINED
+			var URL = function() {
+				if (URL_obj === undefined) {
+					//show the first URL found in the string
+					return 'http' + Text_obj.split('http')[1];
+				} else {
+					//show the display url
+					return URL_obj.url;
+				}
+			}
+			
+			//IF A TAG IS NOT PRESENT
+			var Tag = function() {
+				if (Tag_obj.length >= 20) {
+					//return an empty string
+					return;
+				} else {
+					//return the tag
+					return Tag_obj;
+				}
+			}
+			
+			//Use the factory to create each tile
+			var tile = {
+										
+					text: Text(),
+					tag: Tag(),
+					URL: URL(),
+					date: result[i].created_at,
+					media: result[i].entities.media,
+					popularity: result[i].favorite_count
+	            
+	            } 
+			
+			TilesCollection.push(tile);
+			 
+			//console.log( tilesCollection );
+
+		}
+		
+		return TilesCollection
+						
+		//console.log( "TilesCollection: ", TilesCollection ); 
+		
+	}
+	
+	
+	
+	var RecipientFactory = function () {
+		
+		
+	} 
+		 
+	 	
+	var Archive = function (type, item) {
+				
+		this.addItems = function(type, item) {
+			var x = localStorage.setItem('type', JSON.stringify(item));
+			console.log('item added', this.viewItems());
+		};
+		var removeItems = function(type, item) {
+			var x = localStorage.setItem('type', JSON.stringify(item));
+			console.log('item removed', x);
+		};
+		var viewItems = function(type, itemId) {
+			var x = localStorage.gettItem('type', JSON.stringify(item));
+			console.log('item viewed', x);
+		};
+		
+	}
+	
+	//PUBLIC METHODS
+	return {
+		
+		Tweets: Tweets,
+		Archive: Archive,
+		TileFactory: TileFactory,
+		RecipientFactory: RecipientFactory,
+		WordCloud: WordCloud
+	
+	}
+	
+})();
+
+
 appInit = function(){
 	searchInit('#tweets li:not(.cloud)');		
 	
@@ -83,40 +280,6 @@ clearSearch = function() {
 	$('.shareLink').html('Send');
 };
 
-//Use PHP to get a list of tweets in JSON format
-//Use the first word or phrase from the tweet as the category for that tweet
-//Use the URL from the tweet as the link for its tile 
-buildTweetList = function() {
-	$.ajax({
-		url: "/_dev/twitterApp/tmhOAuth-master/tweets_json.php?count=200",
-		type: "GET",
-		dataType: "json",
-		success: function(result){
-			for (i in result) {
-				var tweetId = i,
-					tweetText = result[i].text,
-					tweetTag = result[i].text.split('. ')[0],
-					tweetURLS = result[i].entities.urls;
-				for (x in tweetURLS) {
-					var tweetLink = tweetURLS[x].url;
-				//	console.log('tweetLink : ' + tweetLink);
-					buildTweets(tweetLink, tweetText, tweetTag);				
-				}	
-			}			
-			appInit();
-			createWordCloud();
-			$('.loading').fadeOut(function(){
-				$(this).remove();
-				$('#tweets .container').show();
-			});
-		},
-		error: function(err){
-			alert("Error with JSON");
-			console.log(err);
-		}
-	});
-};
-
 //Each tweet is transformed into a tile
 //Tiles allow me to manipulate each tweet seperately or in groups
 //Group several tiles as Favorites
@@ -149,57 +312,6 @@ showOnlyFavoirties = function(){
 
 showAllTweets = function(){
 	$('.tweetItem').show();	
-}
-
-createWordCloud = function(){
-	var cloud = [],
-		cloud2 = [];
-	$('.tweetItem p').each(function(){
-		var x = $(this).text().split('.')[0];
-		cloud.push(x);
-	});
-	cloud.sort();
-	var last = cloud[0];
-	for (var i=1; i<cloud.length; i++) {
-	   if (cloud[i] == last) {
-	   	cloud2.push(last);
-	   	//console.log('Duplicate : ' + last);
-	   	};
-	   last = cloud[i];
-	}
-	countCloudItems(cloud2);
-};
-
-countCloudItems = function (arr) {
-    var a = [], b = [], prev;
-	theCloud = [];
-    arr.sort();
-    for ( var i = 0; i < arr.length; i++ ) {
-        if ( arr[i] !== prev ) {
-            a.push(arr[i]);
-            b.push(1);         
-        } else {	
-            b[b.length-1]++;
-        }
-        prev = arr[i];
-    }
-	theCloud.push({'words':a},{'count':b});
-	//console.log(theCloud[0].words);
-	theNewCloud = [];
-	for (i in theCloud[0].words){ 
-		theNewCloud.push({id:theCloud[0].words[i], value:theCloud[1].count[i]});
-    } 
-    theNewCloud.sort(function(a, b) { return b.value - a.value });    
-    for (i in theNewCloud){
-	    if (theNewCloud[i].value <= 1) {} else {
-			//console.log(theNewCloud[i].id, theNewCloud[i].value);
-			$('#wordCloud').append('<div class="cloud">'
-			+ theNewCloud[i].id
-			+ '</div>');
-	    }
-    }
-	cloudInit();
-	console.log(theNewCloud);
 }
 
 NEWchangeMeToRandomColor = function(elem){

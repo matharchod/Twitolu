@@ -7,8 +7,8 @@ require 'tmhOAuth.php'; // Get it from: https://github.com/themattharris/tmhOAut
 $connection = new tmhOAuth(array(
   'consumer_key' => 'MD9EQpRD0MjWDTNgvjiA',
 	'consumer_secret' => 'bM5m5aAMYEsn5L5qvuFsEs8Tn2n0tVsPm4VoAG7DMk',
-	'user_token' => '1234567890123456789012345678901234567890', //your Twitter Developer access token
-	'user_secret' => '1234567890123456789012345678901234567890' //your Twitter Developer access token secret
+	'user_token' => '147717734-lXs1RB44BDxjI4IlsLGxdJ1yY6pmPOXcOD3ewHN1', //access token
+	'user_secret' => '4X5yxKcRHlUwWx22q6fwt6sISZKZOiK9CUuJufhT4' //access token secret
 ));
 
 // set up parameters to pass
