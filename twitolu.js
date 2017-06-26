@@ -55,7 +55,7 @@ var Twitolu = (function () {
 			
 			//console.log(x.length);
 			
-			if (x.length >= 20 || x == 'undefined') {
+			if (x.length >= 22 || x == 'undefined') {
 				//return an empty string
 				console.log('too long: ' + x);
 			} else {
@@ -165,6 +165,57 @@ var Twitolu = (function () {
 		
 		
 	} 
+	
+	var Search = (function () {
+		
+		var elem = '.tweetItem';
+		
+	  //The search functionality in the Portfolio section is a DOM search.
+	  //I use the searchInit function to create a jQuery-wrapped set of elements to limit the search.
+	  //USEAGE: searchInit('#elem');
+	  
+		//prevent default ENTER key
+		$('input').keypress(function (evt) {
+			//Deterime where our character code is coming from within the event
+			var charCode = evt.charCode || evt.keyCode;
+			if (charCode == 13) { //Enter key's keycode
+				//Simulate a click on the "search" button
+				$('.searchNow').click();
+			}
+		});	
+		//Event handler for the "search" button
+		//Takes the value of the seach field
+		//Runs a case-insensitive regular expression on each tweet for that value 
+		//Toggles the visibility on tweets that match the regex
+		//Shows the nuber of tweets that match the search
+		$('.searchNow').click(function () {
+			var filter = $('#filter').val(),
+					count = 0;
+			$(elem).each(function () {
+				if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+					$(this).hide();
+				} else {
+					$(this).show();
+					count++;
+				}
+			});	
+			// Update the tweet count for matched items
+			var numberItems = count;
+			$('#filter-count').text(count).show();
+			return false;
+		});	
+		//Clears the search box
+		//shows all tweets 
+		//resets the tile controls
+		$('.clearSearch').click(function(){	
+			$('#filter').val('');
+			$(elem).show();
+			$('#filter-count').hide();	
+			$('.tweetItem').removeClass('favorite');	
+			$('.shareLink').html('Send');
+		});
+		
+	})();
 		 
 	 	
 	var Archive = function (type, item) {
@@ -188,6 +239,7 @@ var Twitolu = (function () {
 	return {
 		
 		Tweets: Tweets,
+		Search: Search,
 		Archive: Archive,
 		TileFactory: TileFactory,
 		RecipientFactory: RecipientFactory,
