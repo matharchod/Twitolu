@@ -26,47 +26,38 @@
 //Use the first word or phrase from the tweet as the category for that tweet
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
-	
-	var Tweets = function (result) {
-						
-		if (!result) {
+
+	var Tweets = (function (result) {	
+		
+		var x;
+		
+		return function (result) {
 			
-			x = x;
-			
-			return function(){
-								
-				//console.log('Tweets', x)
+			if (!result) {
 				
 				return x;
 				
-			}();
-			
-		} else {
-			
-			x = result;
-			
-			return function(){
-								
-				//console.log('Tweets', x)
+			} else {
 				
+				x = result;
 				return x;
 				
-			}();
+			}
 			
 		}
 		
-	}
-				
-	var getTweets = function () {
+	})();
+	
+	var getTweets = (function () {
 				
 		//Use AJAX to get the latest tweets
 		$.ajax({
 			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
 			type: "GET",
 			dataType: "json",
-			async: true,
+			async: false,
 			success: function(result){
-			 	return Tweets(result);					
+			 	Tweets(result);	
 			},
 			error: function(err){
 				console.log(err);
@@ -74,10 +65,9 @@ var Twitolu = (function () {
 			}
 						
 		});
-		
 				
-	}
-	
+	})();
+							
 	var WordCloud = function () {
 		
 		var wordCloud = [],
@@ -85,11 +75,23 @@ var Twitolu = (function () {
 							
 		var cloud = [],
 			duplicate = cloud[0];
-		
+			
+		var fixSpecials = function(txt) {
+			return (txt).replace(/&amp;/g,"&");
+		}
+				
 		for (i in Tweets) {
-
-			cloud.push(Tweets[i].tag);
-						
+			
+			var x = Tweets[i].text.split('. ')[0];
+			
+			if (x >= 20) {
+				//return an empty string
+				return;
+			} else {
+				//return the tag
+				cloud.push(x);
+			}
+									
 		}
 		
 		cloud.sort();
@@ -115,9 +117,11 @@ var Twitolu = (function () {
 		
 	var TileFactory = function () {
 		
+		//getTweets();
+		
 		//Create place to collect tiles for future reference
 		var TilesCollection = [],
-			result = getTweets();
+			result = Tweets();
 		
 		for (i in result) {
 			
