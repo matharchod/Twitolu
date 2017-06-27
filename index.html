@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="main">
-		<h2>UX Diary</h2>
+		<h1>UX Diary</h1>
 		<ul class="mainNavToggle">
 
 			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
@@ -37,9 +37,12 @@
 				</div>
 			</li>
 			<li>
-				<ul id="WordCloud">
+				<ul id="WordCloud" class="collection w-header">
+					<li class="collection-header">
+						<h2>Tags</h4>
+					</li>
 					<li v-for="word in wordCloud">
-						<button class="waves-effect waves-light btn">{{ word }}</button>
+						<a href="#!" class="collection-item" >{{ word }}</a>
 					</li>
 				</ul>
 			</li><!-- / WordCloud -->
