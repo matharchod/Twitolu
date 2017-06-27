@@ -4,68 +4,88 @@
 	<title>twitter search app / jani momolu anderson / front-end developer / chicago, il</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,700' rel='stylesheet' type='text/css'>
+	<!--Import Google Icon Font-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
 	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
 </head>
 <body>
 	<div class="main">
+		<h2>UX Diary</h2>
 		<ul class="mainNavToggle">
-			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
-		</ul>	
-		<div id="tweets" class="content-section">
-			<div class="tags sidebar">
-				<h2>UX Diary</h2>
-				<div class="search-box border-box">
-					<div class="wrap border-box">
-						<input id="filter" class="border-box" name="filter">
-					</div>
-					<a class="searchNow border-box">Search<p id="filter-count"></p></a>
-					<button class="clearSearch border-box">Reset</button>	
-					<a class="onlyFaves border-box">Show &hearts; Only</a>		
-					<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
-				</div>
-				<div id="WordCloud">
-					<ul>
-						<li v-for="word in wordCloud">{{ word }}</li>
-					</ul>
-				</div>
-				<div id="TileBoard">
-				  <ol>
-				    <li class="tweetItem" v-for="tile in tilesCollection">
-				      
-						<p><a v-bind:href="tile.URL">{{ tile.text }}</a></p>
-						
-						<span>
-							<div class="table">
-								<a class="gotoTop" style="width:0px;">&uarr;</a>
-								<a class="favoriteLink" style="width:0px;">&hearts;</a>
-								<a class="shareLink">Send</a>
-								<a class="tag">{{ tile.tag }}</a>
-							</div>				
-						</span>
-						
-						<span class="shade"></span>
 
-				    </li>
-				  </ol>
+			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
+			<li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a></li>
+			
+		</ul>	
+		
+		<ul id="slide-out" class="side-nav">
+			<li>
+				<div class="user-view">
+					<div class="background">
+						<img src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/FatherSonFishing_crop.jpg">
+					</div>
+					<a href="#!user"><img class="circle" src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/Jani-Anderson.jpg"></a>
+					<a href="#!name"><span class="name">Jani Momolu Anderson</span></a>
+					<a href="#!email"><span class="email">ja@janianderson.com</span></a>
 				</div>
-				
-			</div>	
-			<div class="container">
+			</li>
+			<li>
+				<ul id="WordCloud">
+					<li v-for="word in wordCloud">
+						<button class="waves-effect waves-light btn">{{ word }}</button>
+					</li>
+				</ul>
+			</li><!-- / WordCloud -->
+		</ul><!-- sidebar -->
+
+		<div class="search-box border-box">
+			<div class="wrap border-box">
+				<input id="filter" class="border-box" name="filter">
 			</div>
-		</div>				
-	</div>
+			<a class="searchNow border-box">Search<p id="filter-count"></p></a>
+			<button class="clearSearch border-box">Reset</button>	
+			<a class="onlyFaves border-box">Show &hearts; Only</a>		
+			<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
+		</div>
+
+		<div id="tweets" class="content-section">
+				
+			<div id="TileBoard">
+			  <ul>
+			    <li class="card tweetItem" v-for="tile in tilesCollection">
+			      
+			      	<div class="card-content">
+						<a v-bind:href="tile.URL">{{ tile.text }}</a>
+			      	</div><!-- / card-content -->
+					
+					<div class="card-action">
+						<a class="gotoTop teal-text" style="width:0px;">&uarr;</a>
+						<a class="favoriteLink" style="width:0px;">&hearts;</a>
+						<a class="shareLink">Send</a>
+						<span class="badge"><a class="tag teal-text">{{ tile.tag }}</a></span>
+					</div><!-- / card-action -->
+					
+			    </li><!-- / card -->
+			  </ul>
+			</div><!-- / TileBoard -->
+			
+		</div><!-- / tweets -->
+					
+	</div><!-- / main -->
 
 </body>
 <!-- The SCRIPTS -->	
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>-->
-<script type="text/javascript" src="twitolu.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 <script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="twitolu.js"></script>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -103,5 +123,17 @@
 	});	
 	
  		 	
+</script>
+
+<script type="text/javascript">
+	
+
+	// Initialize collapse button
+	$(function(){
+		$(".button-collapse").sideNav();
+	});
+	// Initialize collapsible (uncomment the line below if you use the dropdown variation)
+	//$('.collapsible').collapsible();	
+	
 </script>
 </html>
