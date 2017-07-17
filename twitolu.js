@@ -3,6 +3,10 @@
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
 
+
+	//Create persistent storage for Favorites in a closure
+	var Faves = [];
+
 	//Create persistent storage for Tweets in a closure
 	var Tweets = (function (result) {	
 		
@@ -141,6 +145,7 @@ var Twitolu = (function () {
 					text: Text(),
 					tag: Tag(),
 					URL: URL(),
+					ID: result[i].id_str,
 					date: result[i].created_at,
 					media: result[i].entities.media,
 					popularity: result[i].favorite_count
@@ -239,6 +244,7 @@ var Twitolu = (function () {
 	return {
 		
 		Tweets: Tweets,
+		Faves: Faves,
 		Search: Search,
 		Archive: Archive,
 		TileFactory: TileFactory,
@@ -326,5 +332,24 @@ searchByTag = function(tag){ //searchTags
 	});	
 	console.log(tag);
 };
+
+addFavorite = function(tileID) {
+    
+    var Tiles = Twitolu.TileFactory();
+    
+    Tiles.forEach(function(tile){
+        
+        if (tile.ID == tileID) {
+            //console.log(tile);
+            Twitolu.Faves.push(tile);
+        }
+        
+    });
+    
+    console.log('Faves:',Twitolu.Faves);
+        
+}
+
+
 
 
