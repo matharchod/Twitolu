@@ -3,6 +3,9 @@
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
 
+	//Create persistent storage for Favorites in a closure
+	var Faves = [];
+
 	//Create persistent storage for Tweets in a closure
 	var Tweets = (function (result) {	
 		
@@ -141,6 +144,7 @@ var Twitolu = (function () {
 					text: Text(),
 					tag: Tag(),
 					URL: URL(),
+					ID: result[i].id_str,
 					date: result[i].created_at,
 					media: result[i].entities.media,
 					popularity: result[i].favorite_count
@@ -239,6 +243,7 @@ var Twitolu = (function () {
 	return {
 		
 		Tweets: Tweets,
+		Faves: Faves,
 		Search: Search,
 		Archive: Archive,
 		TileFactory: TileFactory,
@@ -308,11 +313,11 @@ searchInit = function (elem) {
 
 searchByTag = function(tag){ //searchTags
 	var count = 0;
-	$('.content li:not(:contains(' + tag + '))').each(function(){
+		$('.card:not(:contains(' + tag + '))').each(function(){
 		$(this).hide();
 		//console.log($(this));
 	});
-	$('.content li:contains(' + tag + ')').each(function(){
+	$('.card:contains(' + tag + ')').each(function(){
 		count++;
 		$(this).show();
 		$('#filter-count').text(count).show();
@@ -324,6 +329,50 @@ searchByTag = function(tag){ //searchTags
 			$(this).addClass('active').removeClass('inactive');	
 		}
 	});	
+	console.log(tag);
 };
+
+addFavorite = function(tileID) {
+    
+    var Tiles = Twitolu.TileFactory();
+    
+    Tiles.forEach(function(tile){
+	            
+        if ( tile.ID == tileID ) {
+            //console.log(tile);
+			Twitolu.Faves.push(tile);
+        }
+
+    });
+    
+    console.log('Faves:',Twitolu.Faves);
+        
+}
+
+removeFavorite = function(tileID) {
+    
+    var Tiles = Twitolu.Faves;
+    
+    Tiles.forEach(function(tile){
+	            
+        if ( tile.ID == tileID ) {
+	        
+	        var tileIndex = Tiles.indexOf(tile);
+	        
+            console.log('tileIndex:',tileIndex);
+            
+	        Tiles.splice(tileIndex);
+	        
+        }
+
+    });
+    
+    console.log('Faves:',Twitolu.Faves);
+        
+}
+
+
+
+
 
 
