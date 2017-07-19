@@ -42,7 +42,7 @@
 						<h2>Tags</h4>
 					</li>
 					<li v-for="word in wordCloud">
-						<a href="#!" class="collection-item" >{{ word }}</a>
+						<a href="#!" class="collection-item" onClick="searchByTag(window.event.target.text)">{{ word }}</a>
 					</li>
 				</ul>
 			</li><!-- / WordCloud -->
@@ -52,10 +52,11 @@
 			<div class="wrap border-box">
 				<input id="filter" class="border-box" name="filter">
 			</div>
-			<a class="searchNow border-box">Search<p id="filter-count"></p></a>
+			<button class="searchNow border-box">Search</button>
 			<button class="clearSearch border-box">Reset</button>	
-			<a class="onlyFaves border-box">Show &hearts; Only</a>		
-			<a id="toggleWordCloud" class="border-box">Word Cloud</a>				
+			<a href="#!" class="onlyFaves border-box">Show &hearts; Only</a>		
+			<a href="#!" id="toggleWordCloud" class="border-box">Word Cloud</a>		
+			<p id="filter-count"></p>		
 		</div>
 
 		<div id="tweets" class="content-section">
@@ -69,10 +70,12 @@
 			      	</div><!-- / card-content -->
 					
 					<div class="card-action">
-						<a class="gotoTop teal-text" style="width:0px;">&uarr;</a>
-						<a class="favoriteLink" style="width:0px;">&hearts;</a>
-						<a class="shareLink">Send</a>
-						<span class="badge"><a class="tag teal-text">{{ tile.tag }}</a></span>
+						<button class="gotoTop teal-text">&uarr;</button>
+						<button class="favoriteLink" v-bind:value="tile.ID" onClick="addFavorite( window.event.target.value )">&hearts;</button>
+						<button class="shareLink" v-bind:value="tile.ID">Send</button>
+						<span class="badge">
+						    <a href="#!" class="tag teal-text" onClick="searchByTag( window.event.target.text )">{{ tile.tag }}</a>
+                        </span>
 					</div><!-- / card-action -->
 					
 			    </li><!-- / card -->
