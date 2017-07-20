@@ -7,10 +7,8 @@ var Twitolu = (function () {
 	var Faves = [];
 
 	//Create persistent storage for Tweets in a closure
-	var Tweets = (function (result) {	
-		
+	var Tweets = (function (result) {			
 		var x;
-		
 		return function (result) {			
 			if (!result) {
 				return x;
@@ -38,7 +36,6 @@ var Twitolu = (function () {
 				console.log(err);
 				alert("Error with JSON: " + err);
 			}
-						
 		});
 				
 	})();
@@ -108,7 +105,6 @@ var Twitolu = (function () {
 				URL_obj = result[i].entities.urls[0],
 				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
 				Media_obj = result[i].entities.media;
-				
 			
 			//REMOVE LINK FROM TEXT
 			var Text = function() {
@@ -147,17 +143,19 @@ var Twitolu = (function () {
 					ID: result[i].id_str,
 					date: result[i].created_at,
 					media: result[i].entities.media,
-					popularity: result[i].favorite_count
+					popularity: result[i].favorite_count,
+					fave: null
 	            
 	            } 
 			
 			TilesCollection.push(tile);
-			 
+					 
 			//console.log( tilesCollection );
 
 		}
 		
-		return TilesCollection
+		Tweets(TilesCollection);
+		return Tweets();
 						
 		//console.log( "TilesCollection: ", TilesCollection ); 
 		
@@ -334,24 +332,23 @@ searchByTag = function(tag){ //searchTags
 
 addFavorite = function(tileID) {
     
-    var Tiles = Twitolu.TileFactory();
+    var Tiles = Twitolu.Tweets();
     
     Tiles.forEach(function(tile){
 	            
         if ( tile.ID == tileID ) {
             //console.log(tile);
-			Twitolu.Faves.push(tile);
+			tile.fave = 'active';
+			console.log('add Fave:',tile);
         }
 
     });
     
-    console.log('Faves:',Twitolu.Faves);
-        
 }
 
 removeFavorite = function(tileID) {
     
-    var Tiles = Twitolu.Faves;
+    var Tiles = Twitolu.Tweets();
     
     Tiles.forEach(function(tile){
 	            
@@ -359,16 +356,14 @@ removeFavorite = function(tileID) {
 	        
 	        var tileIndex = Tiles.indexOf(tile);
 	        
-            console.log('tileIndex:',tileIndex);
+            console.log('remove Fave tileIndex:',tileIndex);
             
-	        Tiles.splice(tileIndex);
+	        tile.fave = null;
 	        
         }
 
     });
-    
-    console.log('Faves:',Twitolu.Faves);
-        
+            
 }
 
 

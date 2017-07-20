@@ -71,10 +71,11 @@
 					
 					<div class="card-action">
 						<button class="gotoTop teal-text">&uarr;</button>
-						<button class="favoriteLink" v-bind:value="tile.ID" onClick="addFavorite( window.event.target.value )">&hearts;</button>
-						<button class="favoriteLink" v-bind:value="tile.ID" onClick="removeFavorite( window.event.target.value )">remove&hearts;</button>
+						<button v-if="tile.fave != 'active'" v-bind:value="tile.ID" onClick="addFavorite( window.event.target.value )">&hearts;</button>
+						<button v-else v-bind:value="tile.ID" onClick="removeFavorite( window.event.target.value )">&hearts;</button>
 						<button class="shareLink" v-bind:value="tile.ID">Send</button>
 						<span class="badge">
+							<span>{{tile.fave}}</span>
 						    <a href="#!" class="tag teal-text" onClick="searchByTag( window.event.target.text )">{{ tile.tag }}</a>
                         </span>
 					</div><!-- / card-action -->
