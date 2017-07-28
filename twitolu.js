@@ -137,16 +137,16 @@ var Twitolu = (function () {
 			//Use the factory to create each tile
 			var tile = {
 										
-					text: Text(),
-					tag: Tag(),
-					URL: URL(),
-					ID: result[i].id_str,
-					date: result[i].created_at,
-					media: result[i].entities.media,
-					popularity: result[i].favorite_count,
-					fave: null
+				text: Text(),
+				tag: Tag(),
+				URL: URL(),
+				ID: result[i].id_str,
+				date: result[i].created_at,
+				media: result[i].entities.media,
+				popularity: result[i].favorite_count,
+				fave: null
 	            
-	            } 
+	        } 
 			
 			TilesCollection.push(tile);
 					 
@@ -365,6 +365,8 @@ removeFavorite = function(tileID) {
     });
             
 }
+
+          
 
 
 

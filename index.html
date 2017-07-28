@@ -41,7 +41,7 @@
 					<li class="collection-header">
 						<h2>Tags</h4>
 					</li>
-					<li v-for="word in wordCloud">
+					<li v-for="word in WordCloud">
 						<a href="#!" class="collection-item" onClick="searchByTag(window.event.target.text)">{{ word }}</a>
 					</li>
 				</ul>
@@ -56,6 +56,8 @@
 			<button class="clearSearch border-box">Reset</button>	
 			<a href="#!" class="onlyFaves border-box">Show &hearts; Only</a>		
 			<a href="#!" id="toggleWordCloud" class="border-box">Word Cloud</a>		
+			  <!-- Modal Trigger -->
+			  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
 			<p id="filter-count"></p>		
 		</div>
 
@@ -63,7 +65,7 @@
 				
 			<div id="TileBoard">
 			  <ul>
-			    <li class="card tweetItem" v-for="tile in tilesCollection">
+			    <li class="card tweetItem" v-for="tile in Tiles">
 			      
 			      	<div class="card-content">
 						<a v-bind:href="tile.URL">{{ tile.text }}</a>
@@ -85,7 +87,47 @@
 			</div><!-- / TileBoard -->
 			
 		</div><!-- / tweets -->
-					
+		
+		<!-- Modal Structure -->
+		<div id="modal1" class="modal">
+			<!-- / modal content -->
+			<div class="modal-content">
+				<h4>Modal Header</h4>
+				<!-- contact form -->
+				<div class="row">
+					<form class="col s12">
+						<!-- recipient list -->
+						<div id="Recipients" class="row">
+							<ul>
+								<li v-for="word in WordCloud" class="new badge">{{ word }}</li>
+			  				</ul>
+						</div><!-- / recipient list -->
+						<!-- new recipient -->
+						<div class="row">
+							<div class="input-field col s6">
+								<input placeholder="Placeholder" id="first_name" type="text" class="validate">
+								<label for="first_name">First Name</label>
+							</div>
+							<div class="input-field col s6">
+								<input id="last_name" type="text" class="validate">
+								<label for="last_name">Last Name</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="email" type="email" class="validate">
+								<label for="email">Email</label>
+							</div>
+						</div><!-- / new recipient -->
+					</form>
+				</div><!-- contact form -->
+			</div><!-- / modal content -->
+			<!-- modal footer -->
+			<div class="modal-footer">
+				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+			</div><!-- modal footer -->
+		</div><!-- / Modal Structure -->
+
 	</div><!-- / main -->
 
 </body>
@@ -109,23 +151,23 @@
 </script>
 <script type="text/javascript">
 	
-	var tilesCollection = Twitolu.TileFactory();
-	var wordCloud = Twitolu.WordCloud();		 
+	var Tiles = Twitolu.TileFactory();
+	var WordCloud = Twitolu.WordCloud();		 
 	 	
 	var TileBoard = new Vue({
 		el: '#TileBoard',
 		data: function () {
 			return {
-				tilesCollection
+				Tiles
 			}
 		}
 	});	
 	
-	var WordCloud = new Vue({
-		el: '#WordCloud',
+	var Recipients = new Vue({
+		el: '#Recipients',
 		data: function () {
 			return {
-				wordCloud
+				WordCloud
 			}
 		}
 	});	
@@ -142,6 +184,10 @@
 	});
 	// Initialize collapsible (uncomment the line below if you use the dropdown variation)
 	//$('.collapsible').collapsible();	
+	$(document).ready(function(){
+		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+		$('.modal').modal();
+	});
 	
 </script>
 </html>

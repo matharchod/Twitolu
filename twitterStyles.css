@@ -5,3 +5,9 @@
 #WordCloud button {
 	width: 100%;
 }
+
+#Recipients li {
+    float: left;
+    margin: 0.1em;
+    background-color: #ccc;
+}
