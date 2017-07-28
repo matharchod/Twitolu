@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="main">
-		<h1>UX Diary</h1>
+		<h1>Working Debt</h1>
 		<ul class="mainNavToggle">
 
 			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
@@ -73,8 +73,10 @@
 					
 					<div class="card-action">
 						<button class="gotoTop teal-text">&uarr;</button>
+						<!-- FAVE button -->
 						<button v-if="tile.fave != 'active'" v-bind:value="tile.ID" onClick="addFavorite( window.event.target.value )">&hearts;</button>
 						<button v-else v-bind:value="tile.ID" onClick="removeFavorite( window.event.target.value )">&hearts;</button>
+						<!-- / FAVE button -->
 						<button class="shareLink" v-bind:value="tile.ID">Send</button>
 						<span class="badge">
 							<span>{{tile.fave}}</span>
@@ -105,17 +107,17 @@
 						<!-- new recipient -->
 						<div class="row">
 							<div class="input-field col s6">
-								<input placeholder="Placeholder" id="first_name" type="text" class="validate">
-								<label for="first_name">First Name</label>
+								<input placeholder="First Name" id="FName" type="text" class="validate">
+								<label for="FName">First Name</label>
 							</div>
 							<div class="input-field col s6">
-								<input id="last_name" type="text" class="validate">
-								<label for="last_name">Last Name</label>
+								<input placeholder="Last Name" id="LName" type="text" class="validate">
+								<label for="LName">Last Name</label>
 							</div>
 						</div>
 						<div class="row">
 							<div class="input-field col s12">
-								<input id="email" type="email" class="validate">
+								<input placeholder="Email Address" id="Email" type="email" class="validate">
 								<label for="email">Email</label>
 							</div>
 						</div><!-- / new recipient -->
@@ -124,7 +126,8 @@
 			</div><!-- / modal content -->
 			<!-- modal footer -->
 			<div class="modal-footer">
-				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+<!-- 				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a> -->
+				<button onClick="addRecipient()" type="submit" class="modal-action modal-close waves-effect waves-green btn-flat">Add</button>
 			</div><!-- modal footer -->
 		</div><!-- / Modal Structure -->
 
@@ -177,6 +180,21 @@
 
 <script type="text/javascript">
 	
+	//Recipient form	
+	var addRecipient = function() {
+		
+		var x = {
+			FName: $('form input#FName').val(),
+			LName: $('form input#LName').val(),
+			Email: $('form input#Email').val()
+		}
+		
+		Twitolu.Recipients(x);
+		
+		console.log('recipient to add:', x );
+		
+		return x;
+	}
 
 	// Initialize collapse button
 	$(function(){
@@ -186,7 +204,7 @@
 	//$('.collapsible').collapsible();	
 	$(document).ready(function(){
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-		$('.modal').modal();
+		$('.modal').modal('open');
 	});
 	
 </script>
