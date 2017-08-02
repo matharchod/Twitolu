@@ -23,7 +23,7 @@ var Twitolu = (function () {
 	//Create persistent storage for Tweets in a closure
 	var Recipients = (function (recipient) {
 		
- 		var r_Archive = [ JSON.parse( localStorage.getItem('TwitoluRecipients') ) ];
+ 		var r_Archive = JSON.parse( localStorage.getItem('TwitoluRecipients') );
 		var	r_List = [];
 				
 		return function (recipient) {			
@@ -69,12 +69,12 @@ var Twitolu = (function () {
 			r_NewList = r_Archive.concat(r_List);
 			//set archive contents
 			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_NewList) );
+			
+			console.log('r_List:', r_List)
+			console.log('r_Archive:', r_Archive)
 
 		}
-		
-		console.log('r_Archive:', r_Archive)
-		console.log('r_List:', r_List)
-		
+				
 	};
 	
 	//Make a synchronous call to get Tweets
