@@ -21,40 +21,61 @@ var Twitolu = (function () {
 	})();
 	
 	//Create persistent storage for Tweets in a closure
-	var Recipients = (function (result) {
+	var Recipients = (function (recipient) {
 		
-		var r_List = [ JSON.parse( localStorage.getItem('TwitoluRecipients') ) ];
+ 		var r_Archive = [ JSON.parse( localStorage.getItem('TwitoluRecipients') ) ];
+		var	r_List = [];
 				
-		return function (result) {			
-			if (!result) {
+		return function (recipient) {			
+			if (!recipient) {
 				
-				return r_List;
+				return r_Archive;
 				
 			} else {
 				
-				if (r_List === null) {
-					
-					r_List = [];
-					
-				} else {
-										
-					var person = {
-						FName: result.FName, 
-						Lname: result.LName, 
-						Email: result.Email
-					}
-					
-					r_List.push(person);
-					
-					localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
-										
+				var person = {
+					FName: recipient.FName, 
+					LName: recipient.LName, 
+					Email: recipient.Email
 				}
+								
+				r_List.push(person);
+				
+				//localStorage.setItem('TwitoluRecipients', JSON.stringify(r_Archive) );
 												
 				console.log('Recipients:', r_List)
+				//console.log('Recipients already archived:', r_Archive)
+				
 				return r_List;	
 			}
 		}
 	})();
+	
+	var SaveRecipients = function(){
+		
+		//get archive contents
+		var r_Archive = JSON.parse( localStorage.getItem('TwitoluRecipients') );
+		//get new recipients list
+		var r_List = Twitolu.Recipients();
+		
+		//if archive is empty, add recipients from r_List
+		if (r_Archive === null) {
+			
+			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
+			
+		} else {
+			
+			//add recipeints list to archive
+			r_NewList = r_Archive.concat(r_List);
+			//set archive contents
+			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_NewList) );
+
+		}
+		
+		console.log('r_Archive:', r_Archive)
+		console.log('r_List:', r_List)
+		
+	};
 	
 	//Make a synchronous call to get Tweets
 	var getTweets = (function () {
@@ -93,7 +114,7 @@ var Twitolu = (function () {
 			
 			if (x.length >= 22 || x == 'undefined') {
 				//return an empty string
-				console.log('too long: ' + x);
+				//console.log('too long: ' + x);
 			} else {
 				//correct special characters
 				//and return the tag
@@ -281,6 +302,7 @@ var Twitolu = (function () {
 		Tweets: Tweets,
 		Faves: Faves,
 		Recipients: Recipients,
+		SaveRecipients: SaveRecipients,
 		Search: Search,
 		Archive: Archive,
 		TileFactory: TileFactory,
