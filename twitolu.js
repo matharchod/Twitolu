@@ -23,7 +23,7 @@ var Twitolu = (function () {
 	//Create persistent storage for Tweets in a closure
 	var Recipients = (function (result) {
 		
-		var r_List = JSON.stringify( localStorage.getItem('TwitoluRecipients') );
+		var r_List = [ JSON.parse( localStorage.getItem('TwitoluRecipients') ) ];
 				
 		return function (result) {			
 			if (!result) {
@@ -38,18 +38,18 @@ var Twitolu = (function () {
 					
 				} else {
 										
-					person = {
+					var person = {
 						FName: result.FName, 
-						Lname: result.Lname, 
+						Lname: result.LName, 
 						Email: result.Email
 					}
+					
+					r_List.push(person);
+					
+					localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
 										
 				}
-				
-				//r_List.push(person);
-				
-				//localStorage.setItem('TwitoluRecipients', r_List);
-								
+												
 				console.log('Recipients:', r_List)
 				return r_List;	
 			}
