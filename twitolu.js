@@ -82,6 +82,8 @@ var Twitolu = (function () {
 			
 			console.log('r_List:', r_List)
 			console.log( 'Twitolu.Recipients():', Twitolu.Recipients() )
+			
+			return Twitolu.Recipients();
 
 		}
 				

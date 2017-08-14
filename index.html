@@ -103,9 +103,9 @@
 						<!-- recipient list -->
 						<div id="Recipients" class="row">
 							<ul>
-								<li v-for="person in Recipients" class="new badge">
+								<li v-for="(person, id) in Recipients" class="new badge">
 									<a href="#!" onClick="removeRecipient(window.event.target)" >x</a>
-									{{ person.FName }} {{ person.LName }}
+									{{ person.FName }} {{ person.LName }} - {{ id }}
 								</li>
 			  				</ul>
 						</div><!-- / recipient list -->
@@ -206,7 +206,9 @@
 				
 		console.log('recipient ready to add:', x );
 		
-		return Twitolu.Recipients(x);
+		Twitolu.Recipients(x);
+		
+		return Twitolu.Recipients();
 	}
 	
 	//Remove Recipient	
