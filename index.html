@@ -58,7 +58,8 @@
 			<a href="#!" id="toggleWordCloud" class="border-box">Word Cloud</a>		
 			  <!-- Modal Trigger -->
 			<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-			<button onClick="Twitolu.SaveRecipients();" type="submit" class="waves-effect waves-green btn-flat">Save Recipients</button>
+			<button onClick="Twitolu.SaveRecipients();" class="waves-effect waves-green btn-flat">Save Recipients</button>
+			<button onClick="clearRecipients();" class="waves-effect waves-green btn-flat">Empty Recipients</button>
 			<p id="filter-count"></p>		
 		</div>
 
@@ -102,7 +103,10 @@
 						<!-- recipient list -->
 						<div id="Recipients" class="row">
 							<ul>
-								<li v-for="person in Recipients" class="new badge">{{ person.FName }} {{ person.LName }}</li>
+								<li v-for="person in Recipients" class="new badge">
+									<a href="#!" onClick="removeRecipient(window.event.target)" >x</a>
+									{{ person.FName }} {{ person.LName }}
+								</li>
 			  				</ul>
 						</div><!-- / recipient list -->
 						<!-- new recipient -->
@@ -203,6 +207,18 @@
 		console.log('recipient ready to add:', x );
 		
 		return Twitolu.Recipients(x);
+	}
+	
+	//Remove Recipient	
+	var removeRecipient = function(x) {
+						
+		console.log('recipient ready to remove:', x );
+		
+	}
+	
+	var clearRecipients = function() {
+		localStorage.removeItem('TwitoluRecipients');
+		return Twitolu.Recipients();
 	}
 
 	// Initialize collapse button

@@ -20,35 +20,44 @@ var Twitolu = (function () {
 		
 	})();
 	
-	//Create persistent storage for Tweets in a closure
-	var Recipients = (function (recipient) {
-		
- 		var r_Archive = JSON.parse( localStorage.getItem('TwitoluRecipients') );
-		var	r_List = [];
-				
-		return function (recipient) {			
-			if (!recipient) {
-				
-				return r_Archive;
-				
+	//Create persistent storage for Recipients
+	var Recipients = (function (result) {			
+		var x = JSON.parse( localStorage.getItem('TwitoluRecipients') );
+		return function (result) {			
+			if (!result) {
+				return x;
+			} else if (x === null) {
+				x = [];
+				return x;
 			} else {
-				
-				var person = {
-					FName: recipient.FName, 
-					LName: recipient.LName, 
-					Email: recipient.Email
-				}
-								
-				r_List.push(person);
-				
-				//localStorage.setItem('TwitoluRecipients', JSON.stringify(r_Archive) );
-												
-				console.log('Recipients:', r_List)
-				//console.log('Recipients already archived:', r_Archive)
-				
-				return r_List;	
+				x.push(result);
+				return x;	
 			}
 		}
+		
+	})();
+	
+	var RecipientFactory = (function (recipient) {
+						
+		//var r_Archive = JSON.parse( localStorage.getItem('TwitoluRecipients') );
+/*
+		
+		var person = {
+			FName: recipient.FName, 
+			LName: recipient.LName, 
+			Email: recipient.Email
+		}
+					
+		Recipients(person);
+		
+		//localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
+										
+		console.log('Recipients:', r_List)
+		//console.log('Recipients already archived:', r_Archive)
+		
+		return Recipients();	
+*/
+
 	})();
 	
 	var SaveRecipients = function(){
@@ -59,19 +68,20 @@ var Twitolu = (function () {
 		var r_List = Twitolu.Recipients();
 		
 		//if archive is empty, add recipients from r_List
-		if (r_Archive === null) {
+		if (r_Archive === 'null') {
 			
 			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
 			
 		} else {
-			
+			//create archive object
+			r_Archive = [];
 			//add recipeints list to archive
 			r_NewList = r_Archive.concat(r_List);
 			//set archive contents
 			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_NewList) );
 			
 			console.log('r_List:', r_List)
-			console.log('r_Archive:', r_Archive)
+			console.log( 'Twitolu.Recipients():', Twitolu.Recipients() )
 
 		}
 				
@@ -217,16 +227,7 @@ var Twitolu = (function () {
 		//console.log( "TilesCollection: ", TilesCollection ); 
 		
 	}
-	
-	
-	
-	var RecipientFactory = function () {
 		
-		
-		
-		
-	} 
-	
 	var Search = (function () {
 		
 		var elem = '.tweetItem';
