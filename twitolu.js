@@ -3,9 +3,6 @@
 //Use the URL from the tweet as the link for its tile 
 var Twitolu = (function () {
 
-	//Create persistent storage for Favorites in a closure
-	var Faves = [];
-
 	//Create persistent storage for Tweets in a closure
 	var Tweets = (function (result) {			
 		var x;
@@ -40,6 +37,24 @@ var Twitolu = (function () {
 				x.push(result);
 				//set new archive contents
 				localStorage.setItem('TwitoluRecipients', JSON.stringify(x) );
+				return x;	
+			}
+		}
+		
+	})();
+	
+
+	//Create persistent storage for Favorites in a closure
+	var Favorites = (function (result) {			
+		var x;
+		if (!x) {
+			x = [];
+		}
+		return function (result) {			
+			if (!result) {
+				return x;
+			} else {
+				x.push(result);
 				return x;	
 			}
 		}
@@ -81,9 +96,9 @@ var Twitolu = (function () {
 			
 			//console.log(x.length);
 			
-			if (x.length >= 22 || x == 'undefined') {
+			if (x.length >= 24 || x == 'undefined') {
 				//return an empty string
-				//console.log('too long: ' + x);
+				//console.log('not a tag: ' + x);
 			} else {
 				//correct special characters
 				//and return the tag
@@ -151,7 +166,7 @@ var Twitolu = (function () {
 			
 			//IF A TAG IS NOT PRESENT
 			var Tag = function() {
-				if (Tag_obj.length >= 20) {
+				if (Tag_obj.length >= 24) {
 					//return an empty string
 					return;
 				} else {
@@ -191,8 +206,6 @@ var Twitolu = (function () {
 		
 		var elem = '.tweetItem';
 		
-	  //The search functionality in the Portfolio section is a DOM search.
-	  //I use the searchInit function to create a jQuery-wrapped set of elements to limit the search.
 	  //USEAGE: searchInit('#elem');
 	  
 		//prevent default ENTER key
@@ -206,18 +219,17 @@ var Twitolu = (function () {
 		});	
 		//Event handler for the "search" button
 		//Takes the value of the seach field
-		//Runs a case-insensitive regular expression on each tweet for that value 
-		//Toggles the visibility on tweets that match the regex
-		//Shows the nuber of tweets that match the search
 		$('.searchNow').click(function () {
 			var filter = $('#filter').val(),
 					count = 0;
 			$(elem).each(function () {
+				//Runs a case-insensitive regular expression on each tweet for that value 
 				if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+					//Toggles visibility
 					$(this).hide();
 				} else {
 					$(this).show();
-					count++;
+					count++; //Shows the number of tweets that match the search
 				}
 			});	
 			// Update the tweet count for matched items
@@ -242,7 +254,7 @@ var Twitolu = (function () {
 	return {
 		
 		Tweets: Tweets,
-		Faves: Faves,
+		Favorites: Favorites,
 		Recipients: Recipients,
 		Search: Search,
 		TileFactory: TileFactory,
@@ -340,26 +352,42 @@ addFavorite = function(tileID) {
             //console.log(tile);
 			tile.fave = 'active';
 			console.log('add Fave:',tile);
+			Twitolu.Favorites(tile);
         }
 
     });
-    
+
+	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
 }
 
 removeFavorite = function(tileID) {
     
     var Tiles = Twitolu.Tweets();
+    var Faves = Twitolu.Favorites();
     
     Tiles.forEach(function(tile){
 	            
         if ( tile.ID == tileID ) {
-	        
-	        var tileIndex = Tiles.indexOf(tile);
-	        
-            console.log('remove Fave tileIndex:',tileIndex);
-            
+
 	        tile.fave = null;
 	        
+        }
+
+    });
+    
+    Faves.forEach(function(tile){
+	            
+        if ( tile.ID == tileID ) {
+			
+			var tileIndex = Faves.indexOf(tile);
+			
+			console.log('tileIndex:',tileIndex);
+			console.log('remove Fave at index ' + tileIndex ,tile);
+			
+			var x = Faves.splice(tileIndex);
+			
+			console.log( 'splice result:', x );
+				        
         }
 
     });
