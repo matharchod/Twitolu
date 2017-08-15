@@ -21,74 +21,31 @@ var Twitolu = (function () {
 	})();
 	
 	//Create persistent storage for Recipients
-	var Recipients = (function (result) {			
+	var Recipients = (function (result) {		
+		
+		//check for recipients in web storage	
 		var x = JSON.parse( localStorage.getItem('TwitoluRecipients') );
-		return function (result) {			
+		
+		//if nothing in web storage, create empty object for storage
+		if (x === null) {
+			x = []; 
+			localStorage.setItem('TwitoluRecipients', JSON.stringify(x) );
+		}	
+		
+		return function (result) {		
+			
 			if (!result) {
-				return x;
-			} else if (x === null) {
-				x = [];
 				return x;
 			} else {
 				x.push(result);
+				//set new archive contents
+				localStorage.setItem('TwitoluRecipients', JSON.stringify(x) );
 				return x;	
 			}
 		}
 		
 	})();
-	
-	var RecipientFactory = (function (recipient) {
-						
-		//var r_Archive = JSON.parse( localStorage.getItem('TwitoluRecipients') );
-/*
-		
-		var person = {
-			FName: recipient.FName, 
-			LName: recipient.LName, 
-			Email: recipient.Email
-		}
-					
-		Recipients(person);
-		
-		//localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
-										
-		console.log('Recipients:', r_List)
-		//console.log('Recipients already archived:', r_Archive)
-		
-		return Recipients();	
-*/
-
-	})();
-	
-	var SaveRecipients = function(){
-		
-		//get archive contents
-		var r_Archive = JSON.parse( localStorage.getItem('TwitoluRecipients') );
-		//get new recipients list
-		var r_List = Twitolu.Recipients();
-		
-		//if archive is empty, add recipients from r_List
-		if (r_Archive === 'null') {
 			
-			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_List) );
-			
-		} else {
-			//create archive object
-			r_Archive = [];
-			//add recipeints list to archive
-			r_NewList = r_Archive.concat(r_List);
-			//set archive contents
-			localStorage.setItem('TwitoluRecipients', JSON.stringify(r_NewList) );
-			
-			console.log('r_List:', r_List)
-			console.log( 'Twitolu.Recipients():', Twitolu.Recipients() )
-			
-			return Twitolu.Recipients();
-
-		}
-				
-	};
-	
 	//Make a synchronous call to get Tweets
 	var getTweets = (function () {
 				
@@ -280,24 +237,6 @@ var Twitolu = (function () {
 		});
 		
 	})();
-		 
-	 	
-	var Archive = function (type, item) {
-				
-		this.addItems = function(type, item) {
-			var x = localStorage.setItem('type', JSON.stringify(item));
-			console.log('item added', this.viewItems());
-		};
-		var removeItems = function(type, item) {
-			var x = localStorage.setItem('type', JSON.stringify(item));
-			console.log('item removed', x);
-		};
-		var viewItems = function(type, itemId) {
-			var x = localStorage.gettItem('type', JSON.stringify(item));
-			console.log('item viewed', x);
-		};
-		
-	}
 	
 	//PUBLIC METHODS
 	return {
@@ -305,11 +244,8 @@ var Twitolu = (function () {
 		Tweets: Tweets,
 		Faves: Faves,
 		Recipients: Recipients,
-		SaveRecipients: SaveRecipients,
 		Search: Search,
-		Archive: Archive,
 		TileFactory: TileFactory,
-		RecipientFactory: RecipientFactory,
 		WordCloud: WordCloud
 	
 	}
