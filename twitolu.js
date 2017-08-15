@@ -46,10 +46,7 @@ var Twitolu = (function () {
 
 	//Create persistent storage for Favorites in a closure
 	var Favorites = (function (result) {			
-		var x;
-		if (!x) {
-			x = [];
-		}
+		var x = [];
 		return function (result) {			
 			if (!result) {
 				return x;
@@ -382,15 +379,17 @@ removeFavorite = function(tileID) {
 			var tileIndex = Faves.indexOf(tile);
 			
 			console.log('tileIndex:',tileIndex);
-			console.log('remove Fave at index ' + tileIndex ,tile);
+			console.log('remove Fave at index ' + tileIndex , tile.text);
 			
-			var x = Faves.splice(tileIndex);
+			var x = Faves.splice(tileIndex, 1);
 			
 			console.log( 'splice result:', x );
-				        
+							        
         }
 
     });
+    
+	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
             
 }
 
