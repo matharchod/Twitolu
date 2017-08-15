@@ -43,7 +43,6 @@ var Twitolu = (function () {
 		
 	})();
 	
-
 	//Create persistent storage for Favorites in a closure
 	var Favorites = (function (result) {			
 		var x = [];
@@ -340,42 +339,29 @@ searchByTag = function(tag){ //searchTags
 };
 
 addFavorite = function(tileID) {
-    
     var Tiles = Twitolu.Tweets();
-    
     Tiles.forEach(function(tile){
-	            
         if ( tile.ID == tileID ) {
             //console.log(tile);
 			tile.fave = 'active';
 			console.log('add Fave:',tile);
 			Twitolu.Favorites(tile);
         }
-
     });
 
 	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
 }
 
 removeFavorite = function(tileID) {
-    
     var Tiles = Twitolu.Tweets();
     var Faves = Twitolu.Favorites();
-    
     Tiles.forEach(function(tile){
-	            
         if ( tile.ID == tileID ) {
-
 	        tile.fave = null;
-	        
         }
-
     });
-    
     Faves.forEach(function(tile){
-	            
         if ( tile.ID == tileID ) {
-			
 			var tileIndex = Faves.indexOf(tile);
 			
 			console.log('tileIndex:',tileIndex);
@@ -384,11 +370,8 @@ removeFavorite = function(tileID) {
 			var x = Faves.splice(tileIndex, 1);
 			
 			console.log( 'splice result:', x );
-							        
         }
-
     });
-    
 	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
             
 }

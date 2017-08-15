@@ -102,7 +102,7 @@
 						<div id="Recipients" class="row">
 							<ul>
 								<li v-for="(person, id) in Recipients" class="new badge">
-									<a href="#!" onClick="removeRecipient(window.event.target)" >x</a>
+									<button v-bind:value="id" onClick="removeRecipient(window.event.target.value)" >x</button>
 									{{ person.FName }} {{ person.LName }} - {{ id }}
 								</li>
 			  				</ul>
@@ -196,22 +196,28 @@
 	//Recipient form	
 	var addRecipient = function() {
 				
-		var x = {
+		var person = {
 			FName: $('form input#FName').val(),
 			LName: $('form input#LName').val(),
 			Email: $('form input#Email').val()
 		}
 				
-		console.log('addRecipient:', x );
+		console.log('addRecipient:', person );
 		
-		return Twitolu.Recipients(x);
+		return Twitolu.Recipients(person);
 	}
 	
 	//Remove Recipient	
-	var removeRecipient = function(x) {
-						
-		console.log('recipient ready to remove:', x );
+	var removeRecipient = function(idx) {
 		
+		var recipients = Twitolu.Recipients();	
+		
+		var r_index = recipients.splice(idx,1);
+		
+		console.log('recipient ready to remove:', idx );
+		console.log('new recipients:', recipients );
+		
+		return Twitolu.Recipients();
 	}
 	
 	var clearRecipients = function() {
