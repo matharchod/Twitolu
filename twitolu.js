@@ -338,6 +338,84 @@ searchByTag = function(tag){ //searchTags
 	console.log(tag);
 };
 
+//Recipient form	
+addRecipient = function() {
+	
+	var person = {
+		idx: Math.floor(Math.random() * 90000) + 10000,
+		FName: $('form input#FName').val(),
+		LName: $('form input#LName').val(),
+		Email: $('form input#Email').val()
+	}
+			
+	console.log('addRecipient:', person );
+	
+	return Twitolu.Recipients(person);
+}
+
+//Remove Recipient	
+removeRecipient = function(idx) {
+	
+	var Recipients = Twitolu.Recipients();	
+	
+	Recipients.forEach(function(person,arrIndex){
+		
+		//console.log('person:', person, person.idx, arrIndex );
+		
+		if (person.idx == idx) {
+			
+			Recipients.splice(arrIndex,1);
+			
+			localStorage.setItem('TwitoluRecipients', JSON.stringify(Recipients) );
+			
+			console.log('person FOUND:', person, person.idx, arrIndex );
+			
+		}
+		
+	});
+	
+	console.log('recipient ready to remove:', idx );
+	console.log('new recipients:', Recipients );
+	
+	
+	return Twitolu.Recipients();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 addFavorite = function(tileID) {
     var Tiles = Twitolu.Tweets();
     Tiles.forEach(function(tile){
@@ -362,14 +440,17 @@ removeFavorite = function(tileID) {
     });
     Faves.forEach(function(tile){
         if ( tile.ID == tileID ) {
+	        
 			var tileIndex = Faves.indexOf(tile);
 			
-			console.log('tileIndex:',tileIndex);
-			console.log('remove Fave at index ' + tileIndex , tile.text);
+			//console.log('tileIndex:',tileIndex);
+			console.log('remove Fave at index: ' + tileIndex , tile.text);
 			
 			var x = Faves.splice(tileIndex, 1);
 			
-			console.log( 'splice result:', x );
+			return x;
+			
+			//console.log( 'splice result:', x );
         }
     });
 	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );

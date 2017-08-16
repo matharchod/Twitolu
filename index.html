@@ -101,9 +101,9 @@
 						<!-- recipient list -->
 						<div id="Recipients" class="row">
 							<ul>
-								<li v-for="(person, id) in Recipients" class="new badge">
-									<button v-bind:value="id" onClick="removeRecipient(window.event.target.value)" >x</button>
-									{{ person.FName }} {{ person.LName }} - {{ id }}
+								<li v-for="person in Recipients" class="new badge">
+									<button v-bind:value="person.idx" class="removeRecipient">x</button>
+									{{ person.FName }} {{ person.LName }} - {{ person.idx }}
 								</li>
 			  				</ul>
 						</div><!-- / recipient list -->
@@ -130,7 +130,7 @@
 			<!-- modal footer -->
 			<div class="modal-footer">
 <!-- 				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a> -->
-				<button onClick="addRecipient()" type="submit" class="waves-effect waves-green btn-flat">Add</button>
+				<button type="submit" class="addRecipient waves-effect waves-green btn-flat">Add</button>
 			</div><!-- modal footer -->
 		</div><!-- / Modal Structure -->
 
@@ -192,49 +192,37 @@
 </script>
 
 <script type="text/javascript">
+		
 	
-	//Recipient form	
-	var addRecipient = function() {
-				
-		var person = {
-			FName: $('form input#FName').val(),
-			LName: $('form input#LName').val(),
-			Email: $('form input#Email').val()
-		}
-				
-		console.log('addRecipient:', person );
-		
-		return Twitolu.Recipients(person);
-	}
-	
-	//Remove Recipient	
-	var removeRecipient = function(idx) {
-		
-		var recipients = Twitolu.Recipients();	
-		
-		var r_index = recipients.splice(idx,1);
-		
-		console.log('recipient ready to remove:', idx );
-		console.log('new recipients:', recipients );
-		
-		return Twitolu.Recipients();
-	}
-	
-	var clearRecipients = function() {
-		localStorage.removeItem('TwitoluRecipients');
-		return Twitolu.Recipients();
-	}
-
-	// Initialize collapse button
-	$(function(){
-		$(".button-collapse").sideNav();
-	});
-	// Initialize collapsible (uncomment the line below if you use the dropdown variation)
-	//$('.collapsible').collapsible();	
 	$(document).ready(function(){
+		
+		
+	//************** EVENT LISTENERS ***************//	
+		//Add/Remove Recipients
+		$('.addRecipient').click(function(e){
+			addRecipient();
+			e.preventDefault();
+		});
+		$('.removeRecipient').click(function(e){
+			var idx = $(this).attr('value');
+			removeRecipient(idx);
+			e.preventDefault();
+		});
+	//************** EVENT LISTENERS ***************//	
+	
+	
+		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
+		//$('.collapsible').collapsible();	
+		$(".button-collapse").sideNav();
+		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();
+		
 	});
+	
+
+	
+	
 	
 </script>
 </html>
