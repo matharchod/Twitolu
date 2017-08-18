@@ -13,3 +13,7 @@
     padding: 0.25em 1em;
     border-radius: 1em;
 }
+
+.modal {
+	max-height: none;
+}

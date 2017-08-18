@@ -4,13 +4,13 @@
 var Twitolu = (function () {
 
 	//Create persistent storage for Tweets in a closure
-	var Tweets = (function (result) {			
+	var Tweets = (function (input) {			
 		var x;
-		return function (result) {			
-			if (!result) {
+		return function (input) {			
+			if (!input) {
 				return x;
 			} else {
-				x = result;
+				x = input;
 				return x;	
 			}
 		}
@@ -18,7 +18,7 @@ var Twitolu = (function () {
 	})();
 	
 	//Create persistent storage for Recipients
-	var Recipients = (function (result) {		
+	var Recipients = (function (input) {		
 		
 		//check for recipients in web storage	
 		var x = JSON.parse( localStorage.getItem('TwitoluRecipients') );
@@ -29,12 +29,12 @@ var Twitolu = (function () {
 			localStorage.setItem('TwitoluRecipients', JSON.stringify(x) );
 		}	
 		
-		return function (result) {		
+		return function (input) {		
 			
-			if (!result) {
+			if (!input) {
 				return x;
 			} else {
-				x.push(result);
+				x.push(input);
 				//set new archive contents
 				localStorage.setItem('TwitoluRecipients', JSON.stringify(x) );
 				return x;	
@@ -44,13 +44,13 @@ var Twitolu = (function () {
 	})();
 	
 	//Create persistent storage for Favorites in a closure
-	var Favorites = (function (result) {			
+	var Favorites = (function (input) {			
 		var x = [];
-		return function (result) {			
-			if (!result) {
+		return function (input) {			
+			if (!input) {
 				return x;
 			} else {
-				x.push(result);
+				x.push(input);
 				return x;	
 			}
 		}
@@ -86,40 +86,29 @@ var Twitolu = (function () {
 		var cloud = [],
 			duplicate = cloud[0];
 							
-		for (i in Tweets) {
-			
-			var x = Tweets[i].text.split('. ')[0];
-			
-			//console.log(x.length);
-			
+		for (i in Tweets) {			
+			var x = Tweets[i].text.split('. ')[0];			
+			//console.log(x.length);			
 			if (x.length >= 24 || x == 'undefined') {
 				//return an empty string
 				//console.log('not a tag: ' + x);
 			} else {
 				//correct special characters
-				//and return the tag
 				cloud.push((x).replace(/&amp;/g,"&"));
-			}
-									
+			}									
 		}
 		
 		cloud.sort();
 				
-		for (i in cloud) {
-			
+		for (i in cloud) {			
 			if (cloud[i] !== duplicate) {
 				wordCloud.push(duplicate);
 				//console.log('Duplicate : ' + duplicate);
-			} 
-			
-			duplicate = cloud[i];
-						
+			} 			
+			duplicate = cloud[i];						
 		}
-		
-		wordCloud = wordCloud.splice(1); //remove undefined tags
-						
-		//console.log('wordCloud', wordCloud);
-				
+		wordCloud = wordCloud.splice(1); //remove undefined tags						
+		//console.log('wordCloud', wordCloud);				
 		return wordCloud;
 		
 	}
@@ -155,7 +144,7 @@ var Twitolu = (function () {
 					//show the first URL found in the string
 					return 'http' + Text_obj.split('http')[1];
 				} else {
-					//show the display url
+					//return the display url
 					return URL_obj.url;
 				}
 			}
