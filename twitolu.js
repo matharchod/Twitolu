@@ -230,7 +230,6 @@ var Twitolu = (function () {
 			$(elem).show();
 			$('#filter-count').hide();	
 			$('.tweetItem').removeClass('favorite');	
-			$('.shareLink').html('Send');
 		});
 		
 	})();
@@ -250,11 +249,11 @@ var Twitolu = (function () {
 })();
 
 
-NEWchangeMeToRandomColor = function(elem){
+randomColor = function(){
 	//http://paulirish.com/2009/random-hex-color-code-snippets/	
-	var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16); 
-	var bgcolor = (!bgcolor) ? randomColor : bgcolor ;
-	$(elem).css({'background-color': bgcolor});		
+	var color = '#'+Math.floor(Math.random()*16777215).toString(16); 
+	var bgcolor = (!bgcolor) ? color : bgcolor;
+	return bgcolor;		
 };
 
 //SEARCH
@@ -300,8 +299,6 @@ searchInit = function (elem) {
 		$('#filter').val('');
 		$(elem).show();
 		$('#filter-count').hide();	
-		$('.tweetItem').removeClass('favorite');	
-		$('.shareLink').html('Send');
 	});
 };
 

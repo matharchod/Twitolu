@@ -11,6 +11,8 @@
 	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,700' rel='stylesheet' type='text/css'>
 	<!--Import Google Icon Font-->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- Import Animate.CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 	<!--Import materialize.css-->
 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
 	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
@@ -63,30 +65,45 @@
 
 		<div id="tweets" class="content-section">
 				
-			<div id="TileBoard">
-			  <ul>
-			    <li class="card tweetItem" v-for="tile in Tiles">
-			      
+			<ol id="TileBoard">
+				
+				<!-- ******** CARD ******** -->
+				<li class="card tweetItem animated" 
+					v-for="tile in Tiles" 
+					v-bind:class="[{ 'bounce active' : tile.fave }]">
 			      	<div class="card-content">
-						<a v-bind:href="tile.URL" target="_blank">{{ tile.text }}</a>
+						<h3 class="link">
+							<a v-bind:href="tile.URL" target="_blank">{{ tile.text }}</a>
+						</h3>
 			      	</div><!-- / card-content -->
 					
 					<div class="card-action">
-						<button class="gotoTop teal-text">&uarr;</button>
+						<button class="gotoTop material-icons waves-effect">vertical_align_top</button>
 						<!-- FAVE button -->
-						<button v-if="tile.fave != 'active'" v-bind:value="tile.ID" onClick="addFavorite( window.event.target.value )">+ &hearts;</button>
-						<button v-else v-bind:value="tile.ID" onClick="removeFavorite( window.event.target.value )">- &hearts;</button>
+						<button 
+							v-if="tile.fave != 'active'" 
+							v-bind:value="tile.ID" 
+							onClick="addFavorite( window.event.target.value )"
+							class="material-icons waves-effect waves-teal">favorite_border
+						</button>
+						<button 
+							v-else 
+							v-bind:value="tile.ID" 
+							onClick="removeFavorite( window.event.target.value )"
+							class="material-icons waves-effect waves-teal">favorite
+						</button>
 						<!-- / FAVE button -->
-						<button class="shareLink" v-bind:value="tile.ID">Send</button>
-						<span class="badge">
-							<span>{{tile.fave}}</span>
+						<button class="shareLink material-icons waves-effect" v-bind:value="tile.ID">mail_outline</button>
+						<span class="right">
+<!-- 							<span>{{tile.fave}}</span> -->
 						    <a href="#!" class="tag teal-text" onClick="searchByTag( window.event.target.text )">{{ tile.tag }}</a>
                         </span>
 					</div><!-- / card-action -->
 					
-			    </li><!-- / card -->
-			  </ul>
-			</div><!-- / TileBoard -->
+				</li>
+				<!-- ******** end CARD ******** -->
+			
+			</ol><!-- / TileBoard -->
 			
 		</div><!-- / tweets -->
 		
