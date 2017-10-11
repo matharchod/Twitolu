@@ -44,7 +44,11 @@
 						<h2>Tags</h4>
 					</li>
 					<li v-for="word in WordCloud">
-						<a href="#!" class="collection-item" onClick="searchByTag(window.event.target.text)">{{ word }}</a>
+						<a href="#!" 
+							class="collection-item" 
+							onClick="searchByTag(window.event.target.text)">
+							{{ word }}
+						</a>
 					</li>
 				</ul>
 			</li><!-- / WordCloud -->
@@ -71,12 +75,18 @@
 				<li class="card tweetItem animated" 
 					v-for="tile in Tiles" 
 					v-bind:class="[{ 'bounce active' : tile.fave }]">
+					
+					<!-- card-content -->
 			      	<div class="card-content">
 						<h3 class="link">
-							<a v-bind:href="tile.URL" target="_blank">{{ tile.text }}</a>
+							<a v-bind:href="tile.URL" 
+								target="_blank">
+								{{ tile.text }}
+							</a>
 						</h3>
 			      	</div><!-- / card-content -->
 					
+					<!-- card action -->
 					<div class="card-action">
 						<button class="gotoTop material-icons waves-effect">vertical_align_top</button>
 						<!-- FAVE button -->
@@ -93,10 +103,16 @@
 							class="material-icons waves-effect waves-teal">favorite
 						</button>
 						<!-- / FAVE button -->
-						<button class="shareLink material-icons waves-effect" v-bind:value="tile.ID">mail_outline</button>
+						<button class="shareLink material-icons waves-effect" 
+							v-bind:value="tile.ID">
+							mail_outline
+						</button>
 						<span class="right">
-<!-- 							<span>{{tile.fave}}</span> -->
-						    <a href="#!" class="tag teal-text" onClick="searchByTag( window.event.target.text )">{{ tile.tag }}</a>
+						    <a href="#!" 
+							    class="tag teal-text" 
+								onClick="searchByTag( window.event.target.text )">
+								{{ tile.tag }}
+							</a>
                         </span>
 					</div><!-- / card-action -->
 					
