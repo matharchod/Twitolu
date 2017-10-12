@@ -17,6 +17,26 @@ var Twitolu = (function () {
 		
 	})();
 	
+	//Make a synchronous call to get Tweets
+	var getTweets = (function () {
+				
+		//Use AJAX to get the latest tweets
+		$.ajax({
+			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			type: "GET",
+			dataType: "json",
+			async: false,
+			success: function(result){
+			 	Tweets(result);	
+			},
+			error: function(err){
+				console.log(err);
+				alert("Error with JSON: " + err);
+			}
+		});
+				
+	})();
+	
 	//Create persistent storage for Recipients
 	var Recipients = (function (input) {		
 		
@@ -56,27 +76,84 @@ var Twitolu = (function () {
 		}
 		
 	})();
-			
-	//Make a synchronous call to get Tweets
-	var getTweets = (function () {
-				
-		//Use AJAX to get the latest tweets
-		$.ajax({
-			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
-			type: "GET",
-			dataType: "json",
-			async: false,
-			success: function(result){
-			 	Tweets(result);	
-			},
-			error: function(err){
-				console.log(err);
-				alert("Error with JSON: " + err);
-			}
-		});
-				
-	})();
 	
+	var AddFavorites = function(tileID) {
+	    //var Tiles = Twitolu.Tweets();
+	    Tiles.forEach(function(tile){
+	        if ( tile.ID == tileID ) {
+	            //console.log(tile);
+				tile.fave = 'active';
+				console.log('add Fave:',tile);
+				Twitolu.Favorites(tile);
+	        }
+	    });
+	
+		console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
+	};
+	
+	var RemoveFavorites = function(tileID) {
+	    //var Tiles = Twitolu.Tweets();
+	    var Faves = Twitolu.Favorites();
+	    Tiles.forEach(function(tile){
+	        if ( tile.ID == tileID ) {
+		        tile.fave = null;
+	        }
+	    });
+	    Faves.forEach(function(tile){
+	        if ( tile.ID == tileID ) {
+		        
+				var tileIndex = Faves.indexOf(tile);
+				
+				//console.log('tileIndex:',tileIndex);
+				console.log('remove Fave at index: ' + tileIndex , tile.text);
+				
+				var x = Faves.splice(tileIndex, 1);
+				
+				return x;
+				
+				//console.log( 'splice result:', x );
+	        }
+	    });
+		console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
+	            
+	};
+
+	var SearchByTag = function(tag){ //searchTags
+		
+		var tag = tag.trim(),
+			count = 0;
+		
+		Tiles.forEach(function(tile){
+			if (tag == tile.tag) {
+				console.log(tile.text);
+			} else {
+				tile.status = null
+			}
+		});	
+		
+		console.log(tag);
+		
+	/*
+		$('.card:not(:contains(' + tag + '))').each(function(){
+			$(this).hide();
+			//console.log($(this));
+		});
+		$('.card:contains(' + tag + ')').each(function(){
+			count++;
+			$(this).show();
+			$('#filter-count').text(count).show();
+		});
+		$('.tags a').each(function(){
+			if ( $(this).attr('rel') !== tag && $(this).hasClass('active') === false){
+				$(this).addClass('inactive');
+			} else {
+				$(this).addClass('active').removeClass('inactive');	
+			}
+		});	
+	*/
+		
+	};
+				
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var WordCloud = function () {
 		
@@ -170,7 +247,8 @@ var Twitolu = (function () {
 				date: result[i].created_at,
 				media: result[i].entities.media,
 				popularity: result[i].favorite_count,
-				fave: null
+				fave: null,
+				status: 'active'
 	            
 	        } 
 			
@@ -239,8 +317,11 @@ var Twitolu = (function () {
 		
 		Tweets: Tweets,
 		Favorites: Favorites,
+		AddFavorites: AddFavorites,
+		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
 		Search: Search,
+		SearchByTag: SearchByTag,
 		TileFactory: TileFactory,
 		WordCloud: WordCloud
 	
@@ -300,28 +381,6 @@ searchInit = function (elem) {
 		$(elem).show();
 		$('#filter-count').hide();	
 	});
-};
-
-
-searchByTag = function(tag){ //searchTags
-	var count = 0;
-		$('.card:not(:contains(' + tag + '))').each(function(){
-		$(this).hide();
-		//console.log($(this));
-	});
-	$('.card:contains(' + tag + ')').each(function(){
-		count++;
-		$(this).show();
-		$('#filter-count').text(count).show();
-	});
-	$('.tags a').each(function(){
-		if ( $(this).attr('rel') !== tag && $(this).hasClass('active') === false){
-			$(this).addClass('inactive');
-		} else {
-			$(this).addClass('active').removeClass('inactive');	
-		}
-	});	
-	console.log(tag);
 };
 
 //Recipient form	
@@ -402,46 +461,7 @@ removeRecipient = function(idx) {
 
 
 
-addFavorite = function(tileID) {
-    var Tiles = Twitolu.Tweets();
-    Tiles.forEach(function(tile){
-        if ( tile.ID == tileID ) {
-            //console.log(tile);
-			tile.fave = 'active';
-			console.log('add Fave:',tile);
-			Twitolu.Favorites(tile);
-        }
-    });
 
-	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
-}
-
-removeFavorite = function(tileID) {
-    var Tiles = Twitolu.Tweets();
-    var Faves = Twitolu.Favorites();
-    Tiles.forEach(function(tile){
-        if ( tile.ID == tileID ) {
-	        tile.fave = null;
-        }
-    });
-    Faves.forEach(function(tile){
-        if ( tile.ID == tileID ) {
-	        
-			var tileIndex = Faves.indexOf(tile);
-			
-			//console.log('tileIndex:',tileIndex);
-			console.log('remove Fave at index: ' + tileIndex , tile.text);
-			
-			var x = Faves.splice(tileIndex, 1);
-			
-			return x;
-			
-			//console.log( 'splice result:', x );
-        }
-    });
-	console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
-            
-}
 
           
 

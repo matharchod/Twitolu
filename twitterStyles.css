@@ -20,11 +20,17 @@
 
 .card {
     margin: 1em;
+    height: auto;
     -webkit-transition: background-color 0.25s; /* Safari */
-    transition: background-color 0.25s;}
+    transition: background-color 0.25s;
+}
 
 .card.active {
 	background-color: lime;
+}
+
+.card.inactive {
+	display: none;
 }
 
 .card .badge {
@@ -39,11 +45,12 @@
 	height: 50px;
 	border: none;
 	border-radius: 100%;
+	margin: 0.25em;
 }
 
 .card .card-action a {
-	padding: 1em 0;
-	display: inline-block;
+    position: absolute;
+    right: 0;
 }
 
 .card .card-content {
