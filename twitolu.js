@@ -82,7 +82,7 @@ var Twitolu = (function () {
 	    Tiles.forEach(function(tile){
 	        if ( tile.ID == tileID ) {
 	            //console.log(tile);
-				tile.fave = 'active';
+				tile.faveStatus = 'active';
 				console.log('add Fave:',tile);
 				Twitolu.Favorites(tile);
 	        }
@@ -96,7 +96,7 @@ var Twitolu = (function () {
 	    var Faves = Twitolu.Favorites();
 	    Tiles.forEach(function(tile){
 	        if ( tile.ID == tileID ) {
-		        tile.fave = null;
+		        tile.faveStatus = null;
 	        }
 	    });
 	    Faves.forEach(function(tile){
@@ -108,6 +108,8 @@ var Twitolu = (function () {
 				console.log('remove Fave at index: ' + tileIndex , tile.text);
 				
 				var x = Faves.splice(tileIndex, 1);
+				
+				tile.faveStatus = 'inactive';
 				
 				return x;
 				
@@ -125,35 +127,26 @@ var Twitolu = (function () {
 		
 		Tiles.forEach(function(tile){
 			if (tag == tile.tag) {
+				count++;
+				tile.tileStatus = 'active'
 				console.log(tile.text);
 			} else {
-				tile.status = null
+				tile.tileStatus = 'inactive'
 			}
 		});	
 		
 		console.log(tag);
-		
-	/*
-		$('.card:not(:contains(' + tag + '))').each(function(){
-			$(this).hide();
-			//console.log($(this));
-		});
-		$('.card:contains(' + tag + ')').each(function(){
-			count++;
-			$(this).show();
-			$('#filter-count').text(count).show();
-		});
-		$('.tags a').each(function(){
-			if ( $(this).attr('rel') !== tag && $(this).hasClass('active') === false){
-				$(this).addClass('inactive');
-			} else {
-				$(this).addClass('active').removeClass('inactive');	
-			}
-		});	
-	*/
-		
-	};
 				
+	};
+	
+	var Reset = function () {
+				
+		Tiles.forEach(function(tile) {
+			tile.tileStatus = 'active'
+		});
+		
+	}	
+			
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var WordCloud = function () {
 		
@@ -236,7 +229,7 @@ var Twitolu = (function () {
 					return Tag_obj;
 				}
 			}
-			
+						
 			//Use the factory to create each tile
 			var tile = {
 										
@@ -247,8 +240,9 @@ var Twitolu = (function () {
 				date: result[i].created_at,
 				media: result[i].entities.media,
 				popularity: result[i].favorite_count,
-				fave: null,
-				status: 'active'
+				tileStatus: 'active',
+				faveStatus: null,
+				sendStatus: null
 	            
 	        } 
 			
@@ -300,15 +294,6 @@ var Twitolu = (function () {
 			$('#filter-count').text(count).show();
 			return false;
 		});	
-		//Clears the search box
-		//shows all tweets 
-		//resets the tile controls
-		$('.clearSearch').click(function(){	
-			$('#filter').val('');
-			$(elem).show();
-			$('#filter-count').hide();	
-			$('.tweetItem').removeClass('favorite');	
-		});
 		
 	})();
 	
@@ -321,6 +306,7 @@ var Twitolu = (function () {
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
 		Search: Search,
+		Reset: Reset,
 		SearchByTag: SearchByTag,
 		TileFactory: TileFactory,
 		WordCloud: WordCloud
@@ -335,52 +321,6 @@ randomColor = function(){
 	var color = '#'+Math.floor(Math.random()*16777215).toString(16); 
 	var bgcolor = (!bgcolor) ? color : bgcolor;
 	return bgcolor;		
-};
-
-//SEARCH
-searchInit = function (elem) {
-  //The search functionality in the Portfolio section is a DOM search.
-  //I use the searchInit function to create a jQuery-wrapped set of elements to limit the search.
-  //USEAGE: searchInit('#elem');
-  
-	//prevent default ENTER key
-	$('input').keypress(function (evt) {
-		//Deterime where our character code is coming from within the event
-		var charCode = evt.charCode || evt.keyCode;
-		if (charCode == 13) { //Enter key's keycode
-			//Simulate a click on the "search" button
-			$('.searchNow').click();
-		}
-	});	
-	//Event handler for the "search" button
-	//Takes the value of the seach field
-	//Runs a case-insensitive regular expression on each tweet for that value 
-	//Toggles the visibility on tweets that match the regex
-	//Shows the nuber of tweets that match the search
-	$('.searchNow').click(function () {
-		var filter = $('#filter').val(),
-				count = 0;
-		$(elem).each(function () {
-			if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-				$(this).hide();
-			} else {
-				$(this).show();
-				count++;
-			}
-		});	
-		// Update the tweet count for matched items
-		var numberItems = count;
-		$('#filter-count').text(count).show();
-		return false;
-	});	
-	//Clears the search box
-	//shows all tweets 
-	//resets the tile controls
-	$('.clearSearch').click(function(){	
-		$('#filter').val('');
-		$(elem).show();
-		$('#filter-count').hide();	
-	});
 };
 
 //Recipient form	
@@ -411,7 +351,7 @@ removeRecipient = function(idx) {
 			
 			Recipients.splice(arrIndex,1);
 			
-			localStorage.setItem('TwitoluRecipients', JSON.stringify(Recipients) );
+			localStorage.setItem( 'TwitoluRecipients', JSON.stringify(Recipients) );
 			
 			console.log('person FOUND:', person, person.idx, arrIndex );
 			

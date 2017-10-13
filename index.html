@@ -59,7 +59,7 @@
 				<input id="filter" class="border-box" name="filter">
 			</div>
 			<button class="searchNow border-box">Search</button>
-			<button class="clearSearch border-box">Reset</button>	
+			<button onClick="Twitolu.Reset()">Reset</button>	
 			<a href="#!" class="onlyFaves border-box">Show &hearts; Only</a>		
 			<a href="#!" id="toggleWordCloud" class="border-box">Word Cloud</a>		
 			  <!-- Modal Trigger -->
@@ -74,15 +74,19 @@
 				<!-- ******** CARD ******** -->
 				<li class="card tweetItem animated" 
 					v-for="tile in Tiles" 
-					v-bind:class="[{ 'bounce active' : tile.fave }, { 'flipOutX inactive' : !tile.status }]">
+					v-bind:class="[ 
+						{ 'flipInX' : tile.tileStatus == 'active' }, 
+						{ 'flipOutX inactive' : tile.tileStatus == 'inactive' }, 
+						{ 'bounce active' : tile.faveStatus == 'active' } 
+					]">
 					
 					<!-- card-content -->
 			      	<div class="card-content">
-						<h3 class="link">
+						<p class="link">
 							<a v-bind:href="tile.URL" target="_blank">
 								{{ tile.text }}
 							</a>
-						</h3>
+						</p>
 			      	</div><!-- / card-content -->
 					
 					<!-- card action -->
@@ -91,7 +95,7 @@
 						
 						<!-- FAVE button -->
 						<button 
-							v-if="tile.fave != 'active'" 
+							v-if="tile.faveStatus !== 'active'" 
 							v-bind:value="tile.ID" 
 							@click="addFave(tile.ID)"
 							class="material-icons waves-effect waves-teal">
@@ -215,6 +219,9 @@
 			},
 			searchByTag: function(tag) {
 				Twitolu.SearchByTag(tag)
+			},
+			reset: function() {
+				alert();
 			}
 		}
 	});	

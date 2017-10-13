@@ -21,16 +21,27 @@
 .card {
     margin: 1em;
     height: auto;
-    -webkit-transition: background-color 0.25s; /* Safari */
-    transition: background-color 0.25s;
+    max-height: 200px;
+    -webkit-transition: /* Safari */
+    	background-color 0.25s, 
+    	max-height 0.5s, 
+    	opacity 0.5s;
+    -webkit-transition-delay: 2s;
+    transition: 
+    	background-color 0.25s, 
+    	max-height 0.5s, 
+    	opacity 0.5s;
+    transition-delay: 0.5s;
 }
 
 .card.active {
 	background-color: lime;
+	opacity: 1;
 }
 
 .card.inactive {
-	display: none;
+	max-height: 0;
+	opacity: 0;
 }
 
 .card .badge {
