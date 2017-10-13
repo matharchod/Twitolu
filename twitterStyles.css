@@ -23,15 +23,13 @@
     height: auto;
     max-height: 200px;
     -webkit-transition: /* Safari */
-    	background-color 0.25s, 
+    	background-color 1s, 
     	max-height 0.5s, 
     	opacity 0.5s;
-    -webkit-transition-delay: 2s;
     transition: 
-    	background-color 0.25s, 
+    	background-color 1s, 
     	max-height 0.5s, 
     	opacity 0.5s;
-    transition-delay: 0.5s;
 }
 
 .card.active {
@@ -40,8 +38,12 @@
 }
 
 .card.inactive {
-	max-height: 0;
-	opacity: 0;
+	animation: mymove 2s;
+}
+
+@keyframes mymove {
+    from   {left: 0px;}
+    to {left: -1000px; opacity: 0;}
 }
 
 .card .badge {

@@ -74,10 +74,10 @@
 				<!-- ******** CARD ******** -->
 				<li class="card tweetItem animated" 
 					v-for="tile in Tiles" 
-					v-bind:class="[ 
-						{ 'flipInX' : tile.tileStatus == 'active' }, 
-						{ 'flipOutX inactive' : tile.tileStatus == 'inactive' }, 
-						{ 'bounce active' : tile.faveStatus == 'active' } 
+					v-bind:class="[
+						{ 'flipInX' : tile.tileStatus == 'active'},
+						{ 'inactive' : tile.tileStatus == 'inactive'},
+						{ 'active' : tile.faveStatus == 'active'}
 					]">
 					
 					<!-- card-content -->
@@ -115,7 +115,7 @@
 							mail_outline
 						</button>
 						
-						{{ tile.status }}
+						{{ tile.tileStatus }}
 						
 					    <a href="#!" 
 						    class="tag chip waves-effect"
