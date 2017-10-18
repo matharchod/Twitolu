@@ -72,26 +72,36 @@
 			<ol id="TileBoard">
 				
 				<!-- ******** CARD ******** -->
-				<li class="card tweetItem animated" 
-					v-for="tile in Tiles" 
-					v-bind:class="[
-						{ 'flipInX' : tile.tileStatus == 'active'},
-						{ 'inactive' : tile.tileStatus == 'inactive'},
-						{ 'active' : tile.faveStatus == 'active'}
-					]">
+				<li class="card animated" 
+					v-for="(tile, index, $event) in Tiles" 
+					v-bind:class="addClass(tile.tileStatus)"
+					v-bind:style="stagger(index)">
 					
 					<!-- card-content -->
 			      	<div class="card-content">
+						
+					    <a href="#!" 
+						    v-if="tile.tag"
+						    class="tag chip waves-effect"
+							@click="searchByTag(tile.tag)">
+							{{ tile.tag }}
+						</a>
+						
+<!-- 						{{ tile.tileStatus }} -->
+						
 						<p class="link">
 							<a v-bind:href="tile.URL" target="_blank">
 								{{ tile.text }}
 							</a>
 						</p>
+						
+						
 			      	</div><!-- / card-content -->
 					
 					<!-- card action -->
 					<div class="card-action valign-wrapper">
-						<button class="gotoTop material-icons waves-effect">vertical_align_top</button>
+						
+<!-- 						<button class="gotoTop material-icons waves-effect">vertical_align_top</button> -->
 						
 						<!-- FAVE button -->
 						<button 
@@ -114,15 +124,7 @@
 							v-bind:value="tile.ID">
 							mail_outline
 						</button>
-						
-						{{ tile.tileStatus }}
-						
-					    <a href="#!" 
-						    class="tag chip waves-effect"
-							@click="searchByTag(tile.tag)">
-							{{ tile.tag }}
-						</a>
-                        
+												                        
 					</div><!-- / card-action -->
 					
 				</li>
@@ -222,6 +224,46 @@
 			},
 			reset: function() {
 				alert();
+			},
+			addClass: function(tileStatus, faveStatus) {
+
+				if (tileStatus == 'active') {
+										
+						return 'flipInX active';
+					
+				} else if (tileStatus == 'inactive') {
+					
+						return 'inactive';
+						
+				} 
+												
+			},
+			stagger: function(index) {
+				
+/*
+				var prop = 'animation-delay';
+				var vendors = ['', '-webkit-', '-moz-'];
+				var	delay = Math.min(Math.max(parseInt(index), 1), 10) * 100;
+				
+				var propsPack = [];
+
+				vendors.forEach(function(vend){
+					var newProp = vend + prop + ' = ' + delay + 'ms';
+					propsPack.push(newProp);
+				})
+				
+				var x = JSON.stringify(propsPack);
+				
+				console.log(x);
+				
+				return x;
+*/
+				
+				
+				var number = Math.min(Math.max(parseInt(index), 1), 10);
+
+				return 'animation-delay:' + (number * 100) + 'ms'
+				
 			}
 		}
 	});	
@@ -243,7 +285,14 @@
 			}
 		}
 	});	
-	
+
+/*
+					[
+						{ 'flipInX' : tile.tileStatus == 'active'},
+						{ 'inactive' : tile.tileStatus == 'inactive'},
+						{ 'active' : tile.faveStatus == 'active'}
+					]	
+*/
  		 	
 </script>
 
@@ -251,6 +300,8 @@
 		
 	
 	$(document).ready(function(){
+		
+		$('.tile').on('animationend',function(){console.log('done')})
 		
 		
 	//************** EVENT LISTENERS ***************//	

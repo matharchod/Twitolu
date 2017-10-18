@@ -204,8 +204,21 @@ var Twitolu = (function () {
 			
 			//REMOVE LINK FROM TEXT
 			var Text = function() {
-				//use display url to find link in text and remove it
-				return Text_obj.split('http')[0];
+				
+				var text = Text_obj.split('http')[0]; //use display url to find link in text and remove it
+				var text_notag = text.slice(Tag_obj.length + 1); //use tag object to remove it from the string
+				
+/*
+				console.log('Tag_obj =', Tag_obj);
+				console.log('Tag_obj.length =', Tag_obj.length);
+*/
+				
+				if (Tag_obj.length >= 24) {
+					return text;
+				} else {
+					return text_notag;
+				}
+
 			}
 			
 			//IF A URL IS UNDEFINED

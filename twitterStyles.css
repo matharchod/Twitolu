@@ -20,30 +20,20 @@
 
 .card {
     margin: 1em;
-    height: auto;
-    max-height: 200px;
-    -webkit-transition: /* Safari */
-    	background-color 1s, 
-    	max-height 0.5s, 
-    	opacity 0.5s;
-    transition: 
-    	background-color 1s, 
-    	max-height 0.5s, 
-    	opacity 0.5s;
+    display: table;
 }
 
 .card.active {
-	background-color: lime;
 	opacity: 1;
 }
 
 .card.inactive {
-	animation: mymove 2s;
+	display: none;
 }
 
 @keyframes mymove {
-    from   {left: 0px;}
-    to {left: -1000px; opacity: 0;}
+    0%   {opacity: 1;}
+    100% {opacity: 0; height: 0;}
 }
 
 .card .badge {
@@ -61,22 +51,26 @@
 	margin: 0.25em;
 }
 
+.card .card-action {
+    display: table-cell;
+    width: 10%;
+    border: none;
+}
+
 .card .card-action a {
-    position: absolute;
-    right: 0;
 }
 
 .card .card-content {
-	padding: 0;
+	padding: 2em;
 }
 
 .card .card-content .link {
-	margin: 0;
+	margin: 1em 0;
 }
 
 .card .card-content .link a {
+	font-size: 1.5em;
 	display: block;
-	padding: 2em 1em;
 }
 
 .card .material-icons {
