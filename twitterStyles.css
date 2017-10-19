@@ -65,7 +65,7 @@
     background-color: #fff;
 }
 
-.side-nav button {background-color: #eee;c;color: #000;}
+.side-nav button {background-color: #eee; color: #000;}
 
 .card .card-action {
     display: table-cell;
@@ -75,7 +75,11 @@
     border-left: 1px solid #eee;
 }
 
-.card .card-action a {
+.card .card-action a {	
+}
+
+.card .chip {
+	background-color: #fff;
 }
 
 .card .card-content {
