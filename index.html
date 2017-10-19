@@ -19,17 +19,21 @@
 </head>
 <body>
 	<div class="main">
-		<h1>Working Debt</h1>
-		<ul class="mainNavToggle">
-
-			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
-			<li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a></li>
-			
-		</ul>	
 		
-		<ul id="slide-out" class="side-nav">
-			<li>
-				<div class="user-view">
+		<nav>
+			<div class="nav-wrapper">
+				<a class="brand-logo right">Working Debt</a>
+				<ul class="left hide-on-med-and-down">
+		
+					<li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a></li>
+					
+				</ul>	
+			</div>
+		</nav>
+		
+		<nav id="slide-out" class="side-nav center-align gray lighten-4">
+			<section>
+				<div class="user-view center-align">
 					<div class="background">
 						<img src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/FatherSonFishing_crop.jpg">
 					</div>
@@ -37,8 +41,20 @@
 					<a href="#!name"><span class="name">Jani Momolu Anderson</span></a>
 					<a href="#!email"><span class="email">ja@janianderson.com</span></a>
 				</div>
-			</li>
-			<li>
+				<form>
+					<div class="input-field">
+						<input id="filter" type="search" name="filter" required>
+						<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+						<i class="material-icons">close</i>
+					</div>
+				</form>
+				<button class="waves-effect waves-light material-icons" onClick="Twitolu.Reset()">refresh</button>	
+				<button class="waves-effect waves-light material-icons">favorite_outline</button>		
+				  <!-- Modal Trigger -->
+<!-- 				<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
+				<p id="filter-count"></p>		
+			</section>
+			<section>
 				<ul id="WordCloud" class="collection w-header">
 					<li class="collection-header">
 						<h2>Tags</h4>
@@ -51,21 +67,9 @@
 						</a>
 					</li>
 				</ul>
-			</li><!-- / WordCloud -->
-		</ul><!-- sidebar -->
+			</section><!-- / WordCloud -->
+		</nav><!-- sidebar -->
 
-		<div class="search-box border-box">
-			<div class="wrap border-box">
-				<input id="filter" class="border-box" name="filter">
-			</div>
-			<button class="searchNow border-box">Search</button>
-			<button onClick="Twitolu.Reset()">Reset</button>	
-			<a href="#!" class="onlyFaves border-box">Show &hearts; Only</a>		
-			<a href="#!" id="toggleWordCloud" class="border-box">Word Cloud</a>		
-			  <!-- Modal Trigger -->
-			<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-			<p id="filter-count"></p>		
-		</div>
 
 		<div id="tweets" class="content-section">
 				
@@ -83,7 +87,7 @@
 					    <a href="#!" 
 						    v-if="tile.tag"
 						    class="tag chip waves-effect"
-							@click="searchByTag(tile.tag)">
+							@click="searchByTag(tile.tag, $event)">
 							{{ tile.tag }}
 						</a>
 						
@@ -220,7 +224,8 @@
 				Twitolu.RemoveFavorites(idx)
 			},
 			searchByTag: function(tag) {
-				Twitolu.SearchByTag(tag)
+				Twitolu.SearchByTag(tag);
+				console.log('$event.target',event.target);
 			},
 			reset: function() {
 				alert();
@@ -235,35 +240,28 @@
 					
 						return 'inactive';
 						
-				} 
+				}
 												
 			},
 			stagger: function(index) {
 				
-/*
-				var prop = 'animation-delay';
-				var vendors = ['', '-webkit-', '-moz-'];
-				var	delay = Math.min(Math.max(parseInt(index), 1), 10) * 100;
-				
-				var propsPack = [];
+				var prop = 'animation-delay',
+					vendors = ['', '-webkit-', '-moz-'],
+					delay = Math.min(Math.max(parseInt(index), 1), 10) * 100, //limit number of tiles to animate
+					propsPack = [];
 
 				vendors.forEach(function(vend){
-					var newProp = vend + prop + ' = ' + delay + 'ms';
+					var newProp = vend + prop + ': ' + delay + 'ms';
 					propsPack.push(newProp);
 				})
 				
-				var x = JSON.stringify(propsPack);
+				var x = JSON.stringify(propsPack),	
+					y = x.slice(1, x.length - 1),
+					vendorProps = y.replace(/","/g,';');
 				
-				console.log(x);
+				console.log(vendorProps);
 				
-				return x;
-*/
-				
-				
-				var number = Math.min(Math.max(parseInt(index), 1), 10);
-
-				return 'animation-delay:' + (number * 100) + 'ms'
-				
+				return vendorProps;
 			}
 		}
 	});	
@@ -319,8 +317,10 @@
 	
 	
 		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
-		//$('.collapsible').collapsible();	
+		$('.collapsible').collapsible();	
 		$(".button-collapse").sideNav();
+		
+		$(".button-collapse").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();

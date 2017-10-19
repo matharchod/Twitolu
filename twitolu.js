@@ -206,7 +206,7 @@ var Twitolu = (function () {
 			var Text = function() {
 				
 				var text = Text_obj.split('http')[0]; //use display url to find link in text and remove it
-				var text_notag = text.slice(Tag_obj.length + 1); //use tag object to remove it from the string
+				var text_notag = text.slice(Tag_obj.length + 2); //use tag object to remove it from the string
 				
 /*
 				console.log('Tag_obj =', Tag_obj);
@@ -266,50 +266,14 @@ var Twitolu = (function () {
 		}
 		
 		Tweets(TilesCollection);
+		WordCloud(TilesCollection);
+		
 		return Tweets();
 						
 		//console.log( "TilesCollection: ", TilesCollection ); 
 		
 	}
-		
-	var Search = (function () {
-		
-		var elem = '.tweetItem';
-		
-	  //USEAGE: searchInit('#elem');
-	  
-		//prevent default ENTER key
-		$('input').keypress(function (evt) {
-			//Deterime where our character code is coming from within the event
-			var charCode = evt.charCode || evt.keyCode;
-			if (charCode == 13) { //Enter key's keycode
-				//Simulate a click on the "search" button
-				$('.searchNow').click();
-			}
-		});	
-		//Event handler for the "search" button
-		//Takes the value of the seach field
-		$('.searchNow').click(function () {
-			var filter = $('#filter').val(),
-					count = 0;
-			$(elem).each(function () {
-				//Runs a case-insensitive regular expression on each tweet for that value 
-				if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-					//Toggles visibility
-					$(this).hide();
-				} else {
-					$(this).show();
-					count++; //Shows the number of tweets that match the search
-				}
-			});	
-			// Update the tweet count for matched items
-			var numberItems = count;
-			$('#filter-count').text(count).show();
-			return false;
-		});	
-		
-	})();
-	
+			
 	//PUBLIC METHODS
 	return {
 		
@@ -318,7 +282,6 @@ var Twitolu = (function () {
 		AddFavorites: AddFavorites,
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
-		Search: Search,
 		Reset: Reset,
 		SearchByTag: SearchByTag,
 		TileFactory: TileFactory,
