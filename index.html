@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
 </head>
 <body>
-	<div class="main">
+	<div id="TwitoluApp" class="main">
 		
 		<nav>
 			<div class="nav-wrapper">
@@ -34,7 +34,7 @@
 					<li>
 						<form>
 							<div class="input-field">
-								<input  v-model="searchTerm" id="filter" type="search" name="filter" required >
+								<input v-model="searchTerm" type="search">
 								<label class="label-icon" for="search">
 									<i class="material-icons">search</i>
 								</label>
@@ -83,9 +83,9 @@
 				
 				<!-- ******** CARD ******** -->
 				<li class="card animated waves-effect waves-dark" 
-					v-for="(tile, index, $event) in Tiles" 
+					v-for="(tile, index, $event) in filteredTiles" 
 					v-bind:class="addClass(tile.tileStatus)"
-					v-bind:style="stagger(index)">
+					v-bind:style="stagger('animation-delay',index)">
 					
 					<!-- card-content -->
 			      	<div class="card-content">
@@ -225,11 +225,13 @@
 	var Recipients = Twitolu.Recipients();		 
 	 	
 	var TileBoard = new Vue({
-		el: '#TileBoard',
+		el: '#TwitoluApp',
 		data: function () {
 			return {
 				searchTerm: '',
-				Tiles
+				Tiles,
+				Recipients,
+				WordCloud
 			}
 		},
 		methods: {
@@ -244,7 +246,10 @@
 				topScroll();
 			},
 			reset: function() {
-				Twitolu.Reset();
+				Tiles.forEach(function(tile) {
+					tile.tileStatus = 'active'
+				});
+				this.searchTerm = '';
 				topScroll();
 			},
 			addClass: function(tileStatus, faveStatus) {
@@ -260,10 +265,9 @@
 				}
 												
 			},
-			stagger: function(index) {
-				
-				var prop = 'animation-delay',
-					vendors = ['', '-webkit-', '-moz-'],
+			stagger: function(prop,index) {
+								
+				var vendors = ['', '-webkit-', '-moz-'],
 					delay = Math.min(Math.max(parseInt(index), 1), 10) * 100, //limit number of tiles to animate
 					propsPack = [];
 
@@ -280,32 +284,17 @@
 				
 				return vendorProps;
 			}
-		}
-	});	
-	
-	var Recipients = new Vue({
-		el: '#Recipients',
-		data: function () {
-			return {
-				Recipients
-			}
-		}
-	});		
-	
-	var Words = new Vue({
-		el: '#WordCloud',
-		data: function () {
-			return {
-				WordCloud
-			}
 		},
-		methods: {
-			search: function(tag) {
-				Twitolu.Search(tag);
-				topScroll();
+		computed: {
+			filteredTiles: function() {
+				var self = this;
+				return this.Tiles.filter( function(tile) {
+					return tile.text.toLowerCase().indexOf(self.searchTerm.toLowerCase()) >= 0;
+				});
 			}
 		}
 	});	
+	
 </script>
 
 <script type="text/javascript">
@@ -319,7 +308,7 @@
 		$('.collapsible').collapsible();	
 		$(".slide-out-button").sideNav();
 		
-		$(".slide-out-button").click();
+// 		$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();

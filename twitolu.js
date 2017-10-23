@@ -139,14 +139,7 @@ var Twitolu = (function () {
 				
 	};
 	
-	var Reset = function () {
 				
-		Tiles.forEach(function(tile) {
-			tile.tileStatus = 'active'
-		});
-		
-	}	
-			
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var CloudFactory = function(Tweets) {
 				
@@ -230,7 +223,7 @@ var Twitolu = (function () {
 				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
 				Media_obj = result[i].entities.media;
 			
-			//REMOVE LINK FROM TEXT
+			//REMOVE TAG FROM TEXT
 			var Text = function() {
 				
 				var text = Text_obj.split('http')[0]; //use display url to find link in text and remove it
@@ -305,7 +298,6 @@ var Twitolu = (function () {
 		AddFavorites: AddFavorites,
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
-		Reset: Reset,
 		Search: Search,
 		TileFactory: TileFactory,
 		CloudFactory: CloudFactory
