@@ -23,9 +23,25 @@
 		<nav>
 			<div class="nav-wrapper">
 				<a class="brand-logo right">Working Debt</a>
-				<ul class="left hide-on-med-and-down">
+				<ul class="left">
 		
-					<li><a href="#" data-activates="slide-out" class="slide-out-button"><i class="material-icons">menu</i></a></li>
+					<li>
+						<a href="#" data-activates="slide-out" class="slide-out-button">
+							<i class="material-icons">menu</i>
+						</a>
+					</li>
+					
+					<li>
+						<form>
+							<div class="input-field">
+								<input  v-model="searchTerm" id="filter" type="search" name="filter" required >
+								<label class="label-icon" for="search">
+									<i class="material-icons">search</i>
+								</label>
+								<i class="material-icons">close</i>
+							</div>
+						</form>
+					</li>
 					
 				</ul>	
 			</div>
@@ -41,13 +57,6 @@
 					<a href="#!name"><span class="name">Jani Momolu Anderson</span></a>
 					<a href="#!email"><span class="email">ja@janianderson.com</span></a>
 				</div>
-				<form>
-					<div class="input-field">
-						<input id="filter" type="search" name="filter" required>
-						<label class="label-icon" for="search"><i class="material-icons">search</i></label>
-						<i class="material-icons">close</i>
-					</div>
-				</form>
 				<button class="waves-effect waves-light material-icons" onClick="Twitolu.Reset()">refresh</button>	
 				<button class="waves-effect waves-light material-icons">favorite_outline</button>		
 				  <!-- Modal Trigger -->
@@ -55,18 +64,15 @@
 				<p id="filter-count"></p>		
 			</section>
 			<section>
-				<ul id="WordCloud" class="collection w-header">
-					<li class="collection-header">
-						<h2>Tags</h4>
-					</li>
-					<li v-for="word in WordCloud">
-						<a href="#!" 
-							class="collection-item" 
-							onClick="searchByTag(window.event.target.text)">
-							{{ word }}
-						</a>
-					</li>
-				</ul>
+				<div id="WordCloud">
+					<span v-for="word in WordCloud"
+						@click="search(word.tag)">
+						<span class="chip">
+							{{ word.tag }}
+<!-- 							<b>{{ word.count }}</b> -->
+						</span>
+					</span>
+				</div>
 			</section><!-- / WordCloud -->
 		</nav><!-- sidebar -->
 
@@ -76,7 +82,7 @@
 			<ol id="TileBoard">
 				
 				<!-- ******** CARD ******** -->
-				<li class="card animated" 
+				<li class="card animated waves-effect waves-dark" 
 					v-for="(tile, index, $event) in Tiles" 
 					v-bind:class="addClass(tile.tileStatus)"
 					v-bind:style="stagger(index)">
@@ -87,7 +93,7 @@
 					    <a href="#!" 
 						    v-if="tile.tag"
 						    class="tag chip waves-effect"
-							@click="searchByTag(tile.tag, $event)">
+							@click="search(tile.tag, $event)">
 							{{ tile.tag }}
 						</a>
 						
@@ -105,8 +111,13 @@
 					<!-- card action -->
 					<div class="card-action valign-wrapper">
 						
-<!-- 						<button class="gotoTop material-icons waves-effect">vertical_align_top</button> -->
-						
+						<button 
+						 v-if="tile.tileStatus == 'active'"
+						 class="waves-effect waves-light material-icons" 
+						 @click="reset()">
+						 	refresh
+						</button>	
+												
 						<!-- FAVE button -->
 						<button 
 							v-if="tile.faveStatus !== 'active'" 
@@ -126,7 +137,7 @@
 						
 						<button class="shareLink material-icons waves-effect" 
 							v-bind:value="tile.ID">
-							mail_outline
+							share
 						</button>
 												                        
 					</div><!-- / card-action -->
@@ -205,14 +216,19 @@
 </script>
 <script type="text/javascript">
 	
+	var topScroll = function() {
+		$('html, body').animate({ scrollTop: 0 }, 'slow');
+	}
+	
 	var Tiles = Twitolu.TileFactory();
-	var WordCloud = Twitolu.WordCloud();
+	var WordCloud = Twitolu.CloudFactory(Tiles);
 	var Recipients = Twitolu.Recipients();		 
 	 	
 	var TileBoard = new Vue({
 		el: '#TileBoard',
 		data: function () {
 			return {
+				searchTerm: '',
 				Tiles
 			}
 		},
@@ -223,12 +239,13 @@
 			removeFave: function(idx) {
 				Twitolu.RemoveFavorites(idx)
 			},
-			searchByTag: function(tag) {
-				Twitolu.SearchByTag(tag);
-				console.log('$event.target',event.target);
+			search: function(tag) {
+				Twitolu.Search(tag);
+				topScroll();
 			},
 			reset: function() {
-				alert();
+				Twitolu.Reset();
+				topScroll();
 			},
 			addClass: function(tileStatus, faveStatus) {
 
@@ -253,13 +270,13 @@
 				vendors.forEach(function(vend){
 					var newProp = vend + prop + ': ' + delay + 'ms';
 					propsPack.push(newProp);
-				})
+				});
 				
 				var x = JSON.stringify(propsPack),	
 					y = x.slice(1, x.length - 1),
 					vendorProps = y.replace(/","/g,';');
 				
-				console.log(vendorProps);
+				//console.log(vendorProps);
 				
 				return vendorProps;
 			}
@@ -281,17 +298,14 @@
 			return {
 				WordCloud
 			}
+		},
+		methods: {
+			search: function(tag) {
+				Twitolu.Search(tag);
+				topScroll();
+			}
 		}
 	});	
-
-/*
-					[
-						{ 'flipInX' : tile.tileStatus == 'active'},
-						{ 'inactive' : tile.tileStatus == 'inactive'},
-						{ 'active' : tile.faveStatus == 'active'}
-					]	
-*/
- 		 	
 </script>
 
 <script type="text/javascript">
@@ -299,22 +313,7 @@
 	
 	$(document).ready(function(){
 		
-		$('.tile').on('animationend',function(){console.log('done')})
-		
-		
-	//************** EVENT LISTENERS ***************//	
-		//Add/Remove Recipients
-		$('.addRecipient').click(function(e){
-			addRecipient();
-			e.preventDefault();
-		});
-		$('.removeRecipient').click(function(e){
-			var idx = $(this).attr('value');
-			removeRecipient(idx);
-			e.preventDefault();
-		});
-	//************** EVENT LISTENERS ***************//	
-	
+		$('.tile').on('animationend',function(){console.log('done')})	
 	
 		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
 		$('.collapsible').collapsible();	

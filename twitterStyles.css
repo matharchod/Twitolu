@@ -27,7 +27,8 @@
     display: inline-table;
     width: 45%;
     height: 250px;
-    background: #eee;
+    background: #fff;
+    float: left;
 }
 
 .card.active {
@@ -57,29 +58,32 @@
 
 .card .card-action button,
 .side-nav button {
-    width: 50px;
-    height: 50px;
-    border: none;
+    width: 2em;
+    height: 2em;
+    border: 1px solid #ccc;
     border-radius: 100%;
-    margin: 0.25em;
+    margin: 1.25em 0;
     background-color: #fff;
+    font-size: 1.25em;
+    color: #ccc;
 }
 
 .side-nav button {background-color: #eee; color: #000;}
 
 .card .card-action {
     display: table-cell;
-    width: 10%;
     border: none;
     vertical-align: middle;
-    border-left: 1px solid #eee;
+    xs: 1px solid #eee;
+    width: 70px;
+    /* background: lime; */
 }
 
 .card .card-action a {	
 }
 
 .card .chip {
-	background-color: #fff;
+	background-color: #eee;
 }
 
 .card .card-content {
@@ -97,6 +101,11 @@
     display: block;
     color: #000;
     /* text-shadow: 2px 2px #ccc; */
+}
+
+.card .card-content button {
+    background: #fff;
+    border: none;
 }
 
 .card .material-icons {

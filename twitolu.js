@@ -120,7 +120,7 @@ var Twitolu = (function () {
 	            
 	};
 
-	var SearchByTag = function(tag){ //searchTags
+	var Search = function(tag){ //searchTags
 		
 		var tag = tag.trim(),
 			count = 0;
@@ -148,18 +148,18 @@ var Twitolu = (function () {
 	}	
 			
 	//Create a word cloud from the tags extracted from the Tweet text						
-	var WordCloud = function () {
-		
+	var CloudFactory = function(Tweets) {
+				
 		var wordCloud = [],
-			Tweets = Twitolu.Tweets();
-							
-		var cloud = [],
+			cloud = [],
 			duplicate = cloud[0];
 							
-		for (i in Tweets) {			
-			var x = Tweets[i].text.split('. ')[0];			
-			//console.log(x.length);			
-			if (x.length >= 24 || x == 'undefined') {
+		for (i in Tweets) {		
+				
+			var x = Tweets[i].tag;	
+			//console.log(x);	
+					
+			if (x === undefined || x.length >= 24) {
 				//return an empty string
 				//console.log('not a tag: ' + x);
 			} else {
@@ -177,9 +177,37 @@ var Twitolu = (function () {
 			} 			
 			duplicate = cloud[i];						
 		}
-		wordCloud = wordCloud.splice(1); //remove undefined tags						
+		
+		var counts = {};
+		
+		for (i in cloud) {
+		  var num = cloud[i];
+		  counts[num] = counts[num] ? counts[num] + 1 : 1;
+		}
+		
+		function sortObject(obj) {
+		    var arr = [];
+		    for (var prop in obj) {
+		        if (obj.hasOwnProperty(prop)) {
+		            arr.push({
+		                'tag': prop,
+		                'count': obj[prop]
+		            });
+		        }
+		    }
+		    arr.sort(function(a, b) { return b.count - a.count; });
+		    return arr; 
+		}	
+		
+		var sortedList = sortObject(counts);
+			
+		console.log('counts',counts);
+		
+		console.log('sortedList',sortedList);
+		
+		//wordCloud = wordCloud.splice(1); //remove undefined tags						
 		//console.log('wordCloud', wordCloud);				
-		return wordCloud;
+		return sortedList;
 		
 	}
 	
@@ -207,11 +235,6 @@ var Twitolu = (function () {
 				
 				var text = Text_obj.split('http')[0]; //use display url to find link in text and remove it
 				var text_notag = text.slice(Tag_obj.length + 2); //use tag object to remove it from the string
-				
-/*
-				console.log('Tag_obj =', Tag_obj);
-				console.log('Tag_obj.length =', Tag_obj.length);
-*/
 				
 				if (Tag_obj.length >= 24) {
 					return text;
@@ -266,7 +289,7 @@ var Twitolu = (function () {
 		}
 		
 		Tweets(TilesCollection);
-		WordCloud(TilesCollection);
+// 		CloudFactory(TilesCollection);
 		
 		return Tweets();
 						
@@ -283,9 +306,9 @@ var Twitolu = (function () {
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
 		Reset: Reset,
-		SearchByTag: SearchByTag,
+		Search: Search,
 		TileFactory: TileFactory,
-		WordCloud: WordCloud
+		CloudFactory: CloudFactory
 	
 	}
 	
