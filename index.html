@@ -53,6 +53,7 @@
 					<!-- TAGS -->
 					<a href="#!" 
 						class="chip waves-effect"
+						data-activates="slide-out"
 						v-for="word in WordCloud_alpha"
 						@click="searchByTag(word.tag)">
 						{{ word.tag }}
@@ -60,25 +61,25 @@
 					<!-- /TAGS -->
 					<!-- MORE BUTTON -->
 					<a href="#!" 
-						class="chip waves-effect waves-red material-icons" 
+						class="chip waves-effect waves-teal material-icons" 
 						v-show="showAllTags === false"
 						@click="showAllTags = true">
 						more_horiz
 					</a>
 					<a href="#!" 
-						class="chip red white-text waves-effect waves-light material-icons" 
+						class="chip teal white-text waves-effect waves-light material-icons" 
 						v-show="showAllTags === true"
 						@click="showAllTags = false">
-						close
+						more_horiz
 					</a>
 					<!-- / MORE BUTTON -->
 					<!-- ADDITIONAL TAGS -->
 					<a href="#!" 
 						class="chip waves-effect"
-						v-for="(word, index, $event) in WordCloud_beta"
+						data-activates="slide-out"
+						v-for="(word, index, $event) in WordCloud_delta"
 						v-show="showAllTags === true"
 						v-bind:key="word"
-						v-bind:style="stagger('animation-delay',index)"
 						@click="searchByTag(word.tag)">
 						{{ word.tag }}
 <!-- 					<b>{{ word.count }}</b> -->
@@ -107,23 +108,26 @@
 				<!-- ******** CARD ******** -->
 				<li class="card animated waves-effect waves-dark" 
 					v-for="(tile, index, $event) in filteredTiles" 
-					v-bind:class="addClass(tile.tileStatus)"
-					v-bind:style="stagger('animation-delay',index)">
+					v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)"
+					v-bind:style="stagger(index)">
 					
 					<!-- card-content -->
 					<!--progressbar-->
+<!--
 					<div class="card-content progress"
 						v-if="filteredTiles.length <= 190">
 			  			<div class="indeterminate"></div>
   					</div>
+-->
 					<!--/progressbar-->
-			      	<div v-else class="card-content">
+			      	<div class="card-content">
 					    <a href="#!" 
 						    v-if="tile.tag"
 						    class="tag chip waves-effect"
 							@click="searchByTag(tile.tag, $event)">
 							{{ tile.tag }}
 						</a>
+						<span>a: {{ tile.tileStatus }}, b: {{ tile.faveStatus }}</span>
 						<p class="link">
 							<a v-bind:href="tile.URL" target="_blank">
 								{{ tile.text }}
@@ -238,7 +242,7 @@
 			  				</ul>
 						</div><!-- / recipient list -->
 						<!-- new recipient -->
-						<div class="row">
+						<div class="row" style="display:none;">
 							<div class="input-field col s6">
 								<input placeholder="First Name" id="FName" value="TEST" type="text" class="validate">
 								<label for="FName">First Name</label>
@@ -322,8 +326,14 @@
 				Twitolu.RemoveFavorites(idx)
 				this.Favorites = Twitolu.Favorites();	 
 			},
-			searchByTag: function(tag) {
+			searchByTag: function(tag,index,event) {
+/*
+				var x = $(event.target.parentElement.parentElement).click();
+				console.log(x);
+				
+*/
 				Twitolu.Search(tag);
+				$(this).sideNav('hide');
 				topScroll();
 			},
 			share: function() {
@@ -337,23 +347,17 @@
 					tile.tileStatus = 'active'
 				});
 			},
-			addClass: function(tileStatus, faveStatus) {
-
-				if (tileStatus == 'active') {
-										
-						return 'flipInX active';
-					
-				} else if (tileStatus == 'inactive') {
-					
-						return 'inactive';
-						
-				}
-												
+			switchClass: function(tileStatus, faveStatus) {
+				if (tileStatus === 'active' && faveStatus === 'active') {
+					return 'bounce active';
+				} else if (tileStatus === 'active') {
+					return 'flipInX active';
+				} else if (tileStatus === 'inactive') {
+					return 'inactive';
+				} 
 			},
-			stagger: function(prop,index) {
-				
-				return Twitolu.PropsFactory(prop,index);				
-
+			stagger: function(index) {
+				return Twitolu.PropsFactory('animation-delay',index);				
 			}
 		},
 		computed: {
@@ -366,7 +370,7 @@
 			WordCloud_alpha: function() {
 				return this.WordCloud.slice(0,10);
 			},
-			WordCloud_beta: function() {
+			WordCloud_delta: function() {
 				return this.WordCloud.slice(10,(this.WordCloud.length + 1));
 			}
 		}
@@ -383,9 +387,12 @@
 	
 		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
 		$('.collapsible').collapsible();	
-		$(".slide-out-button").sideNav();
 		
-		$(".slide-out-button").click();
+		$('.slide-out-button').sideNav();
+		
+		///$('.collapse').sideNav('hide');
+		
+// 		$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();

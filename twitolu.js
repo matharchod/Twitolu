@@ -178,8 +178,7 @@ var Twitolu = (function () {
 			y = x.slice(1, x.length - 1),
 			vendorProps = y.replace(/","/g,';');
 		
-		//console.log(vendorProps);
-		
+		console.log(vendorProps);
 		return vendorProps;
 	};	
 				

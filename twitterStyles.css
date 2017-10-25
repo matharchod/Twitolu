@@ -58,14 +58,16 @@
 
 .card .card-action button,
 .side-nav button {
-    width: 2em;
-    height: 2em;
+    width: 45px;
+    height: 45px;
     border: 1px solid #ccc;
     border-radius: 100%;
     margin: 0 0 0 1.25em;
     background-color: #fff;
     font-size: 1.25em;
     color: #ccc;
+    padding: 0.5em;
+    line-height: 1em;
 }
 
 .side-nav button {background-color: #eee; color: #000;}
@@ -119,6 +121,7 @@
     position: relative;
     width: auto;
     height: auto;
+    margin: 0;
 }
 
 .modal .card .card-content {
