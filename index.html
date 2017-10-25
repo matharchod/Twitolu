@@ -49,31 +49,54 @@
 		
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
 			<section>
-				<div class="user-view center-align">
-					<div class="background">
-						<img src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/FatherSonFishing_crop.jpg">
-					</div>
-					<a href="#!user"><img class="circle" src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/Jani-Anderson.jpg"></a>
-					<a href="#!name"><span class="name">Jani Momolu Anderson</span></a>
-					<a href="#!email"><span class="email">ja@janianderson.com</span></a>
+				<div id="WordCloud">
+					<!-- TAGS -->
+					<a href="#!" 
+						class="chip waves-effect"
+						v-for="word in WordCloud_alpha"
+						@click="searchByTag(word.tag)">
+						{{ word.tag }}
+					</a>
+					<!-- /TAGS -->
+					<!-- MORE BUTTON -->
+					<a href="#!" 
+						class="chip waves-effect waves-red material-icons" 
+						v-show="showAllTags === false"
+						@click="showAllTags = true">
+						more_horiz
+					</a>
+					<a href="#!" 
+						class="chip red white-text waves-effect waves-light material-icons" 
+						v-show="showAllTags === true"
+						@click="showAllTags = false">
+						close
+					</a>
+					<!-- / MORE BUTTON -->
+					<!-- ADDITIONAL TAGS -->
+					<a href="#!" 
+						class="chip waves-effect"
+						v-for="(word, index, $event) in WordCloud_beta"
+						v-show="showAllTags === true"
+						v-bind:key="word"
+						v-bind:style="stagger('animation-delay',index)"
+						@click="searchByTag(word.tag)">
+						{{ word.tag }}
+<!-- 					<b>{{ word.count }}</b> -->
+					</a>
+					<!-- ADDITIONAL TAGS -->
 				</div>
-				<button class="waves-effect waves-light material-icons" onClick="Twitolu.Reset()">refresh</button>	
+			</section><!-- / WordCloud -->
+			<section>
+				<button 
+					class="waves-effect waves-light material-icons" 
+					@click="reset()">
+					refresh
+				</button>	
 				<button class="waves-effect waves-light material-icons">favorite_outline</button>		
 				  <!-- Modal Trigger -->
 <!-- 				<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
 				<p id="filter-count"></p>		
 			</section>
-			<section>
-				<div id="WordCloud">
-					<span v-for="word in WordCloud"
-						@click="search(word.tag)">
-						<span class="chip">
-							{{ word.tag }}
-<!-- 							<b>{{ word.count }}</b> -->
-						</span>
-					</span>
-				</div>
-			</section><!-- / WordCloud -->
 		</nav><!-- sidebar -->
 
 
@@ -88,63 +111,77 @@
 					v-bind:style="stagger('animation-delay',index)">
 					
 					<!-- card-content -->
-			      	<div class="card-content">
-						
+					<!--progressbar-->
+					<div class="card-content progress"
+						v-if="filteredTiles.length <= 190">
+			  			<div class="indeterminate"></div>
+  					</div>
+					<!--/progressbar-->
+			      	<div v-else class="card-content">
 					    <a href="#!" 
 						    v-if="tile.tag"
 						    class="tag chip waves-effect"
-							@click="search(tile.tag, $event)">
+							@click="searchByTag(tile.tag, $event)">
 							{{ tile.tag }}
 						</a>
-						
-<!-- 						{{ tile.tileStatus }} -->
-						
 						<p class="link">
 							<a v-bind:href="tile.URL" target="_blank">
 								{{ tile.text }}
 							</a>
 						</p>
-						
-						
 			      	</div><!-- / card-content -->
 					
 					<!-- card action -->
 					<div class="card-action valign-wrapper">
-						
+						<!-- RESET button -->
 						<button 
 						 v-if="tile.tileStatus == 'active'"
-						 class="waves-effect waves-light material-icons" 
+						 class="material-icons waves-effect waves-dark" 
 						 @click="reset()">
-						 	refresh
+						 refresh
 						</button>	
-												
+						<!-- RESET button -->
 						<!-- FAVE button -->
 						<button 
 							v-if="tile.faveStatus !== 'active'" 
 							v-bind:value="tile.ID" 
 							@click="addFave(tile.ID)"
-							class="material-icons waves-effect waves-teal">
+							class="material-icons waves-effect waves-light">
 							favorite_border
 						</button>
 						<button 
 							v-else 
 							v-bind:value="tile.ID" 
 							@click="removeFave(tile.ID)"
-							class="material-icons waves-effect waves-teal">
+							class="material-icons red-text waves-effect waves-red">
 							favorite
 						</button>
 						<!-- / FAVE button -->
-						
-						<button class="shareLink material-icons waves-effect" 
-							v-bind:value="tile.ID">
+						<!-- SHARE button -->
+						<button 
+							v-if="tile.sendStatus !== 'active'" 
+							class="material-icons waves-effect"
+							class="modal-trigger"
+							data-target="modal1"
+							v-bind:value="tile.ID"
+							@click="addFave(tile.ID), share($event)">
 							share
 						</button>
-												                        
+						<button 
+							v-else 
+							class="green-text material-icons waves-effect waves-light"
+							class="modal-trigger"
+							data-target="modal1"
+							v-bind:value="tile.ID"
+							@click="share($event)">
+							share
+						</button>
+						<!-- /SHARE button -->
 					</div><!-- / card-action -->
 					
 				</li>
 				<!-- ******** end CARD ******** -->
-			
+							
 			</ol><!-- / TileBoard -->
 			
 		</div><!-- / tweets -->
@@ -153,7 +190,41 @@
 		<div id="modal1" class="modal">
 			<!-- / modal content -->
 			<div class="modal-content">
-				<h4>Modal Header</h4>
+				<h4>Share These Links</h4>
+				<div v-for="(tile, index, $event) in Favorites">
+					
+					  <transition-group name="slide-fade">
+					  
+					  <!-- ******** start FAVE CARD ******** -->
+						<div class="card" v-bind:key="tile">
+							<div class="card-content">
+								<a v-bind:href="tile.URL">
+									{{ tile.text }}
+								</a>
+							</div>
+							<div class="card-action">
+								<button 
+									class="button material-icons" 
+									@click="removeFave(tile.ID)">
+									remove
+								</button>
+								<button 
+									class="button material-icons"
+									@click="">
+									edit
+								</button>
+								<button 
+									class="button material-icons" 
+									@click="">
+									content_copy
+								</button>
+							</div>
+						</div>
+						<!-- ******** end FAVE CARD ******** -->
+						
+					  </transition-group>
+					  
+				</div>
 				<!-- contact form -->
 				<div class="row">
 					<form class="col s12">
@@ -216,19 +287,27 @@
 </script>
 <script type="text/javascript">
 	
+	$(function(){
+		$('.chip').click(function(){
+			$('.card').click();
+		});
+	});
+	
 	var topScroll = function() {
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	}
 	
 	var Tiles = Twitolu.TileFactory();
 	var WordCloud = Twitolu.CloudFactory(Tiles);
-	var Recipients = Twitolu.Recipients();		 
+	var Recipients = Twitolu.Recipients();	
 	 	
 	var TileBoard = new Vue({
 		el: '#TwitoluApp',
 		data: function () {
 			return {
 				searchTerm: '',
+				Favorites: {},
+				showAllTags: false,
 				Tiles,
 				Recipients,
 				WordCloud
@@ -237,20 +316,26 @@
 		methods: {
 			addFave: function(idx) {
 				Twitolu.AddFavorites(idx);
+				this.Favorites = Twitolu.Favorites();	 
 			},
 			removeFave: function(idx) {
 				Twitolu.RemoveFavorites(idx)
+				this.Favorites = Twitolu.Favorites();	 
 			},
-			search: function(tag) {
+			searchByTag: function(tag) {
 				Twitolu.Search(tag);
 				topScroll();
 			},
+			share: function() {
+				var Faves = this.Favorites;
+				Twitolu.Share(Faves);
+			},
 			reset: function() {
+				this.searchTerm = '';
+				topScroll();
 				Tiles.forEach(function(tile) {
 					tile.tileStatus = 'active'
 				});
-				this.searchTerm = '';
-				topScroll();
 			},
 			addClass: function(tileStatus, faveStatus) {
 
@@ -266,23 +351,9 @@
 												
 			},
 			stagger: function(prop,index) {
-								
-				var vendors = ['', '-webkit-', '-moz-'],
-					delay = Math.min(Math.max(parseInt(index), 1), 10) * 100, //limit number of tiles to animate
-					propsPack = [];
+				
+				return Twitolu.PropsFactory(prop,index);				
 
-				vendors.forEach(function(vend){
-					var newProp = vend + prop + ': ' + delay + 'ms';
-					propsPack.push(newProp);
-				});
-				
-				var x = JSON.stringify(propsPack),	
-					y = x.slice(1, x.length - 1),
-					vendorProps = y.replace(/","/g,';');
-				
-				//console.log(vendorProps);
-				
-				return vendorProps;
 			}
 		},
 		computed: {
@@ -291,6 +362,12 @@
 				return this.Tiles.filter( function(tile) {
 					return tile.text.toLowerCase().indexOf(self.searchTerm.toLowerCase()) >= 0;
 				});
+			},
+			WordCloud_alpha: function() {
+				return this.WordCloud.slice(0,10);
+			},
+			WordCloud_beta: function() {
+				return this.WordCloud.slice(10,(this.WordCloud.length + 1));
 			}
 		}
 	});	
@@ -308,7 +385,7 @@
 		$('.collapsible').collapsible();	
 		$(".slide-out-button").sideNav();
 		
-// 		$(".slide-out-button").click();
+		$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();

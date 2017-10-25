@@ -78,17 +78,20 @@ var Twitolu = (function () {
 	})();
 	
 	var AddFavorites = function(tileID) {
-	    //var Tiles = Twitolu.Tweets();
+		
+	    var Faves = Favorites();
+	    
 	    Tiles.forEach(function(tile){
+		    
 	        if ( tile.ID == tileID ) {
 	            //console.log(tile);
 				tile.faveStatus = 'active';
-				console.log('add Fave:',tile);
+				//console.log('add Fave:',tile);
 				Twitolu.Favorites(tile);
 	        }
 	    });
 	
-		console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
+		//console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
 	};
 	
 	var RemoveFavorites = function(tileID) {
@@ -116,7 +119,7 @@ var Twitolu = (function () {
 				//console.log( 'splice result:', x );
 	        }
 	    });
-		console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
+		//console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
 	            
 	};
 
@@ -129,7 +132,7 @@ var Twitolu = (function () {
 			if (tag == tile.tag) {
 				count++;
 				tile.tileStatus = 'active'
-				console.log(tile.text);
+				//console.log(tile.text);
 			} else {
 				tile.tileStatus = 'inactive'
 			}
@@ -139,6 +142,46 @@ var Twitolu = (function () {
 				
 	};
 	
+	var Share = function(Tiles) {
+		
+		var ShareText = [];
+		
+		Tiles.forEach(function(tile){
+			
+			ShareText.push({
+				'URL' : tile.URL,
+				'date': tile.date,
+				'text' : tile.text,
+				'tag': tile.tag
+			});
+			
+			tile.sendStatus == 'active';
+			
+		});
+			
+		console.log(ShareText);
+		return ShareText;	
+	};
+	
+	var PropsFactory = function(prop,index) {
+		
+		var vendors = ['', '-webkit-', '-moz-'],
+			delay = Math.min(Math.max(parseInt(index), 1), 10) * 100, //limit number of tiles to animate
+			propsPack = [];
+
+		vendors.forEach(function(vend){
+			var newProp = vend + prop + ': ' + delay + 'ms';
+			propsPack.push(newProp);
+		});
+		
+		var x = JSON.stringify(propsPack),	
+			y = x.slice(1, x.length - 1),
+			vendorProps = y.replace(/","/g,';');
+		
+		//console.log(vendorProps);
+		
+		return vendorProps;
+	};	
 				
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var CloudFactory = function(Tweets) {
@@ -299,6 +342,8 @@ var Twitolu = (function () {
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
 		Search: Search,
+		Share: Share,
+		PropsFactory: PropsFactory,
 		TileFactory: TileFactory,
 		CloudFactory: CloudFactory
 	

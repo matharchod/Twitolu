@@ -26,7 +26,7 @@
     margin: 1em;
     display: inline-table;
     width: 45%;
-    height: 250px;
+    height: 275px;
     background: #fff;
     float: left;
 }
@@ -62,7 +62,7 @@
     height: 2em;
     border: 1px solid #ccc;
     border-radius: 100%;
-    margin: 1.25em 0;
+    margin: 0 0 0 1.25em;
     background-color: #fff;
     font-size: 1.25em;
     color: #ccc;
@@ -71,12 +71,14 @@
 .side-nav button {background-color: #eee; color: #000;}
 
 .card .card-action {
-    display: table-cell;
+    display: inline-block;
     border: none;
-    vertical-align: middle;
-    xs: 1px solid #eee;
-    width: 70px;
-    /* background: lime; */
+    vertical-align: bottom;
+    text-align: right;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .card .card-action a {	
@@ -87,9 +89,9 @@
 }
 
 .card .card-content {
-    padding: 2em 0 2em 2em;
+    padding: 2em 2em 0 2em;
     vertical-align: middle;
-    display: table-cell;
+    display: inline-block;
 }
 
 .card .card-content .link {
@@ -111,4 +113,45 @@
 .card .material-icons {
     display: inline;
     vertical-align: middle;
+}
+
+.modal .card {
+    position: relative;
+    width: auto;
+    height: auto;
+}
+
+.modal .card .card-content {
+    position: relative;
+    /* background: red; */
+    width: 50%;
+    display: table-cell;
+    padding: 1em 0 1em 1em;
+}
+
+.modal .card .card-action {
+    position: relative;
+    /* background: lime; */
+    width: 35%;
+    display: table-cell;
+    padding-left: 0;
+    vertical-align: middle;
+}
+
+.card .card-action button.waves-red {
+	border-color: red;
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
