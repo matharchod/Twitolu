@@ -20,33 +20,35 @@
 <body>
 	<div id="TwitoluApp" class="main">
 		
-		<nav>
-			<div class="nav-wrapper">
-				<a class="brand-logo right">Working Debt</a>
-				<ul class="left">
-		
-					<li>
-						<a href="#" data-activates="slide-out" class="slide-out-button">
-							<i class="material-icons">menu</i>
-						</a>
-					</li>
-					
-					<li>
-						<form>
-							<div class="input-field">
-								<input v-model="searchTerm" type="search">
-								<label class="label-icon" for="search">
-									<i class="material-icons">search</i>
-								</label>
-								<i class="material-icons">close</i>
-							</div>
-						</form>
-					</li>
-					
-				</ul>	
-			</div>
-		</nav>
-		
+		<div class="navbar-fixed">
+			<nav>
+				<div class="nav-wrapper">
+					<a class="brand-logo center">Working Debt</a>
+					<ul>
+			
+						<li class="left">
+							<a href="#" data-activates="slide-out" class="slide-out-button">
+								<i class="material-icons">menu</i>
+							</a>
+						</li>
+						
+						<li class="right">
+							<form>
+								<div class="input-field">
+									<input v-model="searchTerm" type="search">
+									<label class="label-icon" for="search">
+										<i class="material-icons">search</i>
+									</label>
+									<i class="material-icons">close</i>
+								</div>
+							</form>
+						</li>
+						
+					</ul>	
+				</div>
+			</nav>
+		</div>
+
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
 			<section>
 				<div id="WordCloud">
@@ -93,13 +95,15 @@
 					@click="reset()">
 					refresh
 				</button>	
-				<button class="waves-effect waves-light material-icons">favorite_outline</button>		
+				<button class="waves-effect waves-light material-icons"
+					@click="onlyFaves()">
+					favorite
+				</button>		
 				  <!-- Modal Trigger -->
 <!-- 				<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
 				<p id="filter-count"></p>		
 			</section>
 		</nav><!-- sidebar -->
-
 
 		<div id="tweets" class="content-section">
 				
@@ -109,7 +113,7 @@
 				<li class="card animated waves-effect waves-dark" 
 					v-for="(tile, index, $event) in filteredTiles" 
 					v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)"
-					v-bind:style="stagger(index)">
+					v-bind:style="stagger($event,index)">
 					
 					<!-- card-content -->
 					<!--progressbar-->
@@ -124,7 +128,7 @@
 					    <a href="#!" 
 						    v-if="tile.tag"
 						    class="tag chip waves-effect"
-							@click="searchByTag(tile.tag, $event)">
+							@click.prevent="searchByTag(tile.tag)">
 							{{ tile.tag }}
 						</a>
 						<span>a: {{ tile.tileStatus }}, b: {{ tile.faveStatus }}</span>
@@ -132,6 +136,7 @@
 							<a v-bind:href="tile.URL" target="_blank">
 								{{ tile.text }}
 							</a>
+							<span style="display:none">{{ tile.fullText }}</span>
 						</p>
 			      	</div><!-- / card-content -->
 					
@@ -191,10 +196,17 @@
 		</div><!-- / tweets -->
 		
 		<!-- Modal Structure -->
-		<div id="modal1" class="modal">
+		<div id="modal1" class="modal bottom-sheet">
+			
 			<!-- / modal content -->
 			<div class="modal-content">
 				<h4>Share These Links</h4>
+				
+				<div class="chip">
+					Share All
+					<i class="close material-icons">share</i>
+				</div>
+				
 				<div v-for="(tile, index, $event) in Favorites">
 					
 					  <transition-group name="slide-fade">
@@ -213,14 +225,9 @@
 									remove
 								</button>
 								<button 
-									class="button material-icons"
-									@click="">
-									edit
-								</button>
-								<button 
 									class="button material-icons" 
 									@click="">
-									content_copy
+									share
 								</button>
 							</div>
 						</div>
@@ -230,7 +237,7 @@
 					  
 				</div>
 				<!-- contact form -->
-				<div class="row">
+				<div class="row" style="display:none;">
 					<form class="col s12">
 						<!-- recipient list -->
 						<div id="Recipients" class="row">
@@ -242,7 +249,7 @@
 			  				</ul>
 						</div><!-- / recipient list -->
 						<!-- new recipient -->
-						<div class="row" style="display:none;">
+						<div class="row">
 							<div class="input-field col s6">
 								<input placeholder="First Name" id="FName" value="TEST" type="text" class="validate">
 								<label for="FName">First Name</label>
@@ -262,10 +269,15 @@
 				</div><!-- contact form -->
 			</div><!-- / modal content -->
 			<!-- modal footer -->
-			<div class="modal-footer">
-<!-- 				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a> -->
-				<button type="submit" class="addRecipient waves-effect waves-green btn-flat">Add</button>
-			</div><!-- modal footer -->
+<!--
+			<div class="modal-footer red">
+				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">One</a>
+				  <div class="chip">
+				    Copy All
+				    <i class="close material-icons">content_copy</i>
+				  </div>
+  			</div>
+-->
 		</div><!-- / Modal Structure -->
 
 	</div><!-- / main -->
@@ -326,13 +338,16 @@
 				Twitolu.RemoveFavorites(idx)
 				this.Favorites = Twitolu.Favorites();	 
 			},
+			onlyFaves: function() {
+				$(this).sideNav('hide');
+				Tiles.forEach(function(tile){
+					if (tile.faveStatus !== 'active') {
+						tile.tileStatus = 'inactive';
+					}
+				})
+			},
 			searchByTag: function(tag,index,event) {
-/*
-				var x = $(event.target.parentElement.parentElement).click();
-				console.log(x);
-				
-*/
-				Twitolu.Search(tag);
+				this.searchTerm = tag.toLowerCase();
 				$(this).sideNav('hide');
 				topScroll();
 			},
@@ -342,6 +357,7 @@
 			},
 			reset: function() {
 				this.searchTerm = '';
+				$(this).sideNav('hide');
 				topScroll();
 				Tiles.forEach(function(tile) {
 					tile.tileStatus = 'active'
@@ -349,22 +365,26 @@
 			},
 			switchClass: function(tileStatus, faveStatus) {
 				if (tileStatus === 'active' && faveStatus === 'active') {
-					return 'bounce active';
+					return 'rubberBand active';
+				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
+					return 'shake active';
 				} else if (tileStatus === 'active') {
 					return 'flipInX active';
 				} else if (tileStatus === 'inactive') {
 					return 'inactive';
 				} 
 			},
-			stagger: function(index) {
+			stagger: function($event,index) {
+								
 				return Twitolu.PropsFactory('animation-delay',index);				
+								
 			}
 		},
 		computed: {
 			filteredTiles: function() {
 				var self = this;
 				return this.Tiles.filter( function(tile) {
-					return tile.text.toLowerCase().indexOf(self.searchTerm.toLowerCase()) >= 0;
+					return tile.fullText.toLowerCase().indexOf(self.searchTerm.toLowerCase()) >= 0;
 				});
 			},
 			WordCloud_alpha: function() {
@@ -396,6 +416,8 @@
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();
+		
+// 		$('.modal').modal('open');
 		
 	});
 	

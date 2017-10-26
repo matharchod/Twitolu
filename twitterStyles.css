@@ -62,7 +62,7 @@
     height: 45px;
     border: 1px solid #ccc;
     border-radius: 100%;
-    margin: 0 0 0 1.25em;
+    margin: 0.25em;
     background-color: #fff;
     font-size: 1.25em;
     color: #ccc;
@@ -119,7 +119,7 @@
 
 .modal .card {
     position: relative;
-    width: auto;
+    width: 50%;
     height: auto;
     margin: 0;
 }
@@ -127,7 +127,7 @@
 .modal .card .card-content {
     position: relative;
     /* background: red; */
-    width: 50%;
+    width: 65%;
     display: table-cell;
     padding: 1em 0 1em 1em;
 }
@@ -135,10 +135,30 @@
 .modal .card .card-action {
     position: relative;
     /* background: lime; */
-    width: 35%;
+    width: auto;
     display: table-cell;
     padding-left: 0;
     vertical-align: middle;
+}
+
+.modal.bottom-sheet {
+	max-height: 65%;
+	min-height: 50%;
+}
+
+.modal .modal-content {
+    padding: 4em;
+    padding-bottom: 12em;
+    display: inline-table;
+    width: 100%;
+}
+
+.modal .modal-footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100px;
 }
 
 .card .card-action button.waves-red {

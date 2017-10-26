@@ -178,7 +178,8 @@ var Twitolu = (function () {
 			y = x.slice(1, x.length - 1),
 			vendorProps = y.replace(/","/g,';');
 		
-		console.log(vendorProps);
+		//console.log(vendorProps);
+		
 		return vendorProps;
 	};	
 				
@@ -236,9 +237,9 @@ var Twitolu = (function () {
 		
 		var sortedList = sortObject(counts);
 			
-		console.log('counts',counts);
+		//console.log('counts',counts);
 		
-		console.log('sortedList',sortedList);
+		//console.log('sortedList',sortedList);
 		
 		//wordCloud = wordCloud.splice(1); //remove undefined tags						
 		//console.log('wordCloud', wordCloud);				
@@ -304,6 +305,7 @@ var Twitolu = (function () {
 			//Use the factory to create each tile
 			var tile = {
 										
+				fullText: Text_obj,
 				text: Text(),
 				tag: Tag(),
 				URL: URL(),
