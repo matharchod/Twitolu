@@ -20,36 +20,51 @@
 <body>
 	<div id="TwitoluApp" class="main">
 		
-		<div class="navbar-fixed">
+		<div class="navbar-fixed z-depth-5">
 			<nav>
 				<div class="nav-wrapper">
-					<a class="brand-logo center">Working Debt</a>
 					<ul>
-			
 						<li class="left">
 							<a href="#" data-activates="slide-out" class="slide-out-button">
 								<i class="material-icons">menu</i>
 							</a>
 						</li>
-						
-						<li class="right">
+						<li>
+							<h1 class="left">Working Debt</h1>
+						</li>
+						<li class="searchBox center">
 							<form>
 								<div class="input-field">
 									<input v-model="searchTerm" type="search">
 									<label class="label-icon" for="search">
 										<i class="material-icons">search</i>
 									</label>
-									<i class="material-icons">close</i>
+									<i class="material-icons close"
+										v-show="searchTerm"
+										@click="searchTerm = ' '">
+										refresh
+									</i>
 								</div>
 							</form>
 						</li>
-						
-					</ul>	
+					</ul>
 				</div>
 			</nav>
 		</div>
 
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
+			<section>
+				<button 
+					class="waves-effect waves-light material-icons" 
+					@click="reset()">
+					refresh
+				</button>	
+				<button 
+					class="waves-effect waves-light material-icons" 
+					@click="onlyFaves()">
+					favorite
+				</button>	
+			</section>
 			<section>
 				<div id="WordCloud">
 					<!-- TAGS -->
@@ -72,7 +87,7 @@
 						class="chip teal white-text waves-effect waves-light material-icons" 
 						v-show="showAllTags === true"
 						@click="showAllTags = false">
-						more_horiz
+						more_vert
 					</a>
 					<!-- / MORE BUTTON -->
 					<!-- ADDITIONAL TAGS -->
@@ -89,109 +104,93 @@
 					<!-- ADDITIONAL TAGS -->
 				</div>
 			</section><!-- / WordCloud -->
-			<section>
-				<button 
-					class="waves-effect waves-light material-icons" 
-					@click="reset()">
-					refresh
-				</button>	
-				<button class="waves-effect waves-light material-icons"
-					@click="onlyFaves()">
-					favorite
-				</button>		
-				  <!-- Modal Trigger -->
-<!-- 				<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
-				<p id="filter-count"></p>		
-			</section>
 		</nav><!-- sidebar -->
 
 		<div id="tweets" class="content-section">
 				
-			<ol id="TileBoard">
+			<div id="TileBoard">
 				
-				<!-- ******** CARD ******** -->
-				<li class="card animated waves-effect waves-dark" 
-					v-for="(tile, index, $event) in filteredTiles" 
-					v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)"
-					v-bind:style="stagger($event,index)">
-					
-					<!-- card-content -->
-					<!--progressbar-->
-<!--
-					<div class="card-content progress"
-						v-if="filteredTiles.length <= 190">
-			  			<div class="indeterminate"></div>
-  					</div>
--->
-					<!--/progressbar-->
-			      	<div class="card-content">
-					    <a href="#!" 
-						    v-if="tile.tag"
-						    class="tag chip waves-effect"
-							@click.prevent="searchByTag(tile.tag)">
-							{{ tile.tag }}
-						</a>
-						<span>a: {{ tile.tileStatus }}, b: {{ tile.faveStatus }}</span>
-						<p class="link">
-							<a v-bind:href="tile.URL" target="_blank">
-								{{ tile.text }}
-							</a>
-							<span style="display:none">{{ tile.fullText }}</span>
-						</p>
-			      	</div><!-- / card-content -->
-					
-					<!-- card action -->
-					<div class="card-action valign-wrapper">
-						<!-- RESET button -->
-						<button 
-						 v-if="tile.tileStatus == 'active'"
-						 class="material-icons waves-effect waves-dark" 
-						 @click="reset()">
-						 refresh
-						</button>	
-						<!-- RESET button -->
-						<!-- FAVE button -->
-						<button 
-							v-if="tile.faveStatus !== 'active'" 
-							v-bind:value="tile.ID" 
-							@click="addFave(tile.ID)"
-							class="material-icons waves-effect waves-light">
-							favorite_border
-						</button>
-						<button 
-							v-else 
-							v-bind:value="tile.ID" 
-							@click="removeFave(tile.ID)"
-							class="material-icons red-text waves-effect waves-red">
-							favorite
-						</button>
-						<!-- / FAVE button -->
-						<!-- SHARE button -->
-						<button 
-							v-if="tile.sendStatus !== 'active'" 
-							class="material-icons waves-effect"
-							class="modal-trigger"
-							data-target="modal1"
-							v-bind:value="tile.ID"
-							@click="addFave(tile.ID), share($event)">
-							share
-						</button>
-						<button 
-							v-else 
-							class="green-text material-icons waves-effect waves-light"
-							class="modal-trigger"
-							data-target="modal1"
-							v-bind:value="tile.ID"
-							@click="share($event)">
-							share
-						</button>
-						<!-- /SHARE button -->
-					</div><!-- / card-action -->
-					
-				</li>
-				<!-- ******** end CARD ******** -->
+				<ul>
+					<!-- ******** CARD ******** -->
+					<li 
+						v-for="(tile, index, $event) in filteredTiles"
+						class="card animated z-depth-2 waves-effect" 
+						v-bind:key="tile"
+						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+						
+						<!-- card-content -->
+				      	<div class="card-content">
+							<p class="link">
+								<a v-bind:href="tile.URL" target="_blank">
+									{{ tile.text }}
+								</a>
+							</p>
+				      	</div><!-- / card-content -->
+						
+						<!-- card action -->
+						<div class="card-action">
+							<div class="left left-align">
+								<a href="#!" 
+								    v-if="tile.tag"
+								    class="tag chip waves-effect"
+									@click.prevent="searchByTag(tile.tag)">
+									{{ tile.tag }}
+								</a>							
+							</div>
+							<div class="right right-align">
+								<!-- RESET button -->
+								<button 
+								 v-if="tile.tileStatus == 'active'"
+								 class="material-icons waves-effect waves-dark" 
+								 @click="reset()">
+								 refresh
+								</button>	
+								<!-- RESET button -->
+								<!-- FAVE button -->
+								<button 
+									v-if="tile.faveStatus !== 'active'" 
+									v-bind:value="tile.ID" 
+									@click="addFave(tile.ID)"
+									class="material-icons waves-effect waves-light">
+									favorite_border
+								</button>
+								<button 
+									v-else 
+									v-bind:value="tile.ID" 
+									@click="removeFave(tile.ID)"
+									class="material-icons red-text waves-effect waves-red">
+									favorite
+								</button>
+								<!-- / FAVE button -->
+								<!-- SHARE button -->
+								<button 
+									v-if="tile.sendStatus !== 'active'" 
+									class="material-icons waves-effect"
+									class="modal-trigger"
+									data-target="modal1"
+									v-bind:value="tile.ID"
+									@click="addFave(tile.ID), share($event)">
+									share
+								</button>
+								<button 
+									v-else 
+									class="green-text material-icons waves-effect waves-light"
+									class="modal-trigger"
+									data-target="modal1"
+									v-bind:value="tile.ID"
+									@click="share($event)">
+									share
+								</button>
+								<!-- /SHARE button -->
+							</div>
+						</div><!-- / card-action -->
+						
+					</li>
+					<!-- ******** end CARD ******** -->
+				</ul>
 							
-			</ol><!-- / TileBoard -->
+			</div><!-- / TileBoard -->
 			
 		</div><!-- / tweets -->
 		
@@ -200,19 +199,24 @@
 			
 			<!-- / modal content -->
 			<div class="modal-content">
-				<h4>Share These Links</h4>
 				
-				<div class="chip">
-					Share All
-					<i class="close material-icons">share</i>
-				</div>
-				
-				<div v-for="(tile, index, $event) in Favorites">
+				<!-- side-nav -->
+				<div class="modal-header">
+					<h4>Share These Links</h4>
 					
-					  <transition-group name="slide-fade">
+					<div class="chip">
+						Share All
+						<i class="close material-icons">share</i>
+					</div>
+				</div><!-- / side-nav -->
+				
+				<div class="sharedTiles">
+					
 					  
 					  <!-- ******** start FAVE CARD ******** -->
-						<div class="card" v-bind:key="tile">
+						<div class="card" 
+							v-bind:key="tile"
+							v-for="(tile, index, $event) in Favorites">
 							<div class="card-content">
 								<a v-bind:href="tile.URL">
 									{{ tile.text }}
@@ -225,15 +229,22 @@
 									remove
 								</button>
 								<button 
-									class="button material-icons" 
+									class="activator button material-icons" 
 									@click="">
 									share
 								</button>
 							</div>
+							<div class="card-reveal">
+								<span class="card-title">
+									<i class="material-icons right">
+									close
+									</i>
+								</span>
+								<textarea>{{ tile.text }} {{ tile.URL }}</textarea>
+							</div>
 						</div>
 						<!-- ******** end FAVE CARD ******** -->
 						
-					  </transition-group>
 					  
 				</div>
 				<!-- contact form -->
@@ -313,7 +324,15 @@
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	}
 	
-	var Tiles = Twitolu.TileFactory();
+	var colors = [
+		'FF9600',
+		'D74B32',
+		'AF0064',
+		'55237D',
+		'004696'
+	];
+	
+	var Tiles = Twitolu.TileFactory(colors);
 	var WordCloud = Twitolu.CloudFactory(Tiles);
 	var Recipients = Twitolu.Recipients();	
 	 	
@@ -363,21 +382,29 @@
 					tile.tileStatus = 'active'
 				});
 			},
-			switchClass: function(tileStatus, faveStatus) {
+			switchClass: function(tileStatus, faveStatus) {				
 				if (tileStatus === 'active' && faveStatus === 'active') {
 					return 'rubberBand active';
 				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
-					return 'shake active';
+					return 'active';
 				} else if (tileStatus === 'active') {
 					return 'flipInX active';
 				} else if (tileStatus === 'inactive') {
 					return 'inactive';
 				} 
 			},
-			stagger: function($event,index) {
-								
-				return Twitolu.PropsFactory('animation-delay',index);				
-								
+			switchStyle: function(tileStatus, faveStatus, index, color) {
+				var delay = (index * 100) + 'ms';
+				var norm = { animationDelay: '0ms', backgroundColor: color };
+				if (tileStatus === 'active' && faveStatus === 'active') {
+					return norm;
+				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
+					return norm;
+				} else if (tileStatus === 'active') {
+					return { animationDelay: delay, backgroundColor: color };
+				} else if (tileStatus === 'inactive') {
+					return norm;
+				} 
 			}
 		},
 		computed: {

@@ -28,6 +28,7 @@ var Twitolu = (function () {
 			async: false,
 			success: function(result){
 			 	Tweets(result);	
+			 	console.log(result);
 			},
 			error: function(err){
 				console.log(err);
@@ -104,18 +105,12 @@ var Twitolu = (function () {
 	    });
 	    Faves.forEach(function(tile){
 	        if ( tile.ID == tileID ) {
-		        
-				var tileIndex = Faves.indexOf(tile);
-				
+				var tileIndex = Faves.indexOf(tile);				
 				//console.log('tileIndex:',tileIndex);
-				console.log('remove Fave at index: ' + tileIndex , tile.text);
-				
-				var x = Faves.splice(tileIndex, 1);
-				
-				tile.faveStatus = 'inactive';
-				
-				return x;
-				
+				console.log('remove Fave at index: ' + tileIndex , tile.text);				
+				var x = Faves.splice(tileIndex, 1);				
+				tile.faveStatus = 'inactive';				
+				return x;				
 				//console.log( 'splice result:', x );
 	        }
 	    });
@@ -124,10 +119,8 @@ var Twitolu = (function () {
 	};
 
 	var Search = function(tag){ //searchTags
-		
 		var tag = tag.trim(),
-			count = 0;
-		
+			count = 0;		
 		Tiles.forEach(function(tile){
 			if (tag == tile.tag) {
 				count++;
@@ -136,16 +129,13 @@ var Twitolu = (function () {
 			} else {
 				tile.tileStatus = 'inactive'
 			}
-		});	
-		
+		});			
 		console.log(tag);
 				
 	};
 	
-	var Share = function(Tiles) {
-		
-		var ShareText = [];
-		
+	var Share = function(Tiles) {		
+		var ShareText = [];		
 		Tiles.forEach(function(tile){
 			
 			ShareText.push({
@@ -166,7 +156,7 @@ var Twitolu = (function () {
 	var PropsFactory = function(prop,index) {
 		
 		var vendors = ['', '-webkit-', '-moz-'],
-			delay = Math.min(Math.max(parseInt(index), 1), 10) * 100, //limit number of tiles to animate
+			delay = index * 10, 
 			propsPack = [];
 
 		vendors.forEach(function(vend){
@@ -249,7 +239,7 @@ var Twitolu = (function () {
 	
 	
 	//Use the Tweets to create tiles	
-	var TileFactory = function () {
+	var TileFactory = function (colors) {
 				
 		//Create place to collect tiles for future reference
 		var TilesCollection = [],
@@ -301,14 +291,19 @@ var Twitolu = (function () {
 					return Tag_obj;
 				}
 			}
+			
+			//CHOOSE A COLOR FROM THE LIST
+			var Color = function() {
+				return '#' + colors[Math.floor(Math.random()*colors.length)];
+			}
 						
 			//Use the factory to create each tile
 			var tile = {
-										
 				fullText: Text_obj,
 				text: Text(),
 				tag: Tag(),
 				URL: URL(),
+				color: Color(),
 				ID: result[i].id_str,
 				date: result[i].created_at,
 				media: result[i].entities.media,

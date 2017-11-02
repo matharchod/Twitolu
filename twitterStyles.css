@@ -1,3 +1,9 @@
+#TwitoluApp {
+	float: left;
+	width: 100%;
+	position: relative;
+}
+
 #WordCloud li {
 }
 
@@ -23,12 +29,39 @@
 }
 
 .card {
-    margin: 1em;
-    display: inline-table;
-    width: 45%;
-    height: 275px;
     background: #fff;
-    float: left;
+    width: 100%;
+    /* break-inside: avoid; */
+    border-radius: 0;
+    margin: 0.25em;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 32.5%;
+    height: 250px;
+    /* border: 2px solid transparent; */
+}
+
+.card.glow {
+    animation-name: glow;
+    animation-iteration-count: infinite;
+    border: 2px solid transparent;
+}
+
+.card:hover {
+	box-shadow: none;
+	/* left: 2px; */
+	/* top: 2px; */
+}
+
+.card:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.1;
+    z-index: 1;
 }
 
 .card.active {
@@ -39,72 +72,103 @@
     display: none;
 }
 
-@keyframes mymove {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        height: 0;
-    }
-}
-
 .card .badge {
     vertical-align: middle;
     display: inline-block;
     float: none;
 }
 
+.card .card-action div {
+	display: inline-block;
+	width: 45%;
+}
+
 .card .card-action button,
 .side-nav button {
-    width: 45px;
-    height: 45px;
-    border: 1px solid #ccc;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #fff;
     border-radius: 100%;
-    margin: 0.25em;
-    background-color: #fff;
-    font-size: 1.25em;
-    color: #ccc;
-    padding: 0.5em;
+    margin-left: 0.5em;
+    background-color: transparent;
+    font-size: 1em;
+    color: #fff;
+    padding: 0.25rem;
     line-height: 1em;
+    display: inline-block;
+    text-align: center;
 }
 
-.side-nav button {background-color: #eee; color: #000;}
+.side-nav button {
+	background-color: #eee; 
+	color: #000;
+}
 
 .card .card-action {
-    display: inline-block;
-    border: none;
-    vertical-align: bottom;
-    text-align: right;
+    /* float: left; */
     width: 100%;
+    z-index: 1;
+    padding: 2em;
+    border: none;
+    background: transparent;
     position: absolute;
     bottom: 0;
-    right: 0;
 }
 
-.card .card-action a {	
+.card .card-action a, 
+.card .card-action button {
+	opacity: 0.5;
+}
+
+.card .card-action *:hover {
+	opacity: 1;
+}
+
+.card .card-action a {
+	font-size: 9px;
+	padding: 0 1em;
+	letter-spacing: 1px;
+	height: 25px;
+	line-height: 25px;
+	border-color: #fff;
+	color: #fff !important;
+	max-width: 100%;
 }
 
 .card .chip {
-	background-color: #eee;
+	background-color: transparent;
+	display: inline-block;
+	margin: 0;
+	border: 1px solid #ccc;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .card .card-content {
-    padding: 2em 2em 0 2em;
-    vertical-align: middle;
-    display: inline-block;
+    padding: 2em;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
 }
 
 .card .card-content .link {
-    margin: 1em 0;
+    margin: 0;
 }
 
 .card .card-content .link a {
-    font-size: 1.5em;
+    font-size: 1.25em;
     display: block;
-    color: #000;
-    /* text-shadow: 2px 2px #ccc; */
+    color: #fff;
+}
+
+.card .card-content .link a button {
+	font-size: 1em;
+	opacity: 0.1;
+	border: none;
+	display: inline;
+	background: transparent;
 }
 
 .card .card-content button {
@@ -119,31 +183,67 @@
 
 .modal .card {
     position: relative;
-    width: 50%;
+    width: 100%;
     height: auto;
     margin: 0;
+    display: inline-block;
+}
+
+.modal .card:before {display:none;}
+
+.modal .card .share-text {
+	padding: 1em;
 }
 
 .modal .card .card-content {
     position: relative;
-    /* background: red; */
-    width: 65%;
+    vertical-align: middle;
+    width: 80%;
     display: table-cell;
     padding: 1em 0 1em 1em;
 }
 
 .modal .card .card-action {
     position: relative;
-    /* background: lime; */
+    /* padding-right: 1em; */
     width: auto;
     display: table-cell;
     padding-left: 0;
     vertical-align: middle;
+    text-align: right;
+}
+
+.modal .card .card-action button {
+	margin: 0.5em;
+	color: #333;
+	border-color: #333;
+}
+
+.modal .card .card-reveal {
+	padding: 0;
+	overflow: hidden;
+}
+
+.modal .card .card-reveal .card-title {
+	line-height: 1em;
+	width: 100%;
+	display: inline-block;
+}
+
+.modal .card .card-reveal textarea {
+	height: calc(100% - 2em);
+	border-color: transparent;
+	padding: 1em;
 }
 
 .modal.bottom-sheet {
 	max-height: 65%;
 	min-height: 50%;
+}
+
+.modal .modal-header {
+	float: left;
+	width: 20%;
 }
 
 .modal .modal-content {
@@ -162,19 +262,83 @@
 }
 
 .card .card-action button.waves-red {
-	border-color: red;
+	/* border-color: red; */
+	background-color: #fff;
+	opacity: 1;
 }
 
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.slide-fade-enter-active {
-  transition: all .3s ease;
+.main .navbar-fixed {
+	z-index: 1000;
+	width: 200px;
+	height: 100%;
+	position: fixed;
 }
-.slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+
+.main .navbar-fixed nav {
+    width: 200px;
+    height: 100%;
+    background-color: #333333;
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
+
+.main .navbar-fixed h1 {
+    margin: 2rem 1rem;
+    font-size: 3rem;
+    position: relative;
 }
+
+.side-nav {
+    width: 600px;
+    padding-left: 210px;
+}
+
+#tweets {
+	padding-left: 200px;
+}
+
+#TileBoard {
+	padding: 1em;
+}
+
+#TileBoard ul {
+	/* column-count: 3; */
+	/* column-gap: 1em; */
+	margin: 0;
+}
+
+.searchBox {
+    /* background: lime; */
+    width: 100%;
+    padding: 0;
+}
+
+.searchBox form {}
+
+.searchBox form i {
+    line-height: 45px;
+    font-size: 1rem;
+    color: #fff !important;
+}
+
+.searchBox input[type=search] {
+	border-color: #fff;
+	margin: 0;
+	padding-left: 3em;
+	width: calc(100% - 6em);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-right: 3em;
+}
+
+.sharedTiles {
+    width: 75%;
+    float: right;
+    column-count: 2;
+    column-gap: 0.5em;
+}
+
+/** GLOW ANIMATION **/
+
+@keyframes glow {
+	from {border-color: #fff;}
+	to {border-color: transparent;}
