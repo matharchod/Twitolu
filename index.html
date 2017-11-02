@@ -30,7 +30,7 @@
 							</a>
 						</li>
 						<li>
-							<h1 class="left">Working Debt</h1>
+							<h1 class="left">UX Diary</h1>
 						</li>
 						<li class="searchBox center">
 							<form>
@@ -54,11 +54,6 @@
 
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
 			<section>
-				<button 
-					class="waves-effect waves-light material-icons" 
-					@click="reset()">
-					refresh
-				</button>	
 				<button 
 					class="waves-effect waves-light material-icons" 
 					@click="onlyFaves()">
@@ -104,6 +99,13 @@
 					<!-- ADDITIONAL TAGS -->
 				</div>
 			</section><!-- / WordCloud -->
+			<section>
+				<button 
+					class="waves-effect waves-light material-icons" 
+					@click="reset()">
+					refresh
+				</button>	
+			</section>
 		</nav><!-- sidebar -->
 
 		<div id="tweets" class="content-section">
@@ -159,33 +161,28 @@
 									v-else 
 									v-bind:value="tile.ID" 
 									@click="removeFave(tile.ID)"
-									class="material-icons red-text waves-effect waves-red">
+									class="material-icons red-text glow waves-effect waves-red">
 									favorite
 								</button>
 								<!-- / FAVE button -->
 								<!-- SHARE button -->
 								<button 
-									v-if="tile.sendStatus !== 'active'" 
-									class="material-icons waves-effect"
-									class="modal-trigger"
-									data-target="modal1"
+									class="activator material-icons waves-effect"
 									v-bind:value="tile.ID"
 									@click="addFave(tile.ID), share($event)">
-									share
-								</button>
-								<button 
-									v-else 
-									class="green-text material-icons waves-effect waves-light"
-									class="modal-trigger"
-									data-target="modal1"
-									v-bind:value="tile.ID"
-									@click="share($event)">
 									share
 								</button>
 								<!-- /SHARE button -->
 							</div>
 						</div><!-- / card-action -->
-						
+						<div class="card-reveal">
+							<span class="card-title">
+								<i class="material-icons right grey-text text-lighten-1">
+								close
+								</i>
+							</span>
+							<textarea>{{ tile.text }} {{ tile.URL }}</textarea>
+						</div>
 					</li>
 					<!-- ******** end CARD ******** -->
 				</ul>
@@ -194,103 +191,6 @@
 			
 		</div><!-- / tweets -->
 		
-		<!-- Modal Structure -->
-		<div id="modal1" class="modal bottom-sheet">
-			
-			<!-- / modal content -->
-			<div class="modal-content">
-				
-				<!-- side-nav -->
-				<div class="modal-header">
-					<h4>Share These Links</h4>
-					
-					<div class="chip">
-						Share All
-						<i class="close material-icons">share</i>
-					</div>
-				</div><!-- / side-nav -->
-				
-				<div class="sharedTiles">
-					
-					  
-					  <!-- ******** start FAVE CARD ******** -->
-						<div class="card" 
-							v-bind:key="tile"
-							v-for="(tile, index, $event) in Favorites">
-							<div class="card-content">
-								<a v-bind:href="tile.URL">
-									{{ tile.text }}
-								</a>
-							</div>
-							<div class="card-action">
-								<button 
-									class="button material-icons" 
-									@click="removeFave(tile.ID)">
-									remove
-								</button>
-								<button 
-									class="activator button material-icons" 
-									@click="">
-									share
-								</button>
-							</div>
-							<div class="card-reveal">
-								<span class="card-title">
-									<i class="material-icons right">
-									close
-									</i>
-								</span>
-								<textarea>{{ tile.text }} {{ tile.URL }}</textarea>
-							</div>
-						</div>
-						<!-- ******** end FAVE CARD ******** -->
-						
-					  
-				</div>
-				<!-- contact form -->
-				<div class="row" style="display:none;">
-					<form class="col s12">
-						<!-- recipient list -->
-						<div id="Recipients" class="row">
-							<ul>
-								<li v-for="person in Recipients" class="new badge">
-									<button v-bind:value="person.idx" class="removeRecipient">x</button>
-									{{ person.FName }} {{ person.LName }} - {{ person.idx }}
-								</li>
-			  				</ul>
-						</div><!-- / recipient list -->
-						<!-- new recipient -->
-						<div class="row">
-							<div class="input-field col s6">
-								<input placeholder="First Name" id="FName" value="TEST" type="text" class="validate">
-								<label for="FName">First Name</label>
-							</div>
-							<div class="input-field col s6">
-								<input placeholder="Last Name" id="LName" value="Testerson" type="text" class="validate">
-								<label for="LName">Last Name</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="input-field col s12">
-								<input placeholder="Email Address" value="test@test.com" id="Email" type="email" class="validate">
-								<label for="email">Email</label>
-							</div>
-						</div><!-- / new recipient -->
-					</form>
-				</div><!-- contact form -->
-			</div><!-- / modal content -->
-			<!-- modal footer -->
-<!--
-			<div class="modal-footer red">
-				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">One</a>
-				  <div class="chip">
-				    Copy All
-				    <i class="close material-icons">content_copy</i>
-				  </div>
-  			</div>
--->
-		</div><!-- / Modal Structure -->
-
 	</div><!-- / main -->
 
 </body>
@@ -315,9 +215,21 @@
 <script type="text/javascript">
 	
 	$(function(){
-		$('.chip').click(function(){
-			$('.card').click();
+		
+		
+		//SHARE - SELECT ALL TEXT IN TEXTAREA
+		$('textarea').focus(function() {
+		    var $this = $(this);
+		    $this.select();
+		    // Work around Chrome's little problem
+		    $this.mouseup(function() {
+		        // Prevent further mouseup intervention
+		        $this.unbind('mouseup');
+		        return false;
+		    });
 		});
+
+
 	});
 	
 	var topScroll = function() {
@@ -384,7 +296,7 @@
 			},
 			switchClass: function(tileStatus, faveStatus) {				
 				if (tileStatus === 'active' && faveStatus === 'active') {
-					return 'rubberBand active';
+					return 'bounce active';
 				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
 					return 'active';
 				} else if (tileStatus === 'active') {

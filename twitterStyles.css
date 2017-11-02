@@ -4,6 +4,20 @@
 	position: relative;
 }
 
+#tweets {
+	padding-left: 200px;
+}
+
+#TileBoard {
+	padding: 1em;
+}
+
+#TileBoard ul {
+	/* column-count: 3; */
+	/* column-gap: 1em; */
+	margin: 0;
+}
+
 #WordCloud li {
 }
 
@@ -17,10 +31,6 @@
     background-color: #ccc;
     padding: 0.25em 1em;
     border-radius: 1em;
-}
-
-.modal {
-    max-height: none;
 }
 
 .user-view .circle {
@@ -38,14 +48,13 @@
     left: 0;
     display: inline-block;
     width: 32.5%;
-    height: 250px;
+    height: 15rem;
     /* border: 2px solid transparent; */
 }
 
-.card.glow {
+.card .card-action button.waves-red.glow {
     animation-name: glow;
     animation-iteration-count: infinite;
-    border: 2px solid transparent;
 }
 
 .card:hover {
@@ -97,11 +106,6 @@
     line-height: 1em;
     display: inline-block;
     text-align: center;
-}
-
-.side-nav button {
-	background-color: #eee; 
-	color: #000;
 }
 
 .card .card-action {
@@ -181,6 +185,102 @@
     vertical-align: middle;
 }
 
+.card .card-reveal {
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid #ccc;
+}
+
+.card .card-reveal .card-title {
+	line-height: 1em;
+	width: 100%;
+	display: inline-block;
+}
+
+.card .card-reveal .card-title i {
+    padding: 0.5em;
+}
+
+.card .card-reveal textarea {
+	height: calc(100% - 3.75em);
+	max-height: calc(100% - 3.75em);
+	width: 100%;
+	max-width: 100%;
+	border-color: transparent;
+	padding: 1em;
+}
+
+.card .card-action button.waves-red {
+	/* border-color: red; */
+	background-color: #fff;
+	opacity: 1;
+}
+
+.main .navbar-fixed {
+	z-index: 1000;
+	width: 200px;
+	height: 100%;
+	position: fixed;
+}
+
+.main .navbar-fixed nav {
+    width: 200px;
+    height: 100%;
+    background-color: #333333;
+}
+
+.main .navbar-fixed h1 {
+    margin: 2rem 1rem;
+    font-size: 3rem;
+    position: relative;
+}
+
+.side-nav {
+    width: 600px;
+    padding-left: 210px;
+}
+
+.side-nav button {
+	background-color: #eee; 
+	color: #000;
+}
+
+.searchBox {
+    /* background: lime; */
+    width: 100%;
+    padding: 0;
+}
+
+.searchBox form {}
+
+.searchBox form i {
+    line-height: 45px;
+    font-size: 1rem !important;
+    color: #fff !important;
+}
+
+.searchBox input[type=search] {
+	border-color: #fff;
+	margin: 0;
+	padding-left: 3em;
+	width: calc(100% - 6em);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-right: 3em;
+}
+
+.sharedTiles {
+    width: 75%;
+    float: right;
+    column-count: 2;
+    column-gap: 0.5em;
+}
+
+.modal {
+    max-height: none;
+}
+
 .modal .card {
     position: relative;
     width: 100%;
@@ -219,23 +319,6 @@
 	border-color: #333;
 }
 
-.modal .card .card-reveal {
-	padding: 0;
-	overflow: hidden;
-}
-
-.modal .card .card-reveal .card-title {
-	line-height: 1em;
-	width: 100%;
-	display: inline-block;
-}
-
-.modal .card .card-reveal textarea {
-	height: calc(100% - 2em);
-	border-color: transparent;
-	padding: 1em;
-}
-
 .modal.bottom-sheet {
 	max-height: 65%;
 	min-height: 50%;
@@ -261,84 +344,15 @@
     height: 100px;
 }
 
-.card .card-action button.waves-red {
-	/* border-color: red; */
-	background-color: #fff;
-	opacity: 1;
-}
-
-.main .navbar-fixed {
-	z-index: 1000;
-	width: 200px;
-	height: 100%;
-	position: fixed;
-}
-
-.main .navbar-fixed nav {
-    width: 200px;
-    height: 100%;
-    background-color: #333333;
-}
-
-.main .navbar-fixed h1 {
-    margin: 2rem 1rem;
-    font-size: 3rem;
-    position: relative;
-}
-
-.side-nav {
-    width: 600px;
-    padding-left: 210px;
-}
-
-#tweets {
-	padding-left: 200px;
-}
-
-#TileBoard {
-	padding: 1em;
-}
-
-#TileBoard ul {
-	/* column-count: 3; */
-	/* column-gap: 1em; */
-	margin: 0;
-}
-
-.searchBox {
-    /* background: lime; */
-    width: 100%;
-    padding: 0;
-}
-
-.searchBox form {}
-
-.searchBox form i {
-    line-height: 45px;
-    font-size: 1rem;
-    color: #fff !important;
-}
-
-.searchBox input[type=search] {
-	border-color: #fff;
-	margin: 0;
-	padding-left: 3em;
-	width: calc(100% - 6em);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	padding-right: 3em;
-}
-
-.sharedTiles {
-    width: 75%;
-    float: right;
-    column-count: 2;
-    column-gap: 0.5em;
-}
-
 /** GLOW ANIMATION **/
 
 @keyframes glow {
-	from {border-color: #fff;}
-	to {border-color: transparent;}
+	from {
+		border-color: transparent !important;
+		background-color: #fff !important;
+	}
+	to {
+		border-color: #fff !important;
+		background-color: transparent !important;
+	}
+}

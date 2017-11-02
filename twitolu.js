@@ -152,27 +152,7 @@ var Twitolu = (function () {
 		console.log(ShareText);
 		return ShareText;	
 	};
-	
-	var PropsFactory = function(prop,index) {
-		
-		var vendors = ['', '-webkit-', '-moz-'],
-			delay = index * 10, 
-			propsPack = [];
-
-		vendors.forEach(function(vend){
-			var newProp = vend + prop + ': ' + delay + 'ms';
-			propsPack.push(newProp);
-		});
-		
-		var x = JSON.stringify(propsPack),	
-			y = x.slice(1, x.length - 1),
-			vendorProps = y.replace(/","/g,';');
-		
-		//console.log(vendorProps);
-		
-		return vendorProps;
-	};	
-				
+					
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var CloudFactory = function(Tweets) {
 				
@@ -339,65 +319,12 @@ var Twitolu = (function () {
 		Recipients: Recipients,
 		Search: Search,
 		Share: Share,
-		PropsFactory: PropsFactory,
 		TileFactory: TileFactory,
 		CloudFactory: CloudFactory
 	
 	}
 	
 })();
-
-
-randomColor = function(){
-	//http://paulirish.com/2009/random-hex-color-code-snippets/	
-	var color = '#'+Math.floor(Math.random()*16777215).toString(16); 
-	var bgcolor = (!bgcolor) ? color : bgcolor;
-	return bgcolor;		
-};
-
-//Recipient form	
-addRecipient = function() {
-	
-	var person = {
-		idx: Math.floor(Math.random() * 90000) + 10000,
-		FName: $('form input#FName').val(),
-		LName: $('form input#LName').val(),
-		Email: $('form input#Email').val()
-	}
-			
-	console.log('addRecipient:', person );
-	
-	return Twitolu.Recipients(person);
-}
-
-//Remove Recipient	
-removeRecipient = function(idx) {
-	
-	var Recipients = Twitolu.Recipients();	
-	
-	Recipients.forEach(function(person,arrIndex){
-		
-		//console.log('person:', person, person.idx, arrIndex );
-		
-		if (person.idx == idx) {
-			
-			Recipients.splice(arrIndex,1);
-			
-			localStorage.setItem( 'TwitoluRecipients', JSON.stringify(Recipients) );
-			
-			console.log('person FOUND:', person, person.idx, arrIndex );
-			
-		}
-		
-	});
-	
-	console.log('recipient ready to remove:', idx );
-	console.log('new recipients:', Recipients );
-	
-	
-	return Twitolu.Recipients();
-}
-
 
 
 
