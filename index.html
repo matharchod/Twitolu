@@ -47,6 +47,7 @@
 								</div>
 							</form>
 						</li>
+						<li>{{coloredTags}}</li>
 					</ul>
 				</div>
 			</nav>
@@ -123,6 +124,7 @@
 						
 						<!-- card-content -->
 				      	<div class="card-content">
+					      	<span>{{tile.color}}</span>
 							<p class="link">
 								<a v-bind:href="tile.URL" target="_blank">
 									{{ tile.text }}
@@ -181,7 +183,7 @@
 								close
 								</i>
 							</span>
-							<textarea>{{ tile.text }} {{ tile.URL }}</textarea>
+							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
 						</div>
 					</li>
 					<!-- ******** end CARD ******** -->
@@ -218,30 +220,30 @@
 		
 		
 		//SHARE - SELECT ALL TEXT IN TEXTAREA
-		$('textarea').focus(function() {
-		    var $this = $(this);
-		    $this.select();
-		    // Work around Chrome's little problem
-		    $this.mouseup(function() {
-		        // Prevent further mouseup intervention
-		        $this.unbind('mouseup');
-		        return false;
-		    });
-		});
+		//$('textarea').focus();
+		
+		
+		
 
 
 	});
+	
 	
 	var topScroll = function() {
 		$('html, body').animate({ scrollTop: 0 }, 'slow');
 	}
 	
 	var colors = [
-		'FF9600',
-		'D74B32',
-		'AF0064',
-		'55237D',
-		'004696'
+		'8F9DB2',
+		'B0BAC8',
+		'B0BAC8',
+		'F3BB9A',
+		'CD998B',
+		'A6658F',
+		'D9A19C',
+		'DDC7A7',
+		'9AC49F',
+		'1D797D'
 	];
 	
 	var Tiles = Twitolu.TileFactory(colors);
@@ -294,29 +296,33 @@
 					tile.tileStatus = 'active'
 				});
 			},
-			switchClass: function(tileStatus, faveStatus) {				
+			switchClass: function(tileStatus, faveStatus, tag) {		
+						
 				if (tileStatus === 'active' && faveStatus === 'active') {
 					return 'bounce active';
 				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
 					return 'active';
 				} else if (tileStatus === 'active') {
-					return 'flipInX active';
+					return 'flipInY active';
 				} else if (tileStatus === 'inactive') {
 					return 'inactive';
 				} 
 			},
 			switchStyle: function(tileStatus, faveStatus, index, color) {
 				var delay = (index * 100) + 'ms';
-				var norm = { animationDelay: '0ms', backgroundColor: color };
+				var norm = { animationDelay: '0ms', backgroundColor: '#' + color };
 				if (tileStatus === 'active' && faveStatus === 'active') {
 					return norm;
 				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
 					return norm;
 				} else if (tileStatus === 'active') {
-					return { animationDelay: delay, backgroundColor: color };
+					return { animationDelay: delay, backgroundColor: '#' + color };
 				} else if (tileStatus === 'inactive') {
 					return norm;
 				} 
+			},
+			textSelect: function(target){
+				$(target).select();
 			}
 		},
 		computed: {
@@ -327,10 +333,30 @@
 				});
 			},
 			WordCloud_alpha: function() {
-				return this.WordCloud.slice(0,10);
+				var x = this.WordCloud.slice(0,10); 
+				return x;
 			},
 			WordCloud_delta: function() {
 				return this.WordCloud.slice(10,(this.WordCloud.length + 1));
+			},
+			coloredTags: function() {
+				var tagColors = [];
+				for (i in this.WordCloud_alpha) {
+					tagColors.push( {'tag': this.WordCloud_alpha[i].tag , 'color': colors[i]}  );
+				}
+				for ( var i = 0; i < Tiles.length; i++) {
+				
+				    for ( var keys in tagColors ) {
+					    
+			            if ( tagColors[keys].tag === Tiles[i].tag ) {
+			                Tiles[i].color = tagColors[keys].color;
+			                console.log('match',tagColors[keys].tag,Tiles[i].fullText)
+			            }
+				    
+				    }  // end for-in
+				} // end for
+
+				return tagColors;
 			}
 		}
 	});	

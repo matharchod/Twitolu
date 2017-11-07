@@ -283,7 +283,6 @@ var Twitolu = (function () {
 				text: Text(),
 				tag: Tag(),
 				URL: URL(),
-				color: Color(),
 				ID: result[i].id_str,
 				date: result[i].created_at,
 				media: result[i].entities.media,
