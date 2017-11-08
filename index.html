@@ -47,7 +47,6 @@
 								</div>
 							</form>
 						</li>
-						<li>{{coloredTags}}</li>
 					</ul>
 				</div>
 			</nav>
@@ -65,11 +64,13 @@
 				<div id="WordCloud">
 					<!-- TAGS -->
 					<a href="#!" 
-						class="chip waves-effect"
+						class="chip white-text waves-effect"
 						data-activates="slide-out"
 						v-for="word in WordCloud_alpha"
+                        v-bind:style="{ backgroundColor: '#' + word.color }"
 						@click="searchByTag(word.tag)">
-						{{ word.tag }}
+						{{ word.tag }} - 
+                        <b>{{ word.count }}</b>
 					</a>
 					<!-- /TAGS -->
 					<!-- MORE BUTTON -->
@@ -95,7 +96,6 @@
 						v-bind:key="word"
 						@click="searchByTag(word.tag)">
 						{{ word.tag }}
-<!-- 					<b>{{ word.count }}</b> -->
 					</a>
 					<!-- ADDITIONAL TAGS -->
 				</div>
@@ -124,7 +124,6 @@
 						
 						<!-- card-content -->
 				      	<div class="card-content">
-					      	<span>{{tile.color}}</span>
 							<p class="link">
 								<a v-bind:href="tile.URL" target="_blank">
 									{{ tile.text }}
@@ -234,16 +233,16 @@
 	}
 	
 	var colors = [
-		'8F9DB2',
-		'B0BAC8',
-		'B0BAC8',
-		'F3BB9A',
-		'CD998B',
-		'A6658F',
-		'D9A19C',
-		'DDC7A7',
-		'9AC49F',
-		'1D797D'
+		'FF9600',
+		'D74B32',
+		'AF0064',
+		'55237D',
+		'004696',
+		'F8342D',
+		'FF803A',
+		'7EBB41',
+		'1F5081',
+		'1DB8D3'
 	];
 	
 	var Tiles = Twitolu.TileFactory(colors);
@@ -333,30 +332,25 @@
 				});
 			},
 			WordCloud_alpha: function() {
-				var x = this.WordCloud.slice(0,10); 
-				return x;
-			},
-			WordCloud_delta: function() {
-				return this.WordCloud.slice(10,(this.WordCloud.length + 1));
-			},
-			coloredTags: function() {
-				var tagColors = [];
-				for (i in this.WordCloud_alpha) {
-					tagColors.push( {'tag': this.WordCloud_alpha[i].tag , 'color': colors[i]}  );
+				var coloredTags = this.WordCloud.slice(0,10);
+				for (i in coloredTags) {
+					coloredTags[i].color = colors[i];
 				}
 				for ( var i = 0; i < Tiles.length; i++) {
 				
-				    for ( var keys in tagColors ) {
+				    for ( var keys in coloredTags ) {
 					    
-			            if ( tagColors[keys].tag === Tiles[i].tag ) {
-			                Tiles[i].color = tagColors[keys].color;
-			                console.log('match',tagColors[keys].tag,Tiles[i].fullText)
+			            if ( coloredTags[keys].tag === Tiles[i].tag ) {
+			                Tiles[i].color = coloredTags[keys].color;
+			                console.log('match',coloredTags[keys].tag,Tiles[i].fullText)
 			            }
 				    
 				    }  // end for-in
 				} // end for
-
-				return tagColors;
+				return coloredTags;
+			},
+			WordCloud_delta: function() {
+				return this.WordCloud.slice(10,(this.WordCloud.length + 1));
 			}
 		}
 	});	
@@ -377,7 +371,7 @@
 		
 		///$('.collapse').sideNav('hide');
 		
-// 		$(".slide-out-button").click();
+		$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();
