@@ -28,7 +28,7 @@ var Twitolu = (function () {
 			async: false,
 			success: function(result){
 			 	Tweets(result);	
-			 	console.log(result);
+			 	console.log(result[0]);
 			},
 			error: function(err){
 				console.log(err);
@@ -117,41 +117,6 @@ var Twitolu = (function () {
 		//console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
 	            
 	};
-
-	var Search = function(tag){ //searchTags
-		var tag = tag.trim(),
-			count = 0;		
-		Tiles.forEach(function(tile){
-			if (tag == tile.tag) {
-				count++;
-				tile.tileStatus = 'active'
-				//console.log(tile.text);
-			} else {
-				tile.tileStatus = 'inactive'
-			}
-		});			
-		console.log(tag);
-				
-	};
-	
-	var Share = function(Tiles) {		
-		var ShareText = [];		
-		Tiles.forEach(function(tile){
-			
-			ShareText.push({
-				'URL' : tile.URL,
-				'date': tile.date,
-				'text' : tile.text,
-				'tag': tile.tag
-			});
-			
-			tile.sendStatus == 'active';
-			
-		});
-			
-		console.log(ShareText);
-		return ShareText;	
-	};
 					
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var CloudFactory = function(Tweets) {
@@ -233,16 +198,36 @@ var Twitolu = (function () {
 			
 			var Text_obj = fixSpecials(result[i].text);
 				URL_obj = result[i].entities.urls[0],
-				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string using a delimitor
+				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string
+				RT_obj = result[i].retweeted, //retweet check
 				Media_obj = result[i].entities.media;
+						
+			if (Media_obj) {
+				console.log('Media_obj',Media_obj[0].media_url_https);
+				console.log(result[i]);
+			}	
 			
-			//REMOVE TAG FROM TEXT
+			if (RT_obj === false) {
+				RT_obj = null;
+			}
+			
+			//REMOVE TAG AND RETWEET FROM TEXT
 			var Text = function() {
 				
 				var text = Text_obj.split('http')[0]; //use display url to find link in text and remove it
 				var text_notag = text.slice(Tag_obj.length + 2); //use tag object to remove it from the string
 				
-				if (Tag_obj.length >= 24) {
+				if (RT_obj === true) {
+					
+					var text_noretweets = Text_obj.replace(/RT\s*@\S+/g, '');
+					var text_cleaned = text_noretweets.split('http')[0];
+					RT_obj = Text_obj.slice(0,Text_obj.indexOf(':'));
+					console.log('text_cleaned',text_cleaned);
+					console.log('retweeter',RT_obj);
+					
+					return text_cleaned;
+					
+				} else if (Tag_obj.length >= 24) {
 					return text;
 				} else {
 					return text_notag;
@@ -271,14 +256,10 @@ var Twitolu = (function () {
 					return Tag_obj;
 				}
 			}
-			
-			//CHOOSE A COLOR FROM THE LIST
-			var Color = function() {
-				return '#' + colors[Math.floor(Math.random()*colors.length)];
-			}
-						
+									
 			//Use the factory to create each tile
 			var tile = {
+				
 				fullText: Text_obj,
 				text: Text(),
 				tag: Tag(),
@@ -287,6 +268,7 @@ var Twitolu = (function () {
 				date: result[i].created_at,
 				media: result[i].entities.media,
 				popularity: result[i].favorite_count,
+				retweet: RT_obj,
 				tileStatus: 'active',
 				faveStatus: null,
 				sendStatus: null
@@ -316,8 +298,6 @@ var Twitolu = (function () {
 		AddFavorites: AddFavorites,
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
-		Search: Search,
-		Share: Share,
 		TileFactory: TileFactory,
 		CloudFactory: CloudFactory
 	

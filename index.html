@@ -41,7 +41,7 @@
 									</label>
 									<i class="material-icons close"
 										v-show="searchTerm"
-										@click="searchTerm = ' '">
+										@click="reset()">
 										refresh
 									</i>
 								</div>
@@ -124,6 +124,12 @@
 						
 						<!-- card-content -->
 				      	<div class="card-content">
+							<span 
+							    v-if="tile.retweet"
+							    class="new badge waves-effect"
+								@click.prevent="searchByTag(tile.retweet)">
+								{{ tile.retweet }}
+							</span>							
 							<p class="link">
 								<a v-bind:href="tile.URL" target="_blank">
 									{{ tile.text }}
@@ -142,14 +148,6 @@
 								</a>							
 							</div>
 							<div class="right right-align">
-								<!-- RESET button -->
-								<button 
-								 v-if="tile.tileStatus == 'active'"
-								 class="material-icons waves-effect waves-dark" 
-								 @click="reset()">
-								 refresh
-								</button>	
-								<!-- RESET button -->
 								<!-- FAVE button -->
 								<button 
 									v-if="tile.faveStatus !== 'active'" 
@@ -342,7 +340,7 @@
 					    
 			            if ( coloredTags[keys].tag === Tiles[i].tag ) {
 			                Tiles[i].color = coloredTags[keys].color;
-			                console.log('match',coloredTags[keys].tag,Tiles[i].fullText)
+			                //console.log('match',coloredTags[keys].tag,Tiles[i].fullText)
 			            }
 				    
 				    }  // end for-in
@@ -371,7 +369,7 @@
 		
 		///$('.collapse').sideNav('hide');
 		
-		$(".slide-out-button").click();
+		//$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();
