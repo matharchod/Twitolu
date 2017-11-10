@@ -53,14 +53,7 @@
 		</div>
 
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
-			<section>
-				<button 
-					class="waves-effect waves-light material-icons" 
-					@click="onlyFaves()">
-					favorite
-				</button>	
-			</section>
-			<section>
+			<section class="valign-wrapper">
 				<div id="WordCloud">
 					<!-- TAGS -->
 					<a href="#!" 
@@ -69,43 +62,53 @@
 						v-for="word in WordCloud_alpha"
                         v-bind:style="{ backgroundColor: '#' + word.color }"
 						@click="searchByTag(word.tag)">
-						{{ word.tag }} - 
-                        <b>{{ word.count }}</b>
+						{{ word.tag }}
+						<b>{{ word.count }}</b>
 					</a>
 					<!-- /TAGS -->
-					<!-- MORE BUTTON -->
-					<a href="#!" 
-						class="chip waves-effect waves-teal material-icons" 
-						v-show="showAllTags === false"
-						@click="showAllTags = true">
-						more_horiz
-					</a>
-					<a href="#!" 
-						class="chip teal white-text waves-effect waves-light material-icons" 
-						v-show="showAllTags === true"
-						@click="showAllTags = false">
-						more_vert
-					</a>
-					<!-- / MORE BUTTON -->
-					<!-- ADDITIONAL TAGS -->
-					<a href="#!" 
-						class="chip waves-effect"
-						data-activates="slide-out"
-						v-for="(word, index, $event) in WordCloud_delta"
-						v-show="showAllTags === true"
-						v-bind:key="word"
-						@click="searchByTag(word.tag)">
-						{{ word.tag }}
-					</a>
-					<!-- ADDITIONAL TAGS -->
-				</div>
-			</section><!-- / WordCloud -->
+				</div><!-- / WordCloud -->
+			</section>
 			<section>
+				<button 
+					class="waves-effect waves-light material-icons" 
+					@click="onlyFaves()">
+					favorite
+				</button>	
+				<button 
+					class="retweet waves-effect waves-light" 
+					@click="onlyRetweets()">
+					rt@
+				</button>	
 				<button 
 					class="waves-effect waves-light material-icons" 
 					@click="reset()">
 					refresh
-				</button>	
+				</button>
+				<!-- MORE BUTTON -->
+				<button 
+					class="chip waves-effect waves-teal material-icons" 
+					v-show="showAllTags === false"
+					@click="showAllTags = true">
+					more_horiz
+				</button>
+				<button 
+					class="chip grey darken-3 white-text waves-effect waves-light material-icons" 
+					v-show="showAllTags === true"
+					@click="showAllTags = false">
+					more_vert
+				</button>
+				<!-- / MORE BUTTON -->
+				<!-- ADDITIONAL TAGS -->
+				<a href="#!" 
+					class="chip grey darken-3 white-text waves-effect"
+					data-activates="slide-out"
+					v-for="(word, index, $event) in WordCloud_delta"
+					v-show="showAllTags === true"
+					v-bind:key="word"
+					@click="searchByTag(word.tag)">
+					{{ word.tag }}
+				</a>
+				<!-- ADDITIONAL TAGS -->
 			</section>
 		</nav><!-- sidebar -->
 
@@ -276,6 +279,11 @@
 					}
 				})
 			},
+			onlyRetweets: function() {
+				this.searchTerm = 'rt @';
+				$(this).sideNav('hide');
+				topScroll();
+			},
 			searchByTag: function(tag,index,event) {
 				this.searchTerm = tag.toLowerCase();
 				$(this).sideNav('hide');
@@ -369,7 +377,7 @@
 		
 		///$('.collapse').sideNav('hide');
 		
-		//$(".slide-out-button").click();
+		$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();

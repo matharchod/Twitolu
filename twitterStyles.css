@@ -40,17 +40,15 @@
 
 .card {
     background: #333;
-    width: 100%;
-    /* break-inside: avoid; */
+    break-inside:;
     border-radius: 0;
     margin: 0.25em;
     top: 0;
     left: 0;
     display: inline-block;
-    width: 21rem;
+    width: 32%;
     height: 19rem;
-    min-width: 300px;
-    max-width: 400px;
+    max-width: 350px;
 }
 
 .card .card-action button.waves-red.glow {
@@ -144,11 +142,22 @@
 	text-overflow: ellipsis;
 }
 
+.chip b {
+	opacity: 0.5;
+	margin-left: 0.5;
+}
+
 .card .badge {
     vertical-align: middle;
     display: inline-block;
     float: none;
     margin: 0 0 1em 0;
+}
+
+button.retweet {
+    font-weight: bold;
+    font-size: 65%;
+    text-transform: uppercase;
 }
 
 .card .badge:after {
