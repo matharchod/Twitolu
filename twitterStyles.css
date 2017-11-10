@@ -182,6 +182,11 @@ button.retweet {
     color: #fff;
 }
 
+.card a:hover,
+.card button:hover {
+	cursor: pointer;
+}
+
 .card .card-content .link a button {
 	font-size: 1em;
 	opacity: 0.1;

@@ -17,6 +17,19 @@ var Twitolu = (function () {
 		
 	})();
 	
+	var User = (function (input) {			
+		var x = [];
+		return function (input) {			
+			if (!input) {
+				return x;
+			} else {
+				x.push(input);
+				return input;	
+			}
+		}
+		
+	})();
+	
 	//Make a synchronous call to get Tweets
 	var getTweets = (function () {
 				
@@ -28,7 +41,8 @@ var Twitolu = (function () {
 			async: false,
 			success: function(result){
 			 	Tweets(result);	
-			 	console.log(result[0]);
+			 	User(result[0].user);
+			 	//console.log(result[0]);
 			},
 			error: function(err){
 				console.log(err);
@@ -203,8 +217,10 @@ var Twitolu = (function () {
 				Media_obj = result[i].entities.media;
 						
 			if (Media_obj) {
+/*
 				console.log('Media_obj',Media_obj[0].media_url_https);
 				console.log(result[i]);
+*/
 			}	
 			
 			if (RT_obj === false) {
@@ -222,8 +238,10 @@ var Twitolu = (function () {
 					var text_noretweets = Text_obj.replace(/RT\s*@\S+/g, '');
 					var text_cleaned = text_noretweets.split('http')[0];
 					RT_obj = Text_obj.slice(0,Text_obj.indexOf(':'));
+/*
 					console.log('text_cleaned',text_cleaned);
 					console.log('retweeter',RT_obj);
+*/
 					
 					return text_cleaned;
 					
@@ -295,6 +313,7 @@ var Twitolu = (function () {
 		
 		Tweets: Tweets,
 		Favorites: Favorites,
+		User: User,
 		AddFavorites: AddFavorites,
 		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,

@@ -53,7 +53,15 @@
 		</div>
 
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
-			<section class="valign-wrapper">
+	    <section><div class="user-view">
+	      <div class="background">
+	        <img src="">
+	      </div>
+	      <a href="#!user"><img class="circle" src=""></a>
+	      <a href="#!name"><span class="white-text name">John Doe</span></a>
+	      <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+	    </div></section>
+			<section>
 				<div id="WordCloud">
 					<!-- TAGS -->
 					<a href="#!" 
@@ -249,6 +257,7 @@
 	var Tiles = Twitolu.TileFactory(colors);
 	var WordCloud = Twitolu.CloudFactory(Tiles);
 	var Recipients = Twitolu.Recipients();	
+	var Profile = Twitolu.User();
 	 	
 	var TileBoard = new Vue({
 		el: '#TwitoluApp',
@@ -259,7 +268,8 @@
 				showAllTags: false,
 				Tiles,
 				Recipients,
-				WordCloud
+				WordCloud,
+				Profile
 			}
 		},
 		methods: {
