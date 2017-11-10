@@ -260,6 +260,22 @@ button.retweet {
     padding-left: 210px;
 }
 
+.side-nav .stats li {
+	line-height: 100%;
+	color: #333;
+	font-size: 75%;
+}
+
+.side-nav .badge {
+	border: 1px solid #eee;
+	padding: 0.5em;
+	line-height: 0.5em;
+	display: inline-block;
+	float: none;
+	margin: 0 !important;
+	height: auto;
+}
+
 .side-nav button {
 	background-color: #eee;
 	color: #000;

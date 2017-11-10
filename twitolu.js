@@ -18,12 +18,12 @@ var Twitolu = (function () {
 	})();
 	
 	var User = (function (input) {			
-		var x = [];
+		var x;
 		return function (input) {			
 			if (!input) {
 				return x;
 			} else {
-				x.push(input);
+				x = input;
 				return input;	
 			}
 		}

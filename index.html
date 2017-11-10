@@ -53,14 +53,35 @@
 		</div>
 
 		<nav id="slide-out" class="side-nav center-align gray lighten-4">
-	    <section><div class="user-view">
-	      <div class="background">
-	        <img src="">
-	      </div>
-	      <a href="#!user"><img class="circle" src=""></a>
-	      <a href="#!name"><span class="white-text name">John Doe</span></a>
-	      <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-	    </div></section>
+	    <section>
+		    <div class="user-view">
+				<img class="circle" v-bind:src="Profile.profile_image_url_https">
+<!--
+				<span class="name grey-text">{{Profile.name}}</span>
+				<span class="name grey-text">{{Profile.description}}</span>
+-->
+				<span class="name grey-text">{{Profile.screen_name}}</span>
+	      	</div>
+	      	<div class="stats container">
+				<ul class="row">
+					<li class="col s3">
+						<p>friends</p>
+						<span class="badge grey-text">{{Profile.friends_count}}</span>
+					</li>
+					<li class="col s3">
+						<p>followers</p>
+						<span class="badge grey-text">{{Profile.followers_count}}</span>
+					</li>
+					<li class="col s3">
+						<p>favorites</p>
+						<span class="badge grey-text">{{Profile.favourites_count}}</span>
+					</li>
+					<li class="col s3">
+						<p>listed</p>
+						<span class="badge grey-text">{{Profile.listed_count}}</span>
+					</li>
+				</ul>
+	      	</div>
 			<section>
 				<div id="WordCloud">
 					<!-- TAGS -->
