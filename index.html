@@ -11,78 +11,226 @@
 	<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,700' rel='stylesheet' type='text/css'>
 	<!--Import Google Icon Font-->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- Import Animate.CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 	<!--Import materialize.css-->
 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
 </head>
 <body>
-	<div class="main">
-		<h1>UX Diary</h1>
-		<ul class="mainNavToggle">
-
-			<li><a href="http://janianderson.com/#aboutme" class="navToggle">&times;</a></li>
-			<li><a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a></li>
-			
-		</ul>	
+	<div id="TwitoluApp" class="row main">
 		
-		<ul id="slide-out" class="side-nav">
-			<li>
-				<div class="user-view">
-					<div class="background">
-						<img src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/FatherSonFishing_crop.jpg">
-					</div>
-					<a href="#!user"><img class="circle" src="http://52.27.168.6/wordpress/wp-content/uploads/2016/11/Jani-Anderson.jpg"></a>
-					<a href="#!name"><span class="name">Jani Momolu Anderson</span></a>
-					<a href="#!email"><span class="email">ja@janianderson.com</span></a>
+		<div class="navbar-fixed z-depth-5 col s2">
+			<nav id="MainNav">
+				<div class="nav-wrapper">
+					<ul>
+						<li class="right">
+							<a href="#" data-activates="slide-out" class="slide-out-button">
+								<i class="material-icons">menu</i>
+							</a>
+						</li>
+						<li>
+							<h1 class="left">UX Diary</h1>
+						</li>
+						<li class="searchBox center">
+							<form>
+								<div class="input-field">
+									<input v-model="searchTerm" type="search">
+									<label class="label-icon" for="search">
+										<i class="material-icons">search</i>
+									</label>
+									<i class="material-icons close"
+										v-show="searchTerm"
+										@click="reset()">
+										refresh
+									</i>
+								</div>
+							</form>
+						</li>
+					</ul>
 				</div>
-			</li>
-			<li>
-				<ul id="WordCloud" class="collection w-header">
-					<li class="collection-header">
-						<h2>Tags</h4>
-					</li>
-					<li v-for="word in wordCloud">
-						<a href="#!" class="collection-item" onClick="searchByTag(window.event.target.text)">{{ word }}</a>
-					</li>
-				</ul>
-			</li><!-- / WordCloud -->
-		</ul><!-- sidebar -->
-
-		<div class="search-box border-box">
-			<div class="wrap border-box">
-				<input id="filter" class="border-box" name="filter">
-			</div>
-			<button class="searchNow border-box">Search</button>
-			<button class="clearSearch border-box">Reset</button>	
-			<a href="#!" class="onlyFaves border-box">Show &hearts; Only</a>		
-			<a href="#!" id="toggleWordCloud" class="border-box">Word Cloud</a>		
-			<p id="filter-count"></p>		
+			</nav>
+			<nav id="slide-out" class="side-nav center-align white lighten-4 col s6">
+			    <div class="spacer col s4"></div>
+			    <div class="spacer col s8">
+			    	<section>
+					    <div class="user-view">
+							<img class="grey" src="http://janianderson.com/imx/_nav/elephant-logo.png">
+							<span class="name grey-text">{{Profile.screen_name}}</span>
+							<span class="chip">
+								<a href="https://twitter.com/the_lonely_seo" class="grey-text text-darken-3">
+									followers <b>{{Profile.followers_count}}</b>
+								</a>
+							</span>
+				      	</div>
+			    	</section>
+					<section>
+						<div id="WordCloud">
+							<!-- TAGS -->
+							<a href="#!" 
+								class="chip white-text waves-effect"
+								data-activates="slide-out"
+								v-for="word in WordCloud_alpha"
+		                        v-bind:style="{ backgroundColor: '#' + word.color }"
+								@click="searchByTag(word.tag)">
+								{{ word.tag }}
+								<b>{{ word.count }}</b>
+							</a>
+							<!-- /TAGS -->
+						</div><!-- / WordCloud -->
+					</section>
+					<section>
+						<!-- MORE BUTTON -->
+						<button 
+							class="chip waves-effect waves-teal material-icons" 
+							v-show="showAllTags === false"
+							@click="showAllTags = true">
+							more_horiz
+						</button>
+						<button 
+							class="chip grey darken-3 white-text waves-effect waves-light material-icons" 
+							v-show="showAllTags === true"
+							@click="showAllTags = false">
+							more_vert
+						</button>
+						<!-- / MORE BUTTON -->
+						<!-- ADDITIONAL TAGS -->
+						<a href="#!" 
+							class="chip grey darken-3 white-text waves-effect"
+							data-activates="slide-out"
+							v-for="(word, index, $event) in WordCloud_delta"
+							v-show="showAllTags === true"
+							v-bind:key="word"
+							@click="searchByTag(word.tag)">
+							{{ word.tag }}
+						</a>
+						<!-- ADDITIONAL TAGS -->
+					</section>
+			    </div><!-- end spacer -->
+			</nav><!-- sidebar -->
 		</div>
 
-		<div id="tweets" class="content-section">
+
+		<div id="tweets" class="content-section col s10">
 				
 			<div id="TileBoard">
-			  <ul>
-			    <li class="card tweetItem" v-for="tile in tilesCollection">
-			      
-			      	<div class="card-content">
-						<a v-bind:href="tile.URL">{{ tile.text }}</a>
-			      	</div><!-- / card-content -->
-					
-					<div class="card-action">
-						<button class="gotoTop teal-text">&uarr;</button>
-						<button class="favoriteLink" v-bind:value="tile.ID" onClick="addFavorite( window.event.target.value )">&hearts;</button>
-						<button class="shareLink" v-bind:value="tile.ID">Send</button>
-						<span class="badge">
-						    <a href="#!" class="tag teal-text" onClick="searchByTag( window.event.target.text )">{{ tile.tag }}</a>
-                        </span>
-					</div><!-- / card-action -->
-					
-			    </li><!-- / card -->
-			  </ul>
+				
+				<ul class="row">
+					<!-- ******** CARD ******** -->
+					<li 
+						v-for="(tile, index, $event) in filteredTiles"
+						class="card animated z-depth-0 waves-effect col s4" 
+						v-show="tile.text"
+						v-bind:key="tile"
+						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+						
+						<!-- card-content -->
+				      	<div class="card-content">
+							<span style="width: 40px; height: 40px;">
+							    <img 
+							    v-show="tile.media"
+								class="responsive-img"
+								v-bind:src="tile.media" />
+							 </span>							
+							<span 
+							    v-if="tile.retweet"
+							    class="new badge waves-effect"
+								@click.prevent="searchByTag(tile.retweet)">
+								{{ tile.retweet }}
+							</span>							
+							<p class="link">
+								<a 
+									v-bind:href="tile.URL" 
+									class="flow-text"
+									target="_blank">
+									{{ tile.text }}
+								</a>
+							</p>
+				      	</div><!-- / card-content -->
+						
+						<!-- card action -->
+						<div class="card-action">
+							<div class="left left-align">
+								<a href="#!" 
+								    v-if="tile.tag"
+								    class="tag chip waves-effect"
+									@click.prevent="searchByTag(tile.tag)">
+									{{ tile.tag }}
+								</a>							
+							</div>
+							<div class="right right-align">
+								<!-- FAVE button -->
+								<button 
+									v-if="tile.faveStatus !== 'active'" 
+									v-bind:value="tile.ID" 
+									@click="addFave(tile.ID)"
+									class="material-icons waves-effect waves-light">
+									favorite_border
+								</button>
+								<button 
+									v-else 
+									v-bind:value="tile.ID" 
+									@click="removeFave(tile.ID)"
+									class="material-icons red-text glow waves-effect waves-red">
+									favorite
+								</button>
+								<!-- / FAVE button -->
+								<!-- SHARE button -->
+								<button 
+									class="activator material-icons waves-effect"
+									v-bind:value="tile.ID"
+									@click="addFave(tile.ID), share($event)">
+									share
+								</button>
+								<!-- /SHARE button -->
+							</div>
+						</div><!-- / card-action -->
+						<div class="card-reveal">
+							<span class="card-title">
+								<i class="material-icons right grey-text text-lighten-1">
+								close
+								</i>
+							</span>
+							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+						</div>
+					</li>
+					<!-- ******** end CARD ******** -->
+				</ul>
+							
 			</div><!-- / TileBoard -->
 			
 		</div><!-- / tweets -->
-					
+		
+		<div class="fixed-action-btn horizontal">
+			<a class="btn-floating btn-large red">
+			  <i class="large material-icons">more_horiz</i>
+			</a>
+			<ul>
+				<li>
+					<a class="btn-floating red" @click="onlyFaves()">
+						<i class="material-icons">favorite</i>
+					</a>
+				</li>
+				<li>
+					<a class="btn-floating red" @click="onlyMedia()">
+						<i class="material-icons">photo</i>
+					</a>
+				</li>
+				<li>
+					<a class="btn-floating red" @click="onlyRetweets()">
+						<i class="">rt@</i>
+					</a>
+				</li>
+				<li>
+					<a class="btn-floating red" @click="reset()">
+						<i class="material-icons">refresh</i>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		
 	</div><!-- / main -->
 
 </body>
@@ -106,39 +254,183 @@
 </script>
 <script type="text/javascript">
 	
-	var tilesCollection = Twitolu.TileFactory();
-	var wordCloud = Twitolu.WordCloud();		 
+	$(function(){
+		
+		
+		//SHARE - SELECT ALL TEXT IN TEXTAREA
+		//$('textarea').focus();
+		
+		
+		
+
+
+	});
+	
+	
+	var topScroll = function() {
+		$('html, body').animate({ scrollTop: 0 }, 'slow');
+	}
+	
+	var colors = [
+		'FF9600',
+		'D74B32',
+		'AF0064',
+		'55237D',
+		'004696',
+		'F8342D',
+		'FF803A',
+		'7EBB41',
+		'1F5081',
+		'1DB8D3'
+	];
+	
+	var Tiles = Twitolu.TileFactory(colors);
+	var WordCloud = Twitolu.CloudFactory(Tiles);
+	var Profile = Twitolu.User();
 	 	
 	var TileBoard = new Vue({
-		el: '#TileBoard',
+		el: '#TwitoluApp',
 		data: function () {
 			return {
-				tilesCollection
+				searchTerm: '',
+				Favorites: {},
+				showAllTags: false,
+				Tiles,
+				WordCloud,
+				Profile
+			}
+		},
+		methods: {
+			addFave: function(idx) {
+				Twitolu.AddFavorites(idx);
+				this.Favorites = Twitolu.Favorites();	 
+			},
+			removeFave: function(idx) {
+				Twitolu.RemoveFavorites(idx)
+				this.Favorites = Twitolu.Favorites();	 
+			},
+			onlyFaves: function() {
+				$(this).sideNav('hide');
+				Tiles.forEach(function(tile){
+					if (tile.faveStatus !== 'active') {
+						tile.tileStatus = 'inactive';
+					}
+				})
+			},
+			onlyMedia: function() {
+				this.searchTerm = '*hasMedia';
+				$(this).sideNav('hide');
+				topScroll();
+			},
+			onlyRetweets: function() {
+				this.searchTerm = 'rt @';
+				$(this).sideNav('hide');
+				topScroll();
+			},
+			searchByTag: function(tag,index,event) {
+				this.searchTerm = tag.toLowerCase();
+				$(this).sideNav('hide');
+				topScroll();
+			},
+			share: function() {
+				var Faves = this.Favorites;
+			},
+			reset: function() {
+				this.searchTerm = '';
+				$(this).sideNav('hide');
+				topScroll();
+				Tiles.forEach(function(tile) {
+					tile.tileStatus = 'active'
+				});
+			},
+			switchClass: function(tileStatus, faveStatus, tag) {		
+						
+				if (tileStatus === 'active' && faveStatus === 'active') {
+					return 'bounce active';
+				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
+					return 'active';
+				} else if (tileStatus === 'active') {
+					return 'flipInY active';
+				} else if (tileStatus === 'inactive') {
+					return 'inactive';
+				} 
+			},
+			switchStyle: function(tileStatus, faveStatus, index, color) {
+				var delay = (index * 100) + 'ms';
+				var norm = { animationDelay: '0ms', backgroundColor: '#' + color };
+				if (tileStatus === 'active' && faveStatus === 'active') {
+					return norm;
+				} else if (tileStatus === 'active' && faveStatus === 'inactive') {
+					return norm;
+				} else if (tileStatus === 'active') {
+					return { animationDelay: delay, backgroundColor: '#' + color };
+				} else if (tileStatus === 'inactive') {
+					return norm;
+				} 
+			},
+			textSelect: function(target){
+				$(target).select();
+			}
+		},
+		computed: {
+			filteredTiles: function() {
+				var self = this;
+				return this.Tiles.filter( function(tile) {
+					return tile.fullText.toLowerCase().indexOf(self.searchTerm.toLowerCase()) >= 0;
+				});
+			},
+			WordCloud_alpha: function() {
+				var coloredTags = this.WordCloud.slice(0,10);
+				for (i in coloredTags) {
+					coloredTags[i].color = colors[i];
+				}
+				for ( var i = 0; i < Tiles.length; i++) {
+				
+				    for ( var keys in coloredTags ) {
+					    
+			            if ( coloredTags[keys].tag === Tiles[i].tag ) {
+			                Tiles[i].color = coloredTags[keys].color;
+			                //console.log('match',coloredTags[keys].tag,Tiles[i].fullText)
+			            }
+				    
+				    }  // end for-in
+				} // end for
+				return coloredTags;
+			},
+			WordCloud_delta: function() {
+				return this.WordCloud.slice(10,(this.WordCloud.length + 1));
 			}
 		}
 	});	
 	
-	var WordCloud = new Vue({
-		el: '#WordCloud',
-		data: function () {
-			return {
-				wordCloud
-			}
-		}
-	});	
-	
- 		 	
 </script>
 
 <script type="text/javascript">
+		
+	
+	$(document).ready(function(){
+		
+		$('.tile').on('animationend',function(){console.log('done')})	
+	
+		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
+		$('.collapsible').collapsible();	
+		
+		$('.slide-out-button').sideNav();
+		
+		///$('.collapse').sideNav('hide');
+		
+// 		$(".slide-out-button").click();
+		
+		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+		$('.modal').modal();
+		
+// 		$('.modal').modal('open');
+		
+	});
 	
 
-	// Initialize collapse button
-	$(function(){
-		$(".button-collapse").sideNav();
-	});
-	// Initialize collapsible (uncomment the line below if you use the dropdown variation)
-	//$('.collapsible').collapsible();	
+	
+	
 	
 </script>
 </html>
