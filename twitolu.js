@@ -217,10 +217,10 @@ var Twitolu = (function () {
 				Media_obj = result[i].entities.media;
 						
 			if (Media_obj) {
-/*
+				Media_obj = Media_obj[0].media_url_https;
+				Text_obj = Text_obj + '*hasMedia';
 				console.log('Media_obj',Media_obj[0].media_url_https);
-				console.log(result[i]);
-*/
+				//console.log(result[i]);
 			}	
 			
 			if (RT_obj === false) {
@@ -284,7 +284,7 @@ var Twitolu = (function () {
 				URL: URL(),
 				ID: result[i].id_str,
 				date: result[i].created_at,
-				media: result[i].entities.media,
+				media: Media_obj,
 				popularity: result[i].favorite_count,
 				retweet: RT_obj,
 				tileStatus: 'active',

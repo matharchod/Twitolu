@@ -5,11 +5,11 @@
 }
 
 #tweets {
-	padding-left: 200px;
+	padding: 0;
 }
 
 #TileBoard {
-	padding: 1em;
+	padding: 0;
 }
 
 #TileBoard ul {
@@ -33,6 +33,17 @@
     border-radius: 1em;
 }
 
+#MainNav {
+	z-index: 1001;
+	left: 0;
+}
+
+#slide-out.side-nav {
+	left: 0;
+	top: 0;
+	position: fixed;
+}
+
 .user-view .circle {
     display: inline-block;
     margin: 0 auto;
@@ -40,15 +51,16 @@
 
 .card {
     background: #333;
-    break-inside:;
     border-radius: 0;
-    margin: 0.25em;
+    margin: 0;
     top: 0;
     left: 0;
     display: inline-block;
     width: 32%;
-    height: 19rem;
+    height: 20rem;
     max-width: 350px;
+    position: relative;
+    /* border: 1px solid #fff; */
 }
 
 .card .card-action button.waves-red.glow {
@@ -70,6 +82,9 @@
     background-color: #000;
     opacity: 0.1;
     z-index: 1;
+    left: 0;
+    top: 0;
+    display: none;
 }
 
 .card.active {
@@ -104,12 +119,13 @@
 .card .card-action {
     /* float: left; */
     width: 100%;
-    z-index: 1;
+    z-index: 2;
     padding: 2em;
     border: none;
     background: transparent;
     position: absolute;
     bottom: 0;
+    left: 0;
 }
 
 .card .card-action a, 
@@ -144,7 +160,11 @@
 
 .chip b {
 	opacity: 0.5;
-	margin-left: 0.5;
+	margin-left: 0.5em;
+}
+
+.chip > img {
+	z-index: 1;
 }
 
 .card .badge {
@@ -170,6 +190,8 @@ button.retweet {
     z-index: 2;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .card .card-content .link {
@@ -240,13 +262,14 @@ button.retweet {
 	z-index: 1000;
 	width: 200px;
 	height: 100%;
-	position: fixed;
+	/* position: fixed; */
 }
 
 .main .navbar-fixed nav {
-    width: 200px;
+    width: inherit;
     height: 100%;
     background-color: #333333;
+    z-index: 1000;
 }
 
 .main .navbar-fixed h1 {
@@ -257,23 +280,24 @@ button.retweet {
 
 .side-nav {
     width: 600px;
-    padding-left: 210px;
+    /* padding-left: 210px; */
 }
 
-.side-nav .stats li {
-	line-height: 100%;
-	color: #333;
-	font-size: 75%;
+.side-nav .user-view .name {
+    margin: 0;
+    position: relative;
+    top: -0.5em;
 }
 
 .side-nav .badge {
 	border: 1px solid #eee;
-	padding: 0.5em;
-	line-height: 0.5em;
-	display: inline-block;
-	float: none;
+	padding: 0.75em;
+	line-height: 1em;
+	/* display: inline-block; */
+	/* float: none; */
 	margin: 0 !important;
 	height: auto;
+	font-size: 1em;
 }
 
 .side-nav button {

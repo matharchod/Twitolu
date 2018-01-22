@@ -18,13 +18,13 @@
 	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
 </head>
 <body>
-	<div id="TwitoluApp" class="main">
+	<div id="TwitoluApp" class="row main">
 		
-		<div class="navbar-fixed z-depth-5">
-			<nav>
+		<div class="navbar-fixed z-depth-5 col s2">
+			<nav id="MainNav">
 				<div class="nav-wrapper">
 					<ul>
-						<li class="left">
+						<li class="right">
 							<a href="#" data-activates="slide-out" class="slide-out-button">
 								<i class="material-icons">menu</i>
 							</a>
@@ -50,112 +50,89 @@
 					</ul>
 				</div>
 			</nav>
+			<nav id="slide-out" class="side-nav center-align white lighten-4 col s6">
+			    <div class="spacer col s4"></div>
+			    <div class="spacer col s8">
+			    	<section>
+					    <div class="user-view">
+							<img class="grey" src="http://janianderson.com/imx/_nav/elephant-logo.png">
+							<span class="name grey-text">{{Profile.screen_name}}</span>
+							<span class="chip">
+								<a href="https://twitter.com/the_lonely_seo" class="grey-text text-darken-3">
+									followers <b>{{Profile.followers_count}}</b>
+								</a>
+							</span>
+				      	</div>
+			    	</section>
+					<section>
+						<div id="WordCloud">
+							<!-- TAGS -->
+							<a href="#!" 
+								class="chip white-text waves-effect"
+								data-activates="slide-out"
+								v-for="word in WordCloud_alpha"
+		                        v-bind:style="{ backgroundColor: '#' + word.color }"
+								@click="searchByTag(word.tag)">
+								{{ word.tag }}
+								<b>{{ word.count }}</b>
+							</a>
+							<!-- /TAGS -->
+						</div><!-- / WordCloud -->
+					</section>
+					<section>
+						<!-- MORE BUTTON -->
+						<button 
+							class="chip waves-effect waves-teal material-icons" 
+							v-show="showAllTags === false"
+							@click="showAllTags = true">
+							more_horiz
+						</button>
+						<button 
+							class="chip grey darken-3 white-text waves-effect waves-light material-icons" 
+							v-show="showAllTags === true"
+							@click="showAllTags = false">
+							more_vert
+						</button>
+						<!-- / MORE BUTTON -->
+						<!-- ADDITIONAL TAGS -->
+						<a href="#!" 
+							class="chip grey darken-3 white-text waves-effect"
+							data-activates="slide-out"
+							v-for="(word, index, $event) in WordCloud_delta"
+							v-show="showAllTags === true"
+							v-bind:key="word"
+							@click="searchByTag(word.tag)">
+							{{ word.tag }}
+						</a>
+						<!-- ADDITIONAL TAGS -->
+					</section>
+			    </div><!-- end spacer -->
+			</nav><!-- sidebar -->
 		</div>
 
-		<nav id="slide-out" class="side-nav center-align gray lighten-4">
-	    <section>
-		    <div class="user-view">
-				<img class="circle" v-bind:src="Profile.profile_image_url_https">
-<!--
-				<span class="name grey-text">{{Profile.name}}</span>
-				<span class="name grey-text">{{Profile.description}}</span>
--->
-				<span class="name grey-text">{{Profile.screen_name}}</span>
-	      	</div>
-	      	<div class="stats container">
-				<ul class="row">
-					<li class="col s3">
-						<p>friends</p>
-						<span class="badge grey-text">{{Profile.friends_count}}</span>
-					</li>
-					<li class="col s3">
-						<p>followers</p>
-						<span class="badge grey-text">{{Profile.followers_count}}</span>
-					</li>
-					<li class="col s3">
-						<p>favorites</p>
-						<span class="badge grey-text">{{Profile.favourites_count}}</span>
-					</li>
-					<li class="col s3">
-						<p>listed</p>
-						<span class="badge grey-text">{{Profile.listed_count}}</span>
-					</li>
-				</ul>
-	      	</div>
-			<section>
-				<div id="WordCloud">
-					<!-- TAGS -->
-					<a href="#!" 
-						class="chip white-text waves-effect"
-						data-activates="slide-out"
-						v-for="word in WordCloud_alpha"
-                        v-bind:style="{ backgroundColor: '#' + word.color }"
-						@click="searchByTag(word.tag)">
-						{{ word.tag }}
-						<b>{{ word.count }}</b>
-					</a>
-					<!-- /TAGS -->
-				</div><!-- / WordCloud -->
-			</section>
-			<section>
-				<button 
-					class="waves-effect waves-light material-icons" 
-					@click="onlyFaves()">
-					favorite
-				</button>	
-				<button 
-					class="retweet waves-effect waves-light" 
-					@click="onlyRetweets()">
-					rt@
-				</button>	
-				<button 
-					class="waves-effect waves-light material-icons" 
-					@click="reset()">
-					refresh
-				</button>
-				<!-- MORE BUTTON -->
-				<button 
-					class="chip waves-effect waves-teal material-icons" 
-					v-show="showAllTags === false"
-					@click="showAllTags = true">
-					more_horiz
-				</button>
-				<button 
-					class="chip grey darken-3 white-text waves-effect waves-light material-icons" 
-					v-show="showAllTags === true"
-					@click="showAllTags = false">
-					more_vert
-				</button>
-				<!-- / MORE BUTTON -->
-				<!-- ADDITIONAL TAGS -->
-				<a href="#!" 
-					class="chip grey darken-3 white-text waves-effect"
-					data-activates="slide-out"
-					v-for="(word, index, $event) in WordCloud_delta"
-					v-show="showAllTags === true"
-					v-bind:key="word"
-					@click="searchByTag(word.tag)">
-					{{ word.tag }}
-				</a>
-				<!-- ADDITIONAL TAGS -->
-			</section>
-		</nav><!-- sidebar -->
 
-		<div id="tweets" class="content-section">
+		<div id="tweets" class="content-section col s10">
 				
 			<div id="TileBoard">
 				
-				<ul>
+				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li 
 						v-for="(tile, index, $event) in filteredTiles"
-						class="card animated z-depth-2 waves-effect" 
+						class="card animated z-depth-0 waves-effect col s4" 
+						v-show="tile.text"
 						v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 						
 						<!-- card-content -->
 				      	<div class="card-content">
+							<span style="width: 40px; height: 40px;">
+							    <img 
+							    v-show="tile.media"
+								class="responsive-img"
+								v-bind:src="tile.media" />
+							 </span>							
 							<span 
 							    v-if="tile.retweet"
 							    class="new badge waves-effect"
@@ -163,7 +140,10 @@
 								{{ tile.retweet }}
 							</span>							
 							<p class="link">
-								<a v-bind:href="tile.URL" target="_blank">
+								<a 
+									v-bind:href="tile.URL" 
+									class="flow-text"
+									target="_blank">
 									{{ tile.text }}
 								</a>
 							</p>
@@ -222,6 +202,35 @@
 			
 		</div><!-- / tweets -->
 		
+		<div class="fixed-action-btn horizontal">
+			<a class="btn-floating btn-large red">
+			  <i class="large material-icons">more_horiz</i>
+			</a>
+			<ul>
+				<li>
+					<a class="btn-floating red" @click="onlyFaves()">
+						<i class="material-icons">favorite</i>
+					</a>
+				</li>
+				<li>
+					<a class="btn-floating red" @click="onlyMedia()">
+						<i class="material-icons">photo</i>
+					</a>
+				</li>
+				<li>
+					<a class="btn-floating red" @click="onlyRetweets()">
+						<i class="">rt@</i>
+					</a>
+				</li>
+				<li>
+					<a class="btn-floating red" @click="reset()">
+						<i class="material-icons">refresh</i>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		
 	</div><!-- / main -->
 
 </body>
@@ -277,7 +286,6 @@
 	
 	var Tiles = Twitolu.TileFactory(colors);
 	var WordCloud = Twitolu.CloudFactory(Tiles);
-	var Recipients = Twitolu.Recipients();	
 	var Profile = Twitolu.User();
 	 	
 	var TileBoard = new Vue({
@@ -288,7 +296,6 @@
 				Favorites: {},
 				showAllTags: false,
 				Tiles,
-				Recipients,
 				WordCloud,
 				Profile
 			}
@@ -310,6 +317,11 @@
 					}
 				})
 			},
+			onlyMedia: function() {
+				this.searchTerm = '*hasMedia';
+				$(this).sideNav('hide');
+				topScroll();
+			},
 			onlyRetweets: function() {
 				this.searchTerm = 'rt @';
 				$(this).sideNav('hide');
@@ -322,7 +334,6 @@
 			},
 			share: function() {
 				var Faves = this.Favorites;
-				Twitolu.Share(Faves);
 			},
 			reset: function() {
 				this.searchTerm = '';
@@ -408,7 +419,7 @@
 		
 		///$('.collapse').sideNav('hide');
 		
-		$(".slide-out-button").click();
+// 		$(".slide-out-button").click();
 		
 		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 		$('.modal').modal();
