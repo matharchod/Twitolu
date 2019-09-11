@@ -15,8 +15,8 @@
 	<!-- Import Animate.CSS -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 	<!--Import materialize.css-->
-	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css" media="screen,projection" />
-	<link rel="stylesheet" type="text/css" href="twitterStyles.css" />
+	<link type="text/css" rel="stylesheet" href="sass/materialize.css" media="screen,projection" />
+	<link rel="stylesheet" type="text/css" href="sass/twitterStyles.css" />
 </head>
 
 <body>
@@ -107,14 +107,14 @@
 				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in filteredTiles"
-						class="card animated z-depth-0 waves-effect col s4" v-show="tile.text" v-bind:key="tile"
+						class="card animated waves-effect" v-show="tile.text" v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
 						<!-- card-content -->
 						<div class="card-content">
-							<span style="width: 40px; height: 40px;">
-								<img v-show="tile.media" class="responsive-img" v-bind:src="tile.media" />
+							<span class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }"> 
+								<!-- <img v-show="tile.media" class="responsive-img" v-bind:src="tile.media" /> -->
 							</span>
 							<span v-if="tile.retweet" class="new badge waves-effect"
 								@click.prevent="searchByTag(tile.retweet)">
@@ -124,7 +124,7 @@
 								<a v-bind:href="tile.URL" class="flow-text" target="_blank">
 									{{ tile.text }}
 								</a>
-							</p>
+							</p>									
 						</div><!-- / card-content -->
 
 						<!-- card action -->
@@ -204,9 +204,9 @@
 </body>
 <!-- The SCRIPTS -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
-<script type="text/javascript" src="vue.js"></script>
-<script type="text/javascript" src="twitolu.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/twitolu.js"></script>
 <script type="text/javascript">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-8132193-2']);

@@ -9,7 +9,8 @@
 }
 
 #TileBoard {
-	padding: 0;
+    padding: 0;
+    width: 100000px;
 }
 
 #TileBoard ul {
@@ -51,16 +52,16 @@
 
 .card {
     background: #333;
-    border-radius: 0;
-    margin: 0;
+    border-radius: 10px;
+    border: none; 
     top: 0;
     left: 0;
     display: inline-block;
     width: 32%;
-    height: 20rem;
+    height: 30rem;
     max-width: 350px;
     position: relative;
-    /* border: 1px solid #fff; */
+    margin: 1em;
 }
 
 .card .card-action button.waves-red.glow {
@@ -104,12 +105,10 @@
 .side-nav button {
     width: 25px;
     height: 25px;
-    border: 1px solid #fff;
     border-radius: 100%;
     margin-left: 0.5em;
     background-color: transparent;
     font-size: 1em;
-    color: #fff;
     padding: 0.25rem;
     line-height: 1em;
     display: inline-block;
@@ -143,7 +142,7 @@
 	letter-spacing: 1px;
 	height: 25px;
 	line-height: 25px;
-	border-color: #fff;
+	border: none;
 	color: #fff !important;
 	max-width: 100%;
 }
@@ -185,7 +184,7 @@ button.retweet {
 }
 
 .card .card-content {
-    padding: 2em;
+    padding: 0;
     position: absolute;
     z-index: 2;
     top: 0;
@@ -194,8 +193,33 @@ button.retweet {
     height: 100%;
 }
 
+.card .card-content .img-contain {
+    position: relative;
+    overflow: hidden;
+    height: 12em;
+    display: block;
+    background-color: rgba(255, 255, 255, 0.25);
+    background-position: top center;
+    background-size: cover;
+    text-align: center;
+}
+
+.card .card-content .img-contain:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    /* box-shadow: 0 0 10px inset; */
+}
+
+.card .card-content .img-contain img {
+    z-index: 1;
+}
+
 .card .card-content .link {
-    margin: 0;
+    margin: 2em;
 }
 
 .card .card-content .link a {
@@ -426,4 +450,5 @@ button.retweet {
 	to {
 		border-color: #fff !important;
 		background-color: transparent !important;
-	}
+    }
+}
