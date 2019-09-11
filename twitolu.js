@@ -35,7 +35,10 @@ var Twitolu = (function () {
 				
 		//Use AJAX to get the latest tweets
 		$.ajax({
-			url: "/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			//REAL DATA
+			// url: "/_projects/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			//TEST DATA
+			url: "/_projects/Twitolu/tmhOAuth-master/test-data.json",
 			type: "GET",
 			dataType: "json",
 			async: false,
@@ -46,7 +49,7 @@ var Twitolu = (function () {
 			},
 			error: function(err){
 				console.log(err);
-				alert("Error with JSON: " + err);
+				alert("Error with JSON: " + err.responseText);
 			}
 		});
 				

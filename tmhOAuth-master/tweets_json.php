@@ -4,6 +4,8 @@ require 'tmhOAuth.php'; // Get it from: https://github.com/themattharris/tmhOAut
 // Use the data from http://dev.twitter.com/apps to fill out this info
 // notice the slight name difference in the last two items)
 
+header("Access-Control-Allow-Origin: *");
+
 $connection = new tmhOAuth(array(
   'consumer_key' => 'MD9EQpRD0MjWDTNgvjiA',
 	'consumer_secret' => 'bM5m5aAMYEsn5L5qvuFsEs8Tn2n0tVsPm4VoAG7DMk',
