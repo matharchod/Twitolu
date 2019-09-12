@@ -1,0 +1,144 @@
+#TwitoluApp {
+	float: left;
+	width: 100%;
+	position: relative;
+}
+#tweets {
+	padding: 0;
+}
+#TileBoard {
+	padding: 0;
+	width: 100000px;
+	ul {
+		margin: 0;
+	}
+}
+#WordCloud {
+	button {
+		width: 100%;
+	}
+}
+#Recipients {
+	li {
+		float: left;
+		margin: 0.1em;
+		background-color: $background_color_1;
+		padding: 0.25em 1em;
+		border-radius: 1em;
+	}
+}
+#MainNav {
+	z-index: 1001;
+	left: 0;
+}
+#slide-out.side-nav {
+	left: 0;
+	top: 0;
+	position: fixed;
+}
+.user-view {
+	.circle {
+		display: inline-block;
+		margin: 0 auto;
+	}
+}
+.side-nav {
+	button {
+		width: 25px;
+		height: 25px;
+		border-radius: 100%;
+		margin-left: 0.5em;
+		background-color: $background_color_3;
+		font-size: 1em;
+		padding: 0.25rem;
+		line-height: 1em;
+		display: inline-block;
+		text-align: center;
+		background-color: $background_color_7;
+		color: $color_2;
+		width: 40px;
+		height: 40px;
+	}
+	width: 600px;
+	.user-view {
+		.name {
+			margin: 0;
+			position: relative;
+			top: -0.5em;
+		}
+	}
+	.badge {
+		border: 1px solid #eee;
+		padding: 0.75em;
+		line-height: 1em;
+		margin: 0 !important;
+		height: auto;
+		font-size: 1em;
+	}
+}
+.chip {
+	b {
+		opacity: 0.5;
+		margin-left: 0.5em;
+	}
+	>img {
+		z-index: 1;
+	}
+}
+button.retweet {
+	font-weight: bold;
+	font-size: 65%;
+	text-transform: uppercase;
+}
+.main {
+	.navbar-fixed {
+		z-index: 1000;
+		width: 200px;
+		height: 100%;
+		nav {
+			width: inherit;
+			height: 100%;
+			background-color: $background_color_6;
+			z-index: 1000;
+		}
+		h1 {
+			margin: 2rem 1rem;
+			font-size: 3rem;
+			position: relative;
+		}
+	}
+}
+.searchBox {
+	width: 100%;
+	padding: 0;
+	form {
+		i {
+			line-height: 45px;
+			font-size: 1rem !important;
+			color: $color_1 !important;
+		}
+		.active {
+			i {
+				display: none;
+			}
+		}
+	}
+	input[type=search] {
+		border-color: $border_color_2;
+		margin: 0;
+		padding-left: 3em;
+		width: calc(100% - 6em);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-right: 3em;
+	}
+}
+.input-field {
+	input[type=search] {
+		&:focus {
+			padding: 0 1em;
+			width: calc(100% - 2rem);
+		}
+	}
+}

@@ -1,0 +1,394 @@
+.card {
+  background: #333;
+  border-radius: 10px;
+  border: none;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 32%;
+  height: 30rem;
+  max-width: 350px;
+  position: relative;
+  margin: 1em;
+}
+
+.card .card-action {
+  width: 100%;
+  z-index: 2;
+  padding: 2em;
+  border: none;
+  background: transparent;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.card .card-action button.waves-red.glow {
+  -webkit-animation-name: glow;
+          animation-name: glow;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+.card .card-action div {
+  display: inline-block;
+  width: 45%;
+}
+
+.card .card-action button {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  margin-left: 0.5em;
+  background-color: transparent;
+  font-size: 1em;
+  padding: 0.25rem;
+  line-height: 1em;
+  display: inline-block;
+  text-align: center;
+  opacity: 0.5;
+}
+
+.card .card-action a {
+  opacity: 0.5;
+  font-size: 9px;
+  padding: 0 1em;
+  letter-spacing: 1px;
+  height: 25px;
+  line-height: 25px;
+  border: none;
+  color: #fff !important;
+  max-width: 100%;
+}
+
+.card .card-action *:hover {
+  opacity: 1;
+}
+
+.card .card-action button.waves-red {
+  background-color: #fff;
+  opacity: 1;
+}
+
+.card:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.card:before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.1;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  display: none;
+}
+
+.card .chip {
+  background-color: transparent;
+  display: inline-block;
+  margin: 0;
+  border: 1px solid #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .badge {
+  vertical-align: middle;
+  display: inline-block;
+  float: none;
+  margin: 0 0 1em 0;
+}
+
+.card .badge:after {
+  content: '' !important;
+}
+
+.card .card-content {
+  padding: 0;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card .card-content .img-contain {
+  position: relative;
+  overflow: hidden;
+  height: 12em;
+  display: block;
+  background-color: rgba(255, 255, 255, 0.25);
+  background-position: top center;
+  background-size: cover;
+  text-align: center;
+}
+
+.card .card-content .img-contain:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.card .card-content .img-contain img {
+  z-index: 1;
+}
+
+.card .card-content .link {
+  margin: 2em;
+}
+
+.card .card-content .link a {
+  font-size: 1.25em;
+  display: block;
+  color: #fff;
+}
+
+.card .card-content .link a button {
+  font-size: 1em;
+  opacity: 0.1;
+  border: none;
+  display: inline;
+  background: transparent;
+}
+
+.card .card-content button {
+  background: #fff;
+  border: none;
+}
+
+.card a:hover {
+  cursor: pointer;
+}
+
+.card button:hover {
+  cursor: pointer;
+}
+
+.card .material-icons {
+  display: inline;
+  vertical-align: middle;
+}
+
+.card .card-reveal {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.card .card-reveal .card-title {
+  line-height: 1em;
+  width: 100%;
+  display: inline-block;
+}
+
+.card .card-reveal .card-title i {
+  padding: 0.5em;
+}
+
+.card .card-reveal textarea {
+  height: calc(100% - 3.9em);
+  max-height: calc(100% - 3.9em);
+  width: 100%;
+  max-width: 100%;
+  border-color: transparent;
+  padding: 1em;
+}
+
+.card.active {
+  opacity: 1;
+}
+
+.card.inactive {
+  display: none;
+}
+
+#TwitoluApp {
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+#tweets {
+  padding: 0;
+}
+
+#TileBoard {
+  padding: 0;
+  width: 100000px;
+}
+
+#TileBoard ul {
+  margin: 0;
+}
+
+#WordCloud button {
+  width: 100%;
+}
+
+#Recipients li {
+  float: left;
+  margin: 0.1em;
+  background-color: #ccc;
+  padding: 0.25em 1em;
+  border-radius: 1em;
+}
+
+#MainNav {
+  z-index: 1001;
+  left: 0;
+}
+
+#slide-out.side-nav {
+  left: 0;
+  top: 0;
+  position: fixed;
+}
+
+.user-view .circle {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.side-nav {
+  width: 600px;
+}
+
+.side-nav button {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  margin-left: 0.5em;
+  background-color: transparent;
+  font-size: 1em;
+  padding: 0.25rem;
+  line-height: 1em;
+  display: inline-block;
+  text-align: center;
+  background-color: #eee;
+  color: #000;
+  width: 40px;
+  height: 40px;
+}
+
+.side-nav .user-view .name {
+  margin: 0;
+  position: relative;
+  top: -0.5em;
+}
+
+.side-nav .badge {
+  border: 1px solid #eee;
+  padding: 0.75em;
+  line-height: 1em;
+  margin: 0 !important;
+  height: auto;
+  font-size: 1em;
+}
+
+.chip b {
+  opacity: 0.5;
+  margin-left: 0.5em;
+}
+
+.chip > img {
+  z-index: 1;
+}
+
+button.retweet {
+  font-weight: bold;
+  font-size: 65%;
+  text-transform: uppercase;
+}
+
+.main .navbar-fixed {
+  z-index: 1000;
+  width: 200px;
+  height: 100%;
+}
+
+.main .navbar-fixed nav {
+  width: inherit;
+  height: 100%;
+  background-color: #333333;
+  z-index: 1000;
+}
+
+.main .navbar-fixed h1 {
+  margin: 2rem 1rem;
+  font-size: 3rem;
+  position: relative;
+}
+
+.searchBox {
+  width: 100%;
+  padding: 0;
+}
+
+.searchBox form i {
+  line-height: 45px;
+  font-size: 1rem !important;
+  color: #fff !important;
+}
+
+.searchBox form .active i {
+  display: none;
+}
+
+.searchBox input[type=search] {
+  border-color: #fff;
+  margin: 0;
+  padding-left: 3em;
+  width: calc(100% - 6em);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 3em;
+}
+
+.input-field input[type=search]:focus {
+  padding: 0 1em;
+  width: calc(100% - 2rem);
+}
+
+/** GLOW ANIMATION **/
+@-webkit-keyframes "glow" {
+  from {
+    border-color: transparent !important;
+    background-color: #fff !important;
+  }
+  to {
+    border-color: #fff !important;
+    background-color: transparent !important;
+  }
+}
+
+@keyframes "glow" {
+  from {
+    border-color: transparent !important;
+    background-color: #fff !important;
+  }
+  to {
+    border-color: #fff !important;
+    background-color: transparent !important;
+  }
+}
+
+.sharedTiles {
+  width: 75%;
+  float: right;
+  -webkit-column-count: 2;
+  column-count: 2;
+  -webkit-column-gap: 0.5em;
+  column-gap: 0.5em;
+}
+/*# sourceMappingURL=base.css.map */
