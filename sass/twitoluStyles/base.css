@@ -212,6 +212,10 @@
   display: none;
 }
 
+body {
+  background-color: #333333;
+}
+
 #TwitoluApp {
   float: left;
   width: 100%;
@@ -220,6 +224,18 @@
 
 #tweets {
   padding: 0;
+  top: 5em;
+  position: relative;
+}
+
+#MainNav {
+  position: fixed;
+  width: 100%;
+  background-color: #333333;
+}
+
+#MainNav .nav-wrapper {
+  padding: 0 1em;
 }
 
 #TileBoard {
@@ -238,14 +254,8 @@
 #Recipients li {
   float: left;
   margin: 0.1em;
-  background-color: #ccc;
   padding: 0.25em 1em;
   border-radius: 1em;
-}
-
-#MainNav {
-  z-index: 1001;
-  left: 0;
 }
 
 #slide-out.side-nav {
@@ -274,10 +284,7 @@
   line-height: 1em;
   display: inline-block;
   text-align: center;
-  background-color: #eee;
   color: #000;
-  width: 40px;
-  height: 40px;
 }
 
 .side-nav .user-view .name {
@@ -312,14 +319,9 @@ button.retweet {
 
 .main .navbar-fixed {
   z-index: 1000;
-  width: 200px;
-  height: 100%;
 }
 
 .main .navbar-fixed nav {
-  width: inherit;
-  height: 100%;
-  background-color: #333333;
   z-index: 1000;
 }
 
@@ -329,15 +331,20 @@ button.retweet {
   position: relative;
 }
 
+.sharedTiles {
+  width: 75%;
+  float: right;
+}
+
 .searchBox {
-  width: 100%;
   padding: 0;
+  margin: 0.5em 0;
 }
 
 .searchBox form i {
   line-height: 45px;
-  font-size: 1rem !important;
-  color: #fff !important;
+  font-size: 1rem;
+  color: #fff;
 }
 
 .searchBox form .active i {
@@ -348,47 +355,16 @@ button.retweet {
   border-color: #fff;
   margin: 0;
   padding-left: 3em;
-  width: calc(100% - 6em);
+  width: 1em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 3em;
 }
 
-.input-field input[type=search]:focus {
+.searchBox .input-field input[type=search]:focus {
   padding: 0 1em;
   width: calc(100% - 2rem);
-}
-
-/** GLOW ANIMATION **/
-@-webkit-keyframes "glow" {
-  from {
-    border-color: transparent !important;
-    background-color: #fff !important;
-  }
-  to {
-    border-color: #fff !important;
-    background-color: transparent !important;
-  }
-}
-
-@keyframes "glow" {
-  from {
-    border-color: transparent !important;
-    background-color: #fff !important;
-  }
-  to {
-    border-color: #fff !important;
-    background-color: transparent !important;
-  }
-}
-
-.sharedTiles {
-  width: 75%;
-  float: right;
-  -webkit-column-count: 2;
-  column-count: 2;
-  -webkit-column-gap: 0.5em;
-  column-gap: 0.5em;
+  border-color: inherit;
 }
 /*# sourceMappingURL=base.css.map */
