@@ -30,16 +30,6 @@
 					Twitolu&trade;
 				</a>
 				<ul class="right hide-on-med-and-down">
-					<li class="searchBox">
-						<form>
-							<div class="input-field">
-								<input v-model="searchTerm" type="search">
-								<label class="label-icon" for="search">
-									<i class="material-icons">search</i>
-								</label>
-							</div>
-						</form>
-					</li>
 					<li>
 						<a class="waves-effect">
 							<i class="material-icons" @click="reset()">refresh</i>
@@ -97,8 +87,8 @@
 					<!-- / MORE BUTTON -->
 					<!-- ADDITIONAL TAGS -->
 					<a href="#!" class="chip grey darken-3 white-text waves-effect" data-activates="slide-out"
-						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true"
-						v-bind:key="word" @click="searchByTag(word.tag)">
+						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word"
+						@click="searchByTag(word.tag)">
 						{{ word.tag }}
 					</a>
 					<!-- ADDITIONAL TAGS -->
@@ -109,8 +99,25 @@
 
 		<div id="tweets" class="content-section">
 
-			<div id="TileBoard">
+			<div class="container">
+				<div class="row">
+					<h2 class="center">What are you interested in?</h2>
+					<div id="SearchBox" class="col s4 offset-s4">
+						<div class="searchBox">
+							<form>
+								<div class="input-field">
+									<input v-model="searchTerm" type="search">
+									<label class="label-icon" for="search">
+										<i class="material-icons">search</i>
+									</label>
+								</div>
+							</form>
+						</div>
+					</div><!-- / SearchBox -->
+				</div><!-- /row -->
+			</div><!-- / container -->
 
+			<div id="TileBoard" class="tileBoard">
 				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
@@ -174,6 +181,8 @@
 				</ul>
 
 			</div><!-- / TileBoard -->
+
+
 
 		</div><!-- / tweets -->
 
@@ -350,7 +359,7 @@
 					var self = this;
 					return this.Tiles.filter(function (tile) {
 						return tile.fullText.toLowerCase().indexOf(self.searchTerm
-						.toLowerCase()) >= 0;
+							.toLowerCase()) >= 0;
 					});
 				},
 				WordCloud_alpha: function () {

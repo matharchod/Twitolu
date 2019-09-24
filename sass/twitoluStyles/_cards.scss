@@ -1,218 +1,215 @@
 // cards.scss
 
 .card {
-	background: #333;
-	border-radius: 10px;
-	border: none;
-	top: 0;
-	left: 0;
-	display: inline-block;
-	width: 32%;
-	height: 30rem;
-	max-width: 350px;
-	position: relative;
-	margin: 1em;
+    background: #333;
+    border-radius: 10px;
+    border: none;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 32%;
+    height: 30rem;
+    max-width: 350px;
+    position: relative;
+    margin: 1em;
 
-	.card-action {
-		button.waves-red.glow {
-			animation-name: glow;
-			animation-iteration-count: infinite;
-		}
+    .card-action {
+        button.waves-red.glow {
+            animation-name: glow;
+            animation-iteration-count: infinite;
+        }
 
-		div {
-			display: inline-block;
-			width: 45%;
-		}
+        div {
+            display: inline-block;
+            width: 45%;
+        }
 
-		button {
-			width: 25px;
-			height: 25px;
-			border-radius: 100%;
-			margin-left: 0.5em;
-			background-color: $background_color_3;
-			font-size: 1em;
-			padding: 0.25rem;
-			line-height: 1em;
-			display: inline-block;
-			text-align: center;
-			opacity: 0.5;
-		}
+        button {
+            width: 25px;
+            height: 25px;
+            border-radius: 100%;
+            margin-left: 0.5em;
+            background-color: $trans;
+            font-size: 1em;
+            padding: 0.25rem;
+            line-height: 1em;
+            display: inline-block;
+            text-align: center;
+            opacity: 0.5;
+        }
 
-		width: 100%;
-		z-index: 2;
-		padding: 2em;
-		border: none;
-		background: transparent;
-		position: absolute;
-		bottom: 0;
-		left: 0;
+        width: 100%;
+        z-index: 2;
+        padding: 2em;
+        border: none;
+        background: transparent;
+        position: absolute;
+        bottom: 0;
+        left: 0;
 
-		a {
+        a {
 			opacity: 0.5;
 			font-size: 9px;
-			padding: 0 1em;
+			padding: 0 2em;
 			letter-spacing: 1px;
-			height: 25px;
-			line-height: 25px;
-			border: none;
-			color: $color_1 !important;
-			max-width: 100%;
-		}
+			color: #fff !important;
+        }
 
-		* {
-			&:hover {
-				opacity: 1;
-			}
-		}
+        * {
+            &:hover {
+                opacity: 1;
+            }
+        }
 
-		button.waves-red {
-			background-color: $background_color_5;
-			opacity: 1;
-		}
-	}
+        button.waves-red {
+            background-color: $white;
+            opacity: 1;
+        }
+    }
 
-	&:hover {
-		box-shadow: none;
-	}
+    &:hover {
+        box-shadow: none;
+    }
 
-	&:before {
-		content: '';
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background-color: $background_color_2;
-		opacity: 0.1;
-		z-index: 1;
-		left: 0;
-		top: 0;
-		display: none;
-	}
+    &:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $black;
+        opacity: 0.1;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        display: none;
+    }
 
-	.chip {
-		background-color: $background_color_3;
-		display: inline-block;
-		margin: 0;
-		border: 1px solid #ccc;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+    .chip {
+        background-color: $trans;
+        display: inline-block;
+        margin: 0;
+        border: 1px solid #ccc;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-	.badge {
-		vertical-align: middle;
-		display: inline-block;
-		float: none;
-		margin: 0 0 1em 0;
+    .badge {
+        vertical-align: middle;
+        display: inline-block;
+        float: none;
+        margin: 0 0 1em 0;
 
-		&:after {
-			content: '' !important;
-		}
-	}
+        &:after {
+            content: '' !important;
+        }
+    }
 
-	.card-content {
-		padding: 0;
-		position: absolute;
-		z-index: 2;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
+    .card-content {
+        padding: 0;
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
 
-		.img-contain {
-			position: relative;
-			overflow: hidden;
-			height: 12em;
-			display: block;
-			background-color: $background_color_4;
-			background-position: top center;
-			background-size: cover;
-			text-align: center;
+        .img-contain {
+            position: relative;
+            overflow: hidden;
+            height: 12em;
+            display: block;
+            background-color: $trans-gray;
+            background-position: top center;
+            background-size: cover;
+            text-align: center;
 
-			&:before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				height: 100%;
-				width: 100%;
-			}
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+            }
 
-			img {
-				z-index: 1;
-			}
-		}
+            img {
+                z-index: 1;
+            }
+        }
 
-		.link {
-			margin: 2em;
+        .link {
+            margin: 2em;
 
-			a {
-				font-size: 1.25em;
-				display: block;
-				color: $color_1;
+            a {
+                font-size: 1.25em;
+                display: block;
+                color: $white;
+                white-space: pre-line;
 
-				button {
-					font-size: 1em;
-					opacity: 0.1;
-					border: none;
-					display: inline;
-					background: transparent;
-				}
-			}
-		}
+                button {
+                    font-size: 1em;
+                    opacity: 0.1;
+                    border: none;
+                    display: inline;
+                    background: transparent;
+                }
+            }
+        }
 
-		button {
-			background: #fff;
-			border: none;
-		}
-	}
+        button {
+            background: #fff;
+            border: none;
+        }
+    }
 
-	a {
-		&:hover {
-			cursor: pointer;
-		}
-	}
+    a {
+        &:hover {
+            cursor: pointer;
+        }
+    }
 
-	button {
-		&:hover {
-			cursor: pointer;
-		}
-	}
+    button {
+        &:hover {
+            cursor: pointer;
+        }
+    }
 
-	.material-icons {
-		display: inline;
-		vertical-align: middle;
-	}
+    .material-icons {
+        display: inline;
+        vertical-align: middle;
+    }
 
-	.card-reveal {
-		padding: 0;
-		overflow: hidden;
-		border: 1px solid #ccc;
+    .card-reveal {
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #ccc;
 
-		.card-title {
-			line-height: 1em;
-			width: 100%;
-			display: inline-block;
+        .card-title {
+            line-height: 1em;
+            width: 100%;
+            display: inline-block;
 
-			i {
-				padding: 0.5em;
-			}
-		}
+            i {
+                padding: 0.5em;
+            }
+        }
 
-		textarea {
-			height: calc(100% - 3.9em);
-			max-height: calc(100% - 3.9em);
-			width: 100%;
-			max-width: 100%;
-			border-color: $border_color_1;
-			padding: 1em;
-		}
-	}
+        textarea {
+            height: calc(100% - 3.9em);
+            max-height: calc(100% - 3.9em);
+            width: 100%;
+            max-width: 100%;
+            border-color: $trans;
+            padding: 1em;
+        }
+    }
 }
 
 .card.active {
-	opacity: 1;
+    opacity: 1;
 }
 
 .card.inactive {
-	display: none;
+    display: none;
 }

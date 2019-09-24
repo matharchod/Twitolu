@@ -52,13 +52,9 @@
 .card .card-action a {
   opacity: 0.5;
   font-size: 9px;
-  padding: 0 1em;
+  padding: 0 2em;
   letter-spacing: 1px;
-  height: 25px;
-  line-height: 25px;
-  border: none;
   color: #fff !important;
-  max-width: 100%;
 }
 
 .card .card-action *:hover {
@@ -151,6 +147,7 @@
   font-size: 1.25em;
   display: block;
   color: #fff;
+  white-space: pre-line;
 }
 
 .card .card-content .link a button {
@@ -213,7 +210,7 @@
 }
 
 body {
-  background-color: #333333;
+  background-color: #fff;
 }
 
 #TwitoluApp {
@@ -231,24 +228,36 @@ body {
 #MainNav {
   position: fixed;
   width: 100%;
-  background-color: #333333;
+  background-color: #333;
+  z-index: 1;
 }
 
 #MainNav .nav-wrapper {
   padding: 0 1em;
 }
 
-#TileBoard {
-  padding: 0;
-  width: 100000px;
+.tileBoard {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
-#TileBoard ul {
+.tileBoard ul {
   margin: 0;
 }
 
 #WordCloud button {
   width: 100%;
+}
+
+#WordCloud .chip {
+  height: auto;
+  font-size: 2em;
+  line-height: 2em;
+  padding: 0 1em;
+  border-radius: 4em;
+  margin-bottom: 1em;
+  margin-right: 1em;
 }
 
 #Recipients li {
@@ -339,12 +348,11 @@ button.retweet {
 .searchBox {
   padding: 0;
   margin: 0.5em 0;
+  color: #000;
 }
 
 .searchBox form i {
-  line-height: 45px;
-  font-size: 1rem;
-  color: #fff;
+  color: #000;
 }
 
 .searchBox form .active i {
@@ -352,14 +360,11 @@ button.retweet {
 }
 
 .searchBox input[type=search] {
-  border-color: #fff;
-  margin: 0;
-  padding-left: 3em;
-  width: 1em;
+  border-color: #000;
   white-space: nowrap;
   overflow: hidden;
+  font-size: 2em;
   text-overflow: ellipsis;
-  padding-right: 3em;
 }
 
 .searchBox .input-field input[type=search]:focus {

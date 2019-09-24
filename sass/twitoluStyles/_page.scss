@@ -1,5 +1,5 @@
 body {
-    background-color: $background_color_6;   
+    background-color: $white;   
 }
 
 #TwitoluApp {
@@ -17,17 +17,18 @@ body {
 #MainNav {
     position: fixed;
     width: 100%;
-	background-color: $background_color_6;
-	
+    background-color: $dark-gray;
+    z-index: 1;
 
     .nav-wrapper {
         padding: 0 1em;
     }
 }
 
-#TileBoard {
-    padding: 0;
-    width: 100000px;
+.tileBoard {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 
     ul {
         margin: 0;
@@ -37,6 +38,15 @@ body {
 #WordCloud {
     button {
         width: 100%;
+    }
+    .chip {
+        height: auto;
+        font-size: 2em;
+        line-height: 2em;
+        padding: 0 1em;
+        border-radius: 4em;
+        margin-bottom: 1em;
+        margin-right: 1em;    
     }
 }
 
@@ -63,18 +73,19 @@ body {
 }
 
 .side-nav {
+
     button {
         width: 25px;
         height: 25px;
         border-radius: 100%;
         margin-left: 0.5em;
-        background-color: $background_color_3;
+        background-color: $trans;
         font-size: 1em;
         padding: 0.25rem;
         line-height: 1em;
         display: inline-block;
         text-align: center;
-        color: $color_2;
+        color: $black;
     }
 
     width: 600px;
