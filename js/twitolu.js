@@ -95,46 +95,6 @@ var Twitolu = (function () {
 
 	})();
 
-	var AddFavorites = function (tileID) {
-
-		var Faves = Favorites();
-
-		Tiles.forEach(function (tile) {
-
-			if (tile.ID == tileID) {
-				//console.log(tile);
-				tile.faveStatus = 'active';
-				//console.log('add Fave:',tile);
-				Twitolu.Favorites(tile);
-			}
-		});
-
-		//console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
-	};
-
-	var RemoveFavorites = function (tileID) {
-		//var Tiles = Twitolu.Tweets();
-		var Faves = Twitolu.Favorites();
-		Tiles.forEach(function (tile) {
-			if (tile.ID == tileID) {
-				tile.faveStatus = null;
-			}
-		});
-		Faves.forEach(function (tile) {
-			if (tile.ID == tileID) {
-				var tileIndex = Faves.indexOf(tile);
-				//console.log('tileIndex:',tileIndex);
-				console.log('remove Fave at index: ' + tileIndex, tile.text);
-				var x = Faves.splice(tileIndex, 1);
-				tile.faveStatus = 'inactive';
-				return x;
-				//console.log( 'splice result:', x );
-			}
-		});
-		//console.log( 'Twitolu.Favorites:',Twitolu.Favorites() );
-
-	};
-
 	//Create a word cloud from the tags extracted from the Tweet text						
 	var CloudFactory = function (Tweets) {
 
@@ -322,8 +282,6 @@ var Twitolu = (function () {
 		Tweets: Tweets,
 		Favorites: Favorites,
 		User: User,
-		AddFavorites: AddFavorites,
-		RemoveFavorites: RemoveFavorites,
 		Recipients: Recipients,
 		TileFactory: TileFactory,
 		CloudFactory: CloudFactory

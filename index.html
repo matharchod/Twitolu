@@ -147,7 +147,7 @@
 							<div class="right right-align">
 								<!-- FAVE button -->
 								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID"
-									@click="addFave(tile.ID)" class="material-icons waves-effect waves-light">
+									@click="addFave()" class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
 								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
@@ -157,7 +157,7 @@
 								<!-- / FAVE button -->
 								<!-- SHARE button -->
 								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(tile.ID), share($event)">
+									@click="addFave(), share($event)">
 									share
 								</button>
 								<!-- /SHARE button -->
@@ -226,7 +226,7 @@
 							<div class="right right-align">
 								<!-- FAVE button -->
 								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID"
-									@click="addFave(tile.ID)" class="material-icons waves-effect waves-light">
+									@click="addFave()" class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
 								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
@@ -236,7 +236,7 @@
 								<!-- / FAVE button -->
 								<!-- SHARE button -->
 								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(tile.ID), share($event)">
+									@click="addFave(), share($event)">
 									share
 								</button>
 								<!-- /SHARE button -->
@@ -336,13 +336,11 @@
 				}
 			},
 			methods: {
-				addFave: function (idx) {
-					Twitolu.AddFavorites(idx);
-					this.Favorites = Twitolu.Favorites();
+				addFave: function () {
+					this.faveStatus = 'active';
 				},
-				removeFave: function (idx) {
-					Twitolu.RemoveFavorites(idx)
-					this.Favorites = Twitolu.Favorites();
+				removeFave: function () {
+					this.faveStatus = 'inactive';
 				},
 				onlyFaves: function () {
 					$(this).sideNav('hide');
@@ -396,6 +394,8 @@
 						return 'flipInY active';
 					} else if (tileStatus === 'inactive') {
 						return 'inactive';
+					} else if (faveStatus === 'active') {
+						return 'faved'
 					}
 				},
 				switchStyle: function (tileStatus, faveStatus, index, color) {
@@ -415,6 +415,10 @@
 						};
 					} else if (tileStatus === 'inactive') {
 						return norm;
+					} else if (faveStatus === 'active') {
+						return {
+							borderColor: '#ccc'
+						}
 					}
 				},
 				textSelect: function (target) {
@@ -464,7 +468,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 
-		$('.tile').on('animationend', function () {
+		$('.card').on('animationend', function () {
 			console.log('done')
 		})
 
@@ -472,6 +476,10 @@
 		$('.collapsible').collapsible();
 
 		$('.slide-out-button').sideNav();
+
+		$('.sidenav-close').click(function(){
+			$('.sidenav').sideNav();
+		})
 
 		$('.collapse').sideNav('hide');
 
