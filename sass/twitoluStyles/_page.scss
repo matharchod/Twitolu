@@ -29,10 +29,19 @@ body {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding: 4em 0;
+    top: -4em;
+    position: relative;
+    z-index: 0;
 
     ul {
         margin: 0;
     }
+}
+
+#TileBoard .card {
+    height: 18em;
 }
 
 #WordCloud {

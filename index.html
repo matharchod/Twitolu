@@ -32,7 +32,7 @@
 				<ul class="right hide-on-med-and-down">
 					<li>
 						<a class="waves-effect">
-							<i class="material-icons" @click="reset()">refresh</i>
+							<i class="material-icons" @click="resetAll()">refresh</i>
 						</a>
 
 					</li>
@@ -45,11 +45,9 @@
 			</div>
 		</nav>
 		<nav id="slide-out" class="side-nav center-align white lighten-4 col s6">
-			<div class="spacer">
-				<a data-activates="slide-out" class="waves-effect right">
-					<i class="material-icons right black-text">close</i>
-				</a>
-			</div>
+			<a href="#!" class="waves-effect right">
+				<i class="sidenav-close material-icons right black-text">close</i>
+			</a>
 			<div class="spacer col s12">
 				<section>
 					<div class="user-view">
@@ -73,6 +71,20 @@
 						</a>
 						<!-- /TAGS -->
 					</div><!-- / WordCloud -->
+				</section>
+				<section id="ExtraControls" class="container">
+					<a href="#!" class="chip red" @click="onlyFaves()">
+						<i class="material-icons">favorite</i>
+					</a>
+					<a href="#!" class="chip red" @click="onlyMedia()">
+						<i class="material-icons">photo</i>
+					</a>
+					<a href="#!" class="chip red" @click="onlyRetweets()">
+						<i class="">rt@</i>
+					</a>
+					<a href="#!" class="chip red" @click="reset()">
+						<i class="material-icons">refresh</i>
+					</a>
 				</section>
 				<section>
 					<!-- MORE BUTTON -->
@@ -101,6 +113,72 @@
 
 			<div class="container">
 				<div class="row">
+					<h2 class="center">Things I'm interested in:</h2>
+				</div><!-- /row -->
+			</div><!-- / container -->
+
+			<div id="" class="tileBoard">
+				<ul class="row">
+					<!-- ******** CARD ******** -->
+					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect" v-show="tile.media"
+						v-bind:key="tile" v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+
+						<!-- card-content -->
+						<div class="card-content">
+							<span class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
+								<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
+							</span>
+							<span v-if="tile.retweet" class="new badge waves-effect"
+								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
+							<p class="link">
+								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+							</p>
+						</div><!-- / card-content -->
+
+						<!-- card action -->
+						<div class="card-action">
+							<div class="left left-align">
+								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
+									@click.prevent="searchByTag(tile.tag)">
+									{{ tile.tag }}
+								</a>
+							</div>
+							<div class="right right-align">
+								<!-- FAVE button -->
+								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID"
+									@click="addFave(tile.ID)" class="material-icons waves-effect waves-light">
+									favorite_border
+								</button>
+								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
+									class="material-icons red-text glow waves-effect waves-red">
+									favorite
+								</button>
+								<!-- / FAVE button -->
+								<!-- SHARE button -->
+								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
+									@click="addFave(tile.ID), share($event)">
+									share
+								</button>
+								<!-- /SHARE button -->
+							</div>
+						</div><!-- / card-action -->
+						<div class="card-reveal">
+							<span class="card-title">
+								<i class="material-icons right grey-text text-lighten-1">
+									close
+								</i>
+							</span>
+							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+						</div>
+					</li>
+					<!-- ******** end CARD ******** -->
+				</ul>
+
+			</div><!-- / TileBoard -->
+
+			<div class="container">
+				<div class="row">
 					<h2 class="center">What are you interested in?</h2>
 					<div id="SearchBox" class="col s4 offset-s4">
 						<div class="searchBox">
@@ -110,6 +188,9 @@
 									<label class="label-icon" for="search">
 										<i class="material-icons">search</i>
 									</label>
+									<a class="resetBtn" href="#!" @click="reset()">
+										<i class="material-icons">refresh</i>
+									</a>
 								</div>
 							</form>
 						</div>
@@ -127,17 +208,10 @@
 
 						<!-- card-content -->
 						<div class="card-content">
-							<span class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
-								<!-- <img v-show="tile.media" class="responsive-img" v-bind:src="tile.media" /> -->
-							</span>
 							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">
-								{{ tile.retweet }}
-							</span>
+								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
 							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">
-									{{ tile.text }}
-								</a>
+								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
 							</p>
 						</div><!-- / card-content -->
 
@@ -186,34 +260,6 @@
 
 		</div><!-- / tweets -->
 
-		<div class="fixed-action-btn horizontal">
-			<a class="btn-floating btn-large red">
-				<i class="large material-icons">more_horiz</i>
-			</a>
-			<ul>
-				<li>
-					<a class="btn-floating red" @click="onlyFaves()">
-						<i class="material-icons">favorite</i>
-					</a>
-				</li>
-				<li>
-					<a class="btn-floating red" @click="onlyMedia()">
-						<i class="material-icons">photo</i>
-					</a>
-				</li>
-				<li>
-					<a class="btn-floating red" @click="onlyRetweets()">
-						<i class="">rt@</i>
-					</a>
-				</li>
-				<li>
-					<a class="btn-floating red" @click="reset()">
-						<i class="material-icons">refresh</i>
-					</a>
-				</li>
-			</ul>
-		</div>
-
 
 	</div><!-- / main -->
 
@@ -241,7 +287,20 @@
 <script type="text/javascript">
 	$(function () {
 
+		var boardScroll = function () {
+			var tileBoardTop = $('#TileBoard').offset();
+			$('#TileBoard').animate({
+				scrollLeft: 0
+			}, 'slow');
+			$('html, body').animate({
+				scrollTop: tileBoardTop.top
+			}, 'slow');
+		}
+
 		var topScroll = function () {
+			$('.tileBoard').animate({
+				scrollLeft: 0
+			}, 'slow');
 			$('html, body').animate({
 				scrollTop: 0
 			}, 'slow');
@@ -296,17 +355,17 @@
 				onlyMedia: function () {
 					this.searchTerm = '*hasMedia';
 					$(this).sideNav('hide');
-					topScroll();
+					boardScroll();
 				},
 				onlyRetweets: function () {
 					this.searchTerm = 'rt @';
 					$(this).sideNav('hide');
-					topScroll();
+					boardScroll();
 				},
 				searchByTag: function (tag, index, event) {
 					this.searchTerm = tag.toLowerCase();
 					$(this).sideNav('hide');
-					topScroll();
+					boardScroll();
 				},
 				share: function () {
 					var Faves = this.Favorites;
@@ -314,11 +373,19 @@
 				reset: function () {
 					this.searchTerm = '';
 					$(this).sideNav('hide');
-					topScroll();
+					boardScroll();
 					Tiles.forEach(function (tile) {
 						tile.tileStatus = 'active'
 					});
 				},
+				resetAll: function () {
+					this.searchTerm = '';
+					$(this).sideNav('hide');
+					topScroll();
+					Tiles.forEach(function (tile) {
+						tile.tileStatus = 'active'
+					});
+				},								
 				switchClass: function (tileStatus, faveStatus, tag) {
 
 					if (tileStatus === 'active' && faveStatus === 'active') {
@@ -406,7 +473,7 @@
 
 		$('.slide-out-button').sideNav();
 
-		///$('.collapse').sideNav('hide');
+		$('.collapse').sideNav('hide');
 
 		// 		$(".slide-out-button").click();
 

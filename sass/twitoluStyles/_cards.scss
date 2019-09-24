@@ -11,32 +11,9 @@
     height: 30rem;
     max-width: 350px;
     position: relative;
-    margin: 1em;
+	margin: 1em;
 
     .card-action {
-        button.waves-red.glow {
-            animation-name: glow;
-            animation-iteration-count: infinite;
-        }
-
-        div {
-            display: inline-block;
-            width: 45%;
-        }
-
-        button {
-            width: 25px;
-            height: 25px;
-            border-radius: 100%;
-            margin-left: 0.5em;
-            background-color: $trans;
-            font-size: 1em;
-            padding: 0.25rem;
-            line-height: 1em;
-            display: inline-block;
-            text-align: center;
-            opacity: 0.5;
-        }
 
         width: 100%;
         z-index: 2;
@@ -46,6 +23,30 @@
         position: absolute;
         bottom: 0;
         left: 0;
+
+        div {
+            display: inline-block;
+            width: 45%;
+        }
+
+        button {
+			width: auto;
+			height: auto;
+			border: 1px solid;
+			border-radius: 100%;
+			margin-left: 0.5em;
+			background-color: transparent;
+			font-size: 1em;
+			padding: 0.5em;
+			line-height: 1em;
+			opacity: 0.5;
+			color: #fff;
+		}
+		
+        button.waves-red.glow {
+            animation-name: glow;
+            animation-iteration-count: infinite;
+        }
 
         a {
 			opacity: 0.5;
@@ -88,7 +89,7 @@
         background-color: $trans;
         display: inline-block;
         margin: 0;
-        border: 1px solid #ccc;
+        border: 1px solid $white;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -112,7 +113,22 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+		height: 100%;
+		
+		a {
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	
+		button {
+            background: #fff;
+			border: none;
+			
+			&:hover {
+				cursor: pointer;
+			}
+		}
 
         .img-contain {
             position: relative;
@@ -120,18 +136,24 @@
             height: 12em;
             display: block;
             background-color: $trans-gray;
-            background-position: top center;
+            background-position: center;
             background-size: cover;
-            text-align: center;
+			text-align: center;
+			
+			a {
+				display: block;
+				height: 100%;
+				width: 100%;				
+			}
 
-            &:before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 100%;
-                width: 100%;
-            }
+            // &:before {
+            //     content: '';
+            //     position: absolute;
+            //     top: 0;
+            //     left: 0;
+            //     height: 100%;
+            //     width: 100%;
+            // }
 
             img {
                 z-index: 1;
@@ -145,7 +167,7 @@
                 font-size: 1.25em;
                 display: block;
                 color: $white;
-                white-space: pre-line;
+                white-space: normal;
 
                 button {
                     font-size: 1em;
@@ -157,22 +179,7 @@
             }
         }
 
-        button {
-            background: #fff;
-            border: none;
-        }
-    }
 
-    a {
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
-    button {
-        &:hover {
-            cursor: pointer;
-        }
     }
 
     .material-icons {

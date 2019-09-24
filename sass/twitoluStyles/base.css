@@ -23,30 +23,30 @@
   left: 0;
 }
 
-.card .card-action button.waves-red.glow {
-  -webkit-animation-name: glow;
-          animation-name: glow;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-}
-
 .card .card-action div {
   display: inline-block;
   width: 45%;
 }
 
 .card .card-action button {
-  width: 25px;
-  height: 25px;
+  width: auto;
+  height: auto;
+  border: 1px solid;
   border-radius: 100%;
   margin-left: 0.5em;
   background-color: transparent;
   font-size: 1em;
-  padding: 0.25rem;
+  padding: 0.5em;
   line-height: 1em;
-  display: inline-block;
-  text-align: center;
   opacity: 0.5;
+  color: #fff;
+}
+
+.card .card-action button.waves-red.glow {
+  -webkit-animation-name: glow;
+          animation-name: glow;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
 }
 
 .card .card-action a {
@@ -88,7 +88,7 @@
   background-color: transparent;
   display: inline-block;
   margin: 0;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -115,22 +115,32 @@
   height: 100%;
 }
 
+.card .card-content a:hover {
+  cursor: pointer;
+}
+
+.card .card-content button {
+  background: #fff;
+  border: none;
+}
+
+.card .card-content button:hover {
+  cursor: pointer;
+}
+
 .card .card-content .img-contain {
   position: relative;
   overflow: hidden;
   height: 12em;
   display: block;
   background-color: rgba(255, 255, 255, 0.25);
-  background-position: top center;
+  background-position: center;
   background-size: cover;
   text-align: center;
 }
 
-.card .card-content .img-contain:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+.card .card-content .img-contain a {
+  display: block;
   height: 100%;
   width: 100%;
 }
@@ -147,7 +157,7 @@
   font-size: 1.25em;
   display: block;
   color: #fff;
-  white-space: pre-line;
+  white-space: normal;
 }
 
 .card .card-content .link a button {
@@ -156,19 +166,6 @@
   border: none;
   display: inline;
   background: transparent;
-}
-
-.card .card-content button {
-  background: #fff;
-  border: none;
-}
-
-.card a:hover {
-  cursor: pointer;
-}
-
-.card button:hover {
-  cursor: pointer;
 }
 
 .card .material-icons {
@@ -240,10 +237,19 @@ body {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  padding: 4em 0;
+  top: -4em;
+  position: relative;
+  z-index: 0;
 }
 
 .tileBoard ul {
   margin: 0;
+}
+
+#TileBoard .card {
+  height: 18em;
 }
 
 #WordCloud button {
@@ -340,6 +346,14 @@ button.retweet {
   position: relative;
 }
 
+#ExtraControls .chip {
+  line-height: 100%;
+  height: auto;
+  border-radius: 2em;
+  padding: 0 1em;
+  font-size: unset;
+}
+
 .sharedTiles {
   width: 75%;
   float: right;
@@ -365,6 +379,13 @@ button.retweet {
   overflow: hidden;
   font-size: 2em;
   text-overflow: ellipsis;
+}
+
+.searchBox .input-field a {
+  right: 1em;
+  position: absolute;
+  z-index: 1;
+  top: 0.5em;
 }
 
 .searchBox .input-field input[type=search]:focus {

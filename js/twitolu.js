@@ -216,7 +216,7 @@ var Twitolu = (function () {
 			}
 
 			var Text_obj = fixSpecials(result[i].text);
-			URL_obj = result[i].entities.urls[0],
+				URL_obj = result[i].entities.urls[0],
 				Tag_obj = fixSpecials(result[i].text.split('. ')[0]), //extract tag from text string
 				RT_obj = result[i].retweeted, //retweet check
 				Media_obj = result[i].entities.media;
@@ -224,7 +224,7 @@ var Twitolu = (function () {
 			if (Media_obj) {
 				Media_obj = Media_obj[0].media_url_https;
 				Text_obj = Text_obj + '*hasMedia';
-				console.log('Media_obj', Media_obj[0].media_url_https);
+				// console.log('Media_obj', Media_obj[0].media_url_https);
 				//console.log(result[i]);
 			}
 
@@ -292,6 +292,10 @@ var Twitolu = (function () {
 				media: Media_obj,
 				popularity: result[i].favorite_count,
 				retweet: RT_obj,
+				retweet_count: result[i].retweet_count,
+				favorite_count: result[i].favorite_count,
+				favorited: result[i].favorited,
+				retweeted: result[i].retweeted,
 				tileStatus: 'active',
 				faveStatus: null,
 				sendStatus: null
@@ -300,16 +304,15 @@ var Twitolu = (function () {
 
 			TilesCollection.push(tile);
 
-			//console.log( tilesCollection );
-
 		}
 
 		Tweets(TilesCollection);
 		// 		CloudFactory(TilesCollection);
 
+		// console.log( "TilesCollection: ", TilesCollection ); 
+
 		return Tweets();
 
-		//console.log( "TilesCollection: ", TilesCollection ); 
 
 	}
 
