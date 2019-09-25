@@ -184,13 +184,19 @@
 						<div class="searchBox">
 							<form>
 								<div class="input-field">
-									<input v-model="searchTerm" type="search">
-									<label class="label-icon" for="search">
-										<i class="material-icons">search</i>
-									</label>
-									<a class="resetBtn" href="#!" @click="reset()">
-										<i class="material-icons">refresh</i>
-									</a>
+									<input v-model="searchTerm" type="search"
+										@focus="searching = true"
+										@blur="searching = false">
+									<template v-if="!searching">
+										<label class="label-icon" for="search" @click="reset()">
+											<i class="material-icons">search</i>
+										</label>
+									</template>
+									<template v-else>
+										<label class="resetBtn" @click="reset()">
+											<i class="material-icons">refresh</i>
+										</label>	
+									</template>
 								</div>
 							</form>
 						</div>
@@ -289,21 +295,13 @@
 
 		var boardScroll = function () {
 			var tileBoardTop = $('#TileBoard').offset();
-			$('#TileBoard').animate({
-				scrollLeft: 0
-			}, 'slow');
-			$('html, body').animate({
-				scrollTop: tileBoardTop.top
-			}, 'slow');
+			$('#TileBoard').animate({scrollLeft: 0}, 'slow');
+			$('html, body').animate({scrollTop: tileBoardTop.top}, 'slow');
 		}
 
 		var topScroll = function () {
-			$('.tileBoard').animate({
-				scrollLeft: 0
-			}, 'slow');
-			$('html, body').animate({
-				scrollTop: 0
-			}, 'slow');
+			$('.tileBoard').animate({scrollLeft: 0}, 'slow');
+			$('html, body').animate({scrollTop: 0}, 'slow');
 		}
 
 		var colors = [
@@ -327,6 +325,7 @@
 			el: '#TwitoluApp',
 			data: function () {
 				return {
+					searching: false,
 					searchTerm: '',
 					Favorites: {},
 					showAllTags: false,
