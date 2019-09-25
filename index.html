@@ -361,6 +361,7 @@
 				},
 				searchByTag: function (tag, index, event) {
 					this.searchTerm = tag.toLowerCase();
+					this.searching = true;
 					$(this).sideNav('hide');
 					boardScroll();
 				},
@@ -371,6 +372,7 @@
 					this.searchTerm = '';
 					$(this).sideNav('hide');
 					boardScroll();
+					this.searching = false;
 					Tiles.forEach(function (tile) {
 						tile.tileStatus = 'active'
 					});
@@ -379,6 +381,7 @@
 					this.searchTerm = '';
 					$(this).sideNav('hide');
 					topScroll();
+					this.searching = false;
 					Tiles.forEach(function (tile) {
 						tile.tileStatus = 'active'
 					});

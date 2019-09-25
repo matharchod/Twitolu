@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Miriam+Libre:700|Sura|Vesper+Libre|Yantramanav:100&display=swap");
 .card {
   background: #333;
   border-radius: 10px;
@@ -207,30 +208,16 @@
 }
 
 body {
-  background-color: #fff;
+  background: #111111;
+  background: -webkit-gradient(linear, left top, left bottom, from(#111111), to(#cccccc));
+  background: linear-gradient(180deg, #111111 0%, #cccccc 100%);
+  padding-bottom: 8em;
 }
 
-#TwitoluApp {
-  float: left;
-  width: 100%;
-  position: relative;
-}
-
-#tweets {
-  padding: 0;
-  top: 5em;
-  position: relative;
-}
-
-#MainNav {
-  position: fixed;
-  width: 100%;
-  background-color: #333;
-  z-index: 1;
-}
-
-#MainNav .nav-wrapper {
-  padding: 0 1em;
+h2 {
+  font-family: 'Yantramanav', sans-serif;
+  font-weight: normal;
+  color: #fff;
 }
 
 .tileBoard {
@@ -239,7 +226,7 @@ body {
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   padding: 4em 0;
-  top: -4em;
+  top: -2em;
   position: relative;
   z-index: 0;
 }
@@ -248,35 +235,33 @@ body {
   margin: 0;
 }
 
-#TileBoard .card {
-  height: 18em;
+.chip b {
+  opacity: 0.5;
+  margin-left: 0.5em;
 }
 
-#WordCloud button {
-  width: 100%;
+.chip > img {
+  z-index: 1;
 }
 
-#WordCloud .chip {
-  height: auto;
-  font-size: 2em;
-  line-height: 2em;
-  padding: 0 1em;
-  border-radius: 4em;
-  margin-bottom: 1em;
-  margin-right: 1em;
+button.retweet {
+  font-weight: bold;
+  font-size: 65%;
+  text-transform: uppercase;
 }
 
-#Recipients li {
-  float: left;
-  margin: 0.1em;
-  padding: 0.25em 1em;
-  border-radius: 1em;
+.main .navbar-fixed {
+  z-index: 1000;
 }
 
-#slide-out.side-nav {
-  left: 0;
-  top: 0;
-  position: fixed;
+.main .navbar-fixed nav {
+  z-index: 1000;
+}
+
+.main .navbar-fixed h1 {
+  margin: 2rem 1rem;
+  font-size: 3rem;
+  position: relative;
 }
 
 .user-view .circle {
@@ -317,33 +302,59 @@ body {
   font-size: 1em;
 }
 
-.chip b {
-  opacity: 0.5;
-  margin-left: 0.5em;
+#TileBoard .card {
+  height: 18em;
 }
 
-.chip > img {
-  z-index: 1;
+#WordCloud button {
+  width: 100%;
 }
 
-button.retweet {
-  font-weight: bold;
-  font-size: 65%;
-  text-transform: uppercase;
+#WordCloud .chip {
+  height: auto;
+  font-size: 2em;
+  line-height: 2em;
+  padding: 0 1em;
+  border-radius: 4em;
+  margin-bottom: 1em;
+  margin-right: 1em;
 }
 
-.main .navbar-fixed {
-  z-index: 1000;
+#Recipients li {
+  float: left;
+  margin: 0.1em;
+  padding: 0.25em 1em;
+  border-radius: 1em;
 }
 
-.main .navbar-fixed nav {
-  z-index: 1000;
+#slide-out.side-nav {
+  left: 0;
+  top: 0;
+  position: fixed;
 }
 
-.main .navbar-fixed h1 {
-  margin: 2rem 1rem;
-  font-size: 3rem;
+#TwitoluApp {
+  float: left;
+  width: 100%;
   position: relative;
+}
+
+#tweets {
+  padding: 0;
+  top: 8em;
+  position: relative;
+}
+
+#MainNav {
+  position: fixed;
+  width: 100%;
+  background-color: #333;
+  z-index: 1;
+  height: auto;
+}
+
+#MainNav .nav-wrapper {
+  padding: 0 1em;
 }
 
 #ExtraControls .chip {
