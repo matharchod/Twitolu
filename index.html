@@ -81,7 +81,7 @@
 					<JANItwitCard 
 						v-for="(tile, index, $event) in Tiles" 
 						class="card animated waves-effect" 
-						v-show="tile.media"
+						v-if="tile.media"
 						v-bind:key="tile" v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 					</JANItwitCard>
