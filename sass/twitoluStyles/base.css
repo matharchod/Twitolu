@@ -235,6 +235,10 @@ h2 {
   margin: 0;
 }
 
+.tileBoard .card {
+  height: 18em;
+}
+
 .chip b {
   opacity: 0.5;
   margin-left: 0.5em;
@@ -303,7 +307,15 @@ button.retweet {
 }
 
 #TileBoard .card {
-  height: 18em;
+  height: 28em;
+}
+
+#WordCloud {
+  margin: 4em 6em 0em 6em;
+  padding-bottom: 2em;
+  z-index: 0;
+  position: relative;
+  text-align: center;
 }
 
 #WordCloud button {
@@ -312,6 +324,7 @@ button.retweet {
 
 #WordCloud .chip {
   height: auto;
+  width: auto;
   font-size: 2em;
   line-height: 2em;
   padding: 0 1em;
@@ -385,7 +398,7 @@ button.retweet {
 }
 
 .searchBox input[type=search] {
-  border-color: #000;
+  border: none;
   white-space: nowrap;
   overflow: hidden;
   font-size: 2em;
@@ -402,8 +415,17 @@ button.retweet {
 }
 
 .searchBox .input-field input[type=search]:focus {
-  padding: 0 0 0.25em 2em;
-  width: calc(100% - 2rem);
-  border-color: inherit;
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.searchBox .input-field label {
+  cursor: pointer;
+}
+
+#SearchBox {
+  background: #fff;
+  border-radius: 4em;
 }
 /*# sourceMappingURL=base.css.map */

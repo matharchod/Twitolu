@@ -22,9 +22,7 @@
 <body>
 	<div id="TwitoluApp" class="row main">
 
-
 		<nav id="MainNav">
-
 			<div class="nav-wrapper">
 				<a href="#!" class="brand-logo">
 					Twitolu&trade;
@@ -34,7 +32,6 @@
 						<a class="waves-effect">
 							<i class="material-icons" @click="resetAll()">refresh</i>
 						</a>
-
 					</li>
 					<li>
 						<a href="#" data-activates="slide-out" class="slide-out-button waves-effect">
@@ -60,64 +57,19 @@
 						</span>
 					</div>
 				</section>
-				<section>
-					<div id="WordCloud">
-						<!-- TAGS -->
-						<a href="#!" class="chip white-text waves-effect" data-activates="slide-out"
-							v-for="word in WordCloud_alpha" v-bind:style="{ backgroundColor: '#' + word.color }"
-							@click="searchByTag(word.tag)">
-							{{ word.tag }}
-							<b>{{ word.count }}</b>
-						</a>
-						<!-- /TAGS -->
-					</div><!-- / WordCloud -->
-				</section>
-				<section id="ExtraControls" class="container">
-					<a href="#!" class="chip red" @click="onlyFaves()">
-						<i class="material-icons">favorite</i>
-					</a>
-					<a href="#!" class="chip red" @click="onlyMedia()">
-						<i class="material-icons">photo</i>
-					</a>
-					<a href="#!" class="chip red" @click="onlyRetweets()">
-						<i class="">rt@</i>
-					</a>
-					<a href="#!" class="chip red" @click="reset()">
-						<i class="material-icons">refresh</i>
-					</a>
-				</section>
-				<section>
-					<!-- MORE BUTTON -->
-					<button class="chip waves-effect waves-teal material-icons" v-show="showAllTags === false"
-						@click="showAllTags = true">
-						more_horiz
-					</button>
-					<button class="chip grey darken-3 white-text waves-effect waves-light material-icons"
-						v-show="showAllTags === true" @click="showAllTags = false">
-						more_vert
-					</button>
-					<!-- / MORE BUTTON -->
-					<!-- ADDITIONAL TAGS -->
-					<a href="#!" class="chip grey darken-3 white-text waves-effect" data-activates="slide-out"
-						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word"
-						@click="searchByTag(word.tag)">
-						{{ word.tag }}
-					</a>
-					<!-- ADDITIONAL TAGS -->
-				</section>
 			</div><!-- end spacer -->
 		</nav><!-- sidebar -->
 
 
 		<div id="tweets" class="content-section">
 
-			<div class="container">
+			<section class="container">
 				<div class="row">
 					<h2 class="center">Things I'm interested in:</h2>
 				</div><!-- /row -->
-			</div><!-- / container -->
+			</section><!-- / container -->
 
-			<div id="" class="tileBoard">
+			<section id="TileBoard" class="tileBoard">
 				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect" v-show="tile.media"
@@ -146,8 +98,8 @@
 							</div>
 							<div class="right right-align">
 								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID"
-									@click="addFave()" class="material-icons waves-effect waves-light">
+								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+									class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
 								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
@@ -174,18 +126,43 @@
 					</li>
 					<!-- ******** end CARD ******** -->
 				</ul>
+			</section><!-- / TileBoard -->
 
-			</div><!-- / TileBoard -->
-
-			<div class="container">
+			<section id="SearchBoard">
+				<h2 class="center">Choose a topic that interests you:</h2>
+				<div id="WordCloud" class="tileBoard">
+					<!-- TAGS -->
+					<a href="#!" class="chip white-text waves-effect" data-activates="slide-out"
+						v-for="word in WordCloud_alpha" v-bind:style="{ backgroundColor: '#' + word.color }"
+						@click="searchByTag(word.tag)">
+						{{ word.tag }}
+						<b>{{ word.count }}</b>
+					</a>
+					<!-- /TAGS -->
+					<!-- MORE BUTTON -->
+					<button class="chip waves-effect waves-teal material-icons" v-show="showAllTags === false"
+						@click="showAllTags = true">
+						more_horiz
+					</button>
+					<button class="chip grey darken-3 white-text waves-effect waves-light material-icons"
+						v-show="showAllTags === true" @click="showAllTags = false">
+						more_vert
+					</button>
+					<!-- / MORE BUTTON -->
+					<!-- ADDITIONAL TAGS -->
+					<a href="#!" class="chip grey darken-3 white-text waves-effect" data-activates="slide-out"
+						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word"
+						@click="searchByTag(word.tag)">
+						{{ word.tag }}
+					</a>
+					<!-- /ADDITIONAL TAGS -->
+				</div><!-- / WordCloud -->
 				<div class="row">
-					<h2 class="center">What are you interested in?</h2>
 					<div id="SearchBox" class="col s4 offset-s4">
 						<div class="searchBox">
 							<form>
 								<div class="input-field">
-									<input v-model="searchTerm" type="search"
-										@focus="searching = true"
+									<input v-model="searchTerm" type="search" @focus="searching = true"
 										@blur="searching = false">
 									<template v-if="!searching">
 										<label class="label-icon" for="search" @click="reset()">
@@ -195,16 +172,16 @@
 									<template v-else>
 										<label class="resetBtn" @click="reset()">
 											<i class="material-icons">refresh</i>
-										</label>	
+										</label>
 									</template>
 								</div>
 							</form>
 						</div>
 					</div><!-- / SearchBox -->
-				</div><!-- /row -->
-			</div><!-- / container -->
+				</div>
+			</section><!-- / container -->
 
-			<div id="TileBoard" class="tileBoard">
+			<section id="" class="tileBoard">
 				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
@@ -231,8 +208,8 @@
 							</div>
 							<div class="right right-align">
 								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID"
-									@click="addFave()" class="material-icons waves-effect waves-light">
+								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+									class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
 								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
@@ -259,10 +236,70 @@
 					</li>
 					<!-- ******** end CARD ******** -->
 				</ul>
+			</section><!-- / tileBoard -->
 
-			</div><!-- / TileBoard -->
+			<section class="container">
+				<div class="row">
+					<h2 class="center">My most popular items:</h2>
+				</div><!-- /row -->
+			</section><!-- / container -->
 
+			<section class="tileBoard">
+				<ul class="row">
+					<!-- ******** CARD ******** -->
+					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
+						v-show="tile.text && tile.popularity" v-bind:key="tile"
+						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
+						<!-- card-content -->
+						<div class="card-content">
+							<span v-if="tile.retweet" class="new badge waves-effect"
+								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
+							<p class="link">
+								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+							</p>
+						</div><!-- / card-content -->
+
+						<!-- card action -->
+						<div class="card-action">
+							<div class="left left-align">
+								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
+									@click.prevent="searchByTag(tile.tag)">
+									{{ tile.tag }}
+								</a>
+							</div>
+							<div class="right right-align">
+								<!-- FAVE button -->
+								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+									class="material-icons waves-effect waves-light">
+									favorite_border
+								</button>
+								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
+									class="material-icons red-text glow waves-effect waves-red">
+									favorite
+								</button>
+								<!-- / FAVE button -->
+								<!-- SHARE button -->
+								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
+									@click="addFave(), share($event)">
+									share
+								</button>
+								<!-- /SHARE button -->
+							</div>
+						</div><!-- / card-action -->
+						<div class="card-reveal">
+							<span class="card-title">
+								<i class="material-icons right grey-text text-lighten-1">
+									close
+								</i>
+							</span>
+							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+						</div>
+					</li>
+					<!-- ******** end CARD ******** -->
+				</ul>
+			</section><!-- / tileBoard -->
 
 		</div><!-- / tweets -->
 
@@ -294,8 +331,8 @@
 	$(function () {
 
 		var boardScroll = function () {
-			var tileBoardTop = $('#TileBoard').offset();
-			$('#TileBoard').animate({scrollLeft: 0}, 'slow');
+			var tileBoardTop = $('#SearchBoard').offset();
+			$('#SearchBoard').animate({scrollLeft: 0}, 'slow');
 			$('html, body').animate({scrollTop: tileBoardTop.top}, 'slow');
 		}
 
@@ -385,7 +422,7 @@
 					Tiles.forEach(function (tile) {
 						tile.tileStatus = 'active'
 					});
-				},								
+				},
 				switchClass: function (tileStatus, faveStatus, tag) {
 
 					if (tileStatus === 'active' && faveStatus === 'active') {
@@ -479,7 +516,7 @@
 
 		$('.slide-out-button').sideNav();
 
-		$('.sidenav-close').click(function(){
+		$('.sidenav-close').click(function () {
 			$('.sidenav').sideNav();
 		})
 

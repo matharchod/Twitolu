@@ -23,6 +23,10 @@ h2 {
     ul {
         margin: 0;
     }
+
+    .card {
+        height: 18em;
+    }
 }
 
 .chip {
@@ -68,6 +72,8 @@ button.retweet {
 
 .side-nav {
 
+    width: 600px;
+
     button {
         width: 25px;
         height: 25px;
@@ -81,8 +87,6 @@ button.retweet {
         text-align: center;
         color: $black;
     }
-
-    width: 600px;
 
     .user-view {
         .name {
@@ -102,16 +106,25 @@ button.retweet {
     }
 }
 
-#TileBoard .card {
-    height: 18em;
+#TileBoard {
+    .card {
+        height: 28em;
+    }
 }
 
 #WordCloud {
+    margin: 4em 6em 0em 6em;
+    padding-bottom: 2em;
+    z-index: 0;
+    position: relative;
+    text-align: center;
+
     button {
         width: 100%;
     }
     .chip {
         height: auto;
+        width: auto;
         font-size: 2em;
         line-height: 2em;
         padding: 0 1em;
