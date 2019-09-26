@@ -196,6 +196,9 @@
             line-height: 1em;
             width: 100%;
             display: inline-block;
+            position: absolute;
+            top: 0;
+            z-index: 2;
 
             i {
                 padding: 0.5em;
@@ -209,6 +212,8 @@
             max-width: 100%;
             border-color: $trans;
             padding: 1em;
+            position: absolute;
+            bottom: 0;
         }
     }
 }

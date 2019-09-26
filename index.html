@@ -71,59 +71,20 @@
 
 			<section id="TileBoard" class="tileBoard">
 				<ul class="row">
+					<!-- ******** LOADING ******** -->
+					<li class="card animated waves-effect" v-bind:key="Tiles">
+						<p>Loading graphic...</p>
+						<p>{{ Tiles.count }}</p>
+					</li>
+					<!-- ******** end LOADING ******** -->
 					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect" v-show="tile.media"
+					<JANItwitCard 
+						v-for="(tile, index, $event) in Tiles" 
+						class="card animated waves-effect" 
+						v-show="tile.media"
 						v-bind:key="tile" v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
-
-						<!-- card-content -->
-						<div class="card-content">
-							<span class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
-								<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
-							</span>
-							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
-							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
-							</p>
-						</div><!-- / card-content -->
-
-						<!-- card action -->
-						<div class="card-action">
-							<div class="left left-align">
-								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-									@click.prevent="searchByTag(tile.tag)">
-									{{ tile.tag }}
-								</a>
-							</div>
-							<div class="right right-align">
-								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-									class="material-icons waves-effect waves-light">
-									favorite_border
-								</button>
-								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-									class="material-icons red-text glow waves-effect waves-red">
-									favorite
-								</button>
-								<!-- / FAVE button -->
-								<!-- SHARE button -->
-								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(), share($event)">
-									share
-								</button>
-								<!-- /SHARE button -->
-							</div>
-						</div><!-- / card-action -->
-						<div class="card-reveal">
-							<span class="card-title">
-								<i class="material-icons right grey-text text-lighten-1">
-									close
-								</i>
-							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
-						</div>
-					</li>
+					</JANItwitCard>
 					<!-- ******** end CARD ******** -->
 				</ul>
 			</section><!-- / TileBoard -->
@@ -306,6 +267,61 @@
 
 	</div><!-- / main -->
 
+	<!-- ******** CARD TEMPLATE ******** -->
+	<script type="text/x-template" id="twitCard">
+		<!--  CARD  -->
+		<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
+			v-show="tile.text && tile.popularity" v-bind:key="tile"
+			v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
+			v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+
+			<!-- card-content -->
+			<div class="card-content">
+				<span v-if="tile.retweet" class="new badge waves-effect"
+					@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
+				<p class="link">
+					<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+				</p>
+			</div><!-- / card-content -->
+
+			<!-- card action -->
+			<div class="card-action">
+				<div class="left left-align">
+					<a href="#!" v-if="tile.tag" class="tag chip waves-effect" @click.prevent="searchByTag(tile.tag)">
+						{{ tile.tag }}
+					</a>
+				</div>
+				<div class="right right-align">
+					<!-- FAVE button -->
+					<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+						class="material-icons waves-effect waves-light">
+						favorite_border
+					</button>
+					<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
+						class="material-icons red-text glow waves-effect waves-red">
+						favorite
+					</button>
+					<!-- / FAVE button -->
+					<!-- SHARE button -->
+					<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
+						@click="addFave(), share($event)">
+						share
+					</button>
+					<!-- /SHARE button -->
+				</div>
+			</div><!-- / card-action -->
+			<div class="card-reveal">
+				<span class="card-title">
+					<i class="material-icons right grey-text text-lighten-1">
+						close
+					</i>
+				</span>
+				<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+			</div>
+		</li>
+		<!--  end CARD  -->
+	</script><!-- ******** end CARD TEMPLATE ******** -->
+
 </body>
 <!-- The SCRIPTS -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -332,13 +348,21 @@
 
 		var boardScroll = function () {
 			var tileBoardTop = $('#SearchBoard').offset();
-			$('#SearchBoard').animate({scrollLeft: 0}, 'slow');
-			$('html, body').animate({scrollTop: tileBoardTop.top}, 'slow');
+			$('#SearchBoard').animate({
+				scrollLeft: 0
+			}, 'slow');
+			$('html, body').animate({
+				scrollTop: tileBoardTop.top
+			}, 'slow');
 		}
 
 		var topScroll = function () {
-			$('.tileBoard').animate({scrollLeft: 0}, 'slow');
-			$('html, body').animate({scrollTop: 0}, 'slow');
+			$('.tileBoard').animate({
+				scrollLeft: 0
+			}, 'slow');
+			$('html, body').animate({
+				scrollTop: 0
+			}, 'slow');
 		}
 
 		var colors = [
@@ -357,6 +381,10 @@
 		var Tiles = Twitolu.TileFactory(colors);
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
+
+		var twitCardTemplate = Vue.component('JANItwitCard', {
+			template: '#twitCard'
+		})
 
 		var TileBoard = new Vue({
 			el: '#TwitoluApp',

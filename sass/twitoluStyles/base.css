@@ -184,6 +184,9 @@
   line-height: 1em;
   width: 100%;
   display: inline-block;
+  position: absolute;
+  top: 0;
+  z-index: 2;
 }
 
 .card .card-reveal .card-title i {
@@ -197,6 +200,8 @@
   max-width: 100%;
   border-color: transparent;
   padding: 1em;
+  position: absolute;
+  bottom: 0;
 }
 
 .card.active {
