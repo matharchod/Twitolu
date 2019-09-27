@@ -102,7 +102,7 @@ var Twitolu = (function () {
 			cloud = [],
 			duplicate = cloud[0];
 
-		for (i in Tweets) {
+		for (var i in Tweets) {
 
 			var x = Tweets[i].tag;
 			//console.log(x);	
@@ -169,7 +169,7 @@ var Twitolu = (function () {
 		var TilesCollection = [],
 			result = Tweets();
 
-		for (i in result) {
+		for (var i in result) {
 
 			var fixSpecials = function (txt) {
 				return (txt).replace(/&amp;/g, "&"); //corrects ampersands

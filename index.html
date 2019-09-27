@@ -72,7 +72,7 @@
 			<section id="TileBoard" class="tileBoard">
 				<ul class="row">
 					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect" v-show="tile.media"
+					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect" v-if="tile.media"
 						v-bind:key="tile" v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
@@ -123,8 +123,7 @@
 							</span>
 							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
 						</div>
-					</li>
-					<!-- ******** end CARD ******** -->
+					</li><!-- ******** end CARD ******** -->
 				</ul>
 			</section><!-- / TileBoard -->
 
@@ -185,7 +184,7 @@
 				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-show="tile.text" v-bind:key="tile"
+						v-if="tile.text" v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
@@ -233,8 +232,7 @@
 							</span>
 							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
 						</div>
-					</li>
-					<!-- ******** end CARD ******** -->
+					</li><!-- ******** end CARD ******** -->
 				</ul>
 			</section><!-- / tileBoard -->
 
@@ -248,7 +246,7 @@
 				<ul class="row">
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
-						v-show="tile.text && tile.popularity" v-bind:key="tile"
+						v-if="tile.text && tile.popularity" v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
@@ -296,8 +294,7 @@
 							</span>
 							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
 						</div>
-					</li>
-					<!-- ******** end CARD ******** -->
+					</li><!-- ******** end CARD ******** -->
 				</ul>
 			</section><!-- / tileBoard -->
 
