@@ -5,6 +5,7 @@
   border: none;
   top: 0;
   left: 0;
+  text-align: left;
   display: inline-block;
   width: 32%;
   height: 30rem;
@@ -169,6 +170,13 @@
   background: transparent;
 }
 
+.card .card-content .name {
+  font-size: 6em;
+  top: 0.25em;
+  position: absolute;
+  width: 100%;
+}
+
 .card .material-icons {
   display: inline;
   vertical-align: middle;
@@ -207,11 +215,52 @@
   display: none;
 }
 
+.twitProfile {
+  background-color: #444;
+}
+
+.twitProfile h3 {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: 0;
+  width: 100%;
+}
+
+@keyframes colorchange {
+  0% {
+    background: #ccc;
+  }
+  25% {
+    background: #000;
+  }
+  50% {
+    background: #eee;
+  }
+  100% {
+    background: #333;
+  }
+}
+
+/* Safari and Chrome - necessary duplicate */
+@-webkit-keyframes colorchange {
+  0% {
+    background: #ccc;
+  }
+  25% {
+    background: #000;
+  }
+  50% {
+    background: #eee;
+  }
+  100% {
+    background: #333;
+  }
+}
+
 body {
-  background: #111111;
-  background: -webkit-gradient(linear, left top, left bottom, from(#111111), to(#cccccc));
-  background: linear-gradient(180deg, #111111 0%, #cccccc 100%);
-  padding-bottom: 8em;
+  background: #333;
 }
 
 h2 {
@@ -225,6 +274,7 @@ h2 {
   overflow-y: hidden;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+  text-align: center;
   padding: 4em 0;
   top: -2em;
   position: relative;
@@ -306,6 +356,19 @@ button.retweet {
   font-size: 1em;
 }
 
+.fader {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 15em;
+  background: #111111;
+  background: -webkit-gradient(linear, left top, right top, from(rgba(17, 17, 17, 0)), to(#333333));
+  background: linear-gradient(90deg, rgba(17, 17, 17, 0) 0%, #333333 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#111111",endColorstr="#333333",GradientType=1);
+  height: 100%;
+  z-index: 10;
+}
+
 #TileBoard .card {
   height: 28em;
 }
@@ -353,9 +416,7 @@ button.retweet {
 }
 
 #tweets {
-  padding: 0;
-  top: 8em;
-  position: relative;
+  padding: 6em;
 }
 
 #MainNav {

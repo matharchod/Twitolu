@@ -46,17 +46,7 @@
 				<i class="sidenav-close material-icons right black-text">close</i>
 			</a>
 			<div class="spacer col s12">
-				<section>
-					<div class="user-view">
-						<img class="grey" src="http://janianderson.com/imx/_nav/elephant-logo.png">
-						<span class="name grey-text">{{Profile.screen_name}}</span>
-						<span class="chip">
-							<a href="https://twitter.com/the_lonely_seo" class="grey-text text-darken-3">
-								followers <b>{{Profile.followers_count}}</b>
-							</a>
-						</span>
-					</div>
-				</section>
+
 			</div><!-- end spacer -->
 		</nav><!-- sidebar -->
 
@@ -70,10 +60,12 @@
 			</section><!-- / container -->
 
 			<section id="TileBoard" class="tileBoard">
+				<span class="fader"></span>
 				<ul class="row">
 					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect" v-if="tile.media"
-						v-bind:key="tile" v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
+					<li v-for="(tile, index, $event) in Tiles" class="card z-depth-3 animated waves-effect"
+						v-if="tile.media" v-bind:key="tile"
+						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
 						<!-- card-content -->
@@ -130,6 +122,7 @@
 			<section id="SearchBoard">
 				<h2 class="center">Choose a topic that interests you:</h2>
 				<div id="WordCloud" class="tileBoard">
+					<span class="fader"></span>
 					<!-- TAGS -->
 					<a href="#!" class="chip white-text waves-effect" data-activates="slide-out"
 						v-for="word in WordCloud_alpha" v-bind:style="{ backgroundColor: '#' + word.color }"
@@ -181,9 +174,10 @@
 			</section><!-- / container -->
 
 			<section id="" class="tileBoard">
+				<span class="fader"></span>
 				<ul class="row">
 					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+					<li v-for="(tile, index, $event) in filteredTiles" class="card z-depth-3 animated waves-effect"
 						v-if="tile.text" v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
@@ -243,9 +237,10 @@
 			</section><!-- / container -->
 
 			<section class="tileBoard">
+				<span class="fader"></span>
 				<ul class="row">
 					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
+					<li v-for="(tile, index, $event) in Tiles" class="card z-depth-3 animated waves-effect"
 						v-if="tile.text && tile.popularity" v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
@@ -298,6 +293,44 @@
 				</ul>
 			</section><!-- / tileBoard -->
 
+			<section class="container">
+				<div class="row">
+					<h2 class="center">Follow me on Twitter!</h2>
+				</div><!-- /row -->
+			</section><!-- / container -->
+
+			<section class="tileBoard">
+
+				<div class="container">
+					<div class="twitProfile card col s3 offset-s1">
+						<!-- card-content -->
+						<div class="card-content">
+							<h3 class="grey-text center">
+								{{Profile.followers_count}} <br />followers
+							</h3>
+						</div><!-- / card-content -->
+					</div><!-- / card -->
+
+					<div class="twitProfile card col s3">
+						<!-- card-content -->
+						<div class="card-content">
+							<h3 class="grey-text center">
+								{{Profile.friends_count}} <br />friends
+							</h3>
+						</div><!-- / card-content -->
+					</div><!-- / card -->
+
+					<div class="twitProfile card col s3">
+						<!-- card-content -->
+						<div class="card-content">
+							<h3 class="grey-text center">
+								listed <br /> {{Profile.listed_count}} times
+							</h3>
+						</div><!-- / card-content -->
+					</div><!-- / card -->
+				</div>
+
+			</section><!-- / tileBoard -->
 		</div><!-- / tweets -->
 
 
@@ -329,13 +362,21 @@
 
 		var boardScroll = function () {
 			var tileBoardTop = $('#SearchBoard').offset();
-			$('#SearchBoard').animate({scrollLeft: 0}, 'slow');
-			$('html, body').animate({scrollTop: tileBoardTop.top}, 'slow');
+			$('#SearchBoard').animate({
+				scrollLeft: 0
+			}, 'slow');
+			$('html, body').animate({
+				scrollTop: tileBoardTop.top
+			}, 'slow');
 		}
 
 		var topScroll = function () {
-			$('.tileBoard').animate({scrollLeft: 0}, 'slow');
-			$('html, body').animate({scrollTop: 0}, 'slow');
+			$('.tileBoard').animate({
+				scrollLeft: 0
+			}, 'slow');
+			$('html, body').animate({
+				scrollTop: 0
+			}, 'slow');
 		}
 
 		var colors = [

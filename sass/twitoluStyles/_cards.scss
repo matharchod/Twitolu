@@ -6,6 +6,7 @@
     border: none;
     top: 0;
     left: 0;
+    text-align: left;
     display: inline-block;
     width: 32%;
     height: 30rem;
@@ -179,6 +180,12 @@
             }
         }
 
+        .name {
+            font-size: 6em;
+            top: 0.25em;
+            position: absolute;
+            width: 100%;        
+        }
 
     }
 
@@ -219,4 +226,34 @@
 
 .card.inactive {
     display: none;
+}
+
+.twitProfile {
+    background-color: #444;
+    // animation: colorchange 25s; /* animation-name followed by duration in seconds*/
+    //     /* you could also use milliseconds (ms) or something like 2.5s */
+    // -webkit-animation: colorchange 25s; /* Chrome and Safari */
+
+    h3 {
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        margin: 0;
+        width: 100%;    
+    }
+}
+
+@keyframes colorchange {
+    0%   {background: $med-gray;}
+    25%  {background: $black;}
+    50%  {background: $faint-gray;}
+    100% {background: $dark-gray;}
+}
+/* Safari and Chrome - necessary duplicate */ 
+@-webkit-keyframes colorchange {  
+    0%   {background: $med-gray;}
+    25%  {background: $black;}
+    50%  {background: $faint-gray;}
+    100% {background: $dark-gray;}
 }
