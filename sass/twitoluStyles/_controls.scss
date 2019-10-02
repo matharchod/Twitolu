@@ -66,4 +66,10 @@
 #SearchBox {
   background: #fff;
   border-radius: 4em;  
+
+  .chip {
+    position: absolute;
+    right: 0;
+    top: 0.8em;   
+  }
 }

@@ -13,7 +13,7 @@ var Twitolu = (function () {
 				x = input;
 				return x;
 			}
-		}
+		};
 
 	})();
 
@@ -26,7 +26,7 @@ var Twitolu = (function () {
 				x = input;
 				return input;
 			}
-		}
+		};
 
 	})();
 
@@ -36,7 +36,7 @@ var Twitolu = (function () {
 		//Use AJAX to get the latest tweets
 		$.ajax({
 			//REAL DATA
-			// url: "/_projects/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			//url: "/_projects/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
 			//TEST DATA
 			url: "/_projects/Twitolu/tmhOAuth-master/test-data.json",
 			type: "GET",
@@ -77,7 +77,7 @@ var Twitolu = (function () {
 				localStorage.setItem('TwitoluRecipients', JSON.stringify(x));
 				return x;
 			}
-		}
+		};
 
 	})();
 
@@ -91,7 +91,7 @@ var Twitolu = (function () {
 				x.push(input);
 				return x;
 			}
-		}
+		};
 
 	})();
 
@@ -159,7 +159,7 @@ var Twitolu = (function () {
 		//console.log('wordCloud', wordCloud);				
 		return sortedList;
 
-	}
+	};
 
 
 	//Use the Tweets to create tiles	
@@ -173,7 +173,7 @@ var Twitolu = (function () {
 
 			var fixSpecials = function (txt) {
 				return (txt).replace(/&amp;/g, "&"); //corrects ampersands
-			}
+			};
 
 			var Text_obj = fixSpecials(result[i].text);
 				URL_obj = result[i].entities.urls[0],
@@ -183,7 +183,7 @@ var Twitolu = (function () {
 
 			if (Media_obj) {
 				Media_obj = Media_obj[0].media_url_https;
-				Text_obj = Text_obj + '*hasMedia';
+				// Text_obj = Text_obj + '*hasMedia';
 				// console.log('Media_obj', Media_obj[0].media_url_https);
 				//console.log(result[i]);
 			}
@@ -216,7 +216,7 @@ var Twitolu = (function () {
 					return text_notag;
 				}
 
-			}
+			};
 
 			//IF A URL IS UNDEFINED
 			var URL = function () {
@@ -227,7 +227,7 @@ var Twitolu = (function () {
 					//return the display url
 					return URL_obj.url;
 				}
-			}
+			};
 
 			//IF A TAG IS NOT PRESENT
 			var Tag = function () {
@@ -238,7 +238,7 @@ var Twitolu = (function () {
 					//return the tag
 					return Tag_obj;
 				}
-			}
+			};
 
 			//Use the factory to create each tile
 			var tile = {
@@ -260,11 +260,11 @@ var Twitolu = (function () {
 				faveStatus: null,
 				sendStatus: null
 
-			}
+			};
 
 			TilesCollection.push(tile);
 
-		}
+		};
 
 		Tweets(TilesCollection);
 		// 		CloudFactory(TilesCollection);
@@ -274,7 +274,7 @@ var Twitolu = (function () {
 		return Tweets();
 
 
-	}
+	};
 
 	//PUBLIC METHODS
 	return {
@@ -286,6 +286,6 @@ var Twitolu = (function () {
 		TileFactory: TileFactory,
 		CloudFactory: CloudFactory
 
-	}
+	};
 
 })();

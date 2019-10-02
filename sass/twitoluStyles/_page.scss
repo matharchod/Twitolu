@@ -5,7 +5,7 @@ body {
     background: #333;
 }
 
-h2 {
+h1, h2, h3, h4, h5 {
     font-family: 'Yantramanav', sans-serif;
     font-weight: normal;
     color: #fff;    
@@ -28,6 +28,19 @@ h2 {
 
     .card {
         height: 18em;
+
+        &.ender {
+            text-align: center;
+            display: inline-block;
+
+            i {
+                font-size: 6em;
+                -webkit-transform: translateY(-50%);
+                transform: translateY(-50%);
+                position: relative;
+                top: 30%;
+            }
+        }       
     }
 
 }
@@ -122,6 +135,10 @@ button.retweet {
     height: 100%;
     z-index: 10;
 }   
+
+#TwitProfile {
+    padding-bottom: 0;
+}
 
 #TileBoard {
 

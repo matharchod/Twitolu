@@ -33,11 +33,11 @@
 							<i class="material-icons" @click="resetAll()">refresh</i>
 						</a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="#" data-activates="slide-out" class="slide-out-button waves-effect">
 							<i class="material-icons">menu</i>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</nav>
@@ -62,9 +62,25 @@
 			<section id="TileBoard" class="tileBoard">
 				<span class="fader"></span>
 				<ul class="row">
+					<!-- LOADING -->
+					<li class="card loader z-depth-3 animated waves-effect" v-show="loading">
+						<div class="card-content">
+							<div class="lds-roller">
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+							<p class="center grey-text">Loading...</p>
+						</div>
+					</li>
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in Tiles" class="card z-depth-3 animated waves-effect"
-						v-if="tile.media" v-bind:key="tile"
+						v-if="!loading && tile.media" v-bind:key="tile"
 						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
 
@@ -90,14 +106,14 @@
 							</div>
 							<div class="right right-align">
 								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+								<!-- <button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
 									class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
 								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
 									class="material-icons red-text glow waves-effect waves-red">
 									favorite
-								</button>
+								</button> -->
 								<!-- / FAVE button -->
 								<!-- SHARE button -->
 								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
@@ -132,7 +148,7 @@
 					</a>
 					<!-- /TAGS -->
 					<!-- MORE BUTTON -->
-					<button class="chip waves-effect waves-teal material-icons" v-show="showAllTags === false"
+					<button class="chip waves-effect waves-teal material-icons meScroll" v-show="showAllTags === false"
 						@click="showAllTags = true">
 						more_horiz
 					</button>
@@ -166,6 +182,9 @@
 											<i class="material-icons">refresh</i>
 										</label>
 									</template>
+									<div class="chip" v-if="searching">
+										{{ filteredTiles.length }}
+									</div>
 								</div>
 							</form>
 						</div>
@@ -201,14 +220,14 @@
 							</div>
 							<div class="right right-align">
 								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+								<!-- <button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
 									class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
 								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
 									class="material-icons red-text glow waves-effect waves-red">
 									favorite
-								</button>
+								</button> -->
 								<!-- / FAVE button -->
 								<!-- SHARE button -->
 								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
@@ -227,6 +246,9 @@
 							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
 						</div>
 					</li><!-- ******** end CARD ******** -->
+					<li class="card ender card z-depth-0 animated waves-effect flipInY active">
+						<i class="material-icons grey-text">done_all</i>
+					</li>
 				</ul>
 			</section><!-- / tileBoard -->
 
@@ -263,16 +285,11 @@
 								</a>
 							</div>
 							<div class="right right-align">
-								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-									class="material-icons waves-effect waves-light">
-									favorite_border
-								</button>
-								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-									class="material-icons red-text glow waves-effect waves-red">
-									favorite
-								</button>
-								<!-- / FAVE button -->
+								<!-- Popularity -->
+								<!-- <button v-bind:value="tile.ID" >
+									{{ tile.popularity }}
+								</button> -->
+								<!-- / Popularity -->
 								<!-- SHARE button -->
 								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
 									@click="addFave(), share($event)">
@@ -299,38 +316,66 @@
 				</div><!-- /row -->
 			</section><!-- / container -->
 
-			<section class="tileBoard">
+			<section id="TwitProfile" class="tileBoard">
 
-				<div class="container">
-					<div class="twitProfile card col s3 offset-s1">
+				<div class="row">
+					<div class="card col s4">
 						<!-- card-content -->
 						<div class="card-content">
 							<h3 class="grey-text center">
-								{{Profile.followers_count}} <br />followers
+								<a href="https://twitter.com/the_lonely_seo/followers">
+									{{Profile.followers_count}} <br />
+									followers<br />
+									<i class="material-icons">radio</i>
+								</a>
 							</h3>
 						</div><!-- / card-content -->
 					</div><!-- / card -->
 
-					<div class="twitProfile card col s3">
+					<div class="card col s4">
 						<!-- card-content -->
 						<div class="card-content">
 							<h3 class="grey-text center">
-								{{Profile.friends_count}} <br />friends
+								<a href="https://twitter.com/the_lonely_seo">
+									{{Profile.statuses_count}} <br />
+									posts<br />
+									<i class="material-icons">chat</i>
+								</a>
 							</h3>
 						</div><!-- / card-content -->
 					</div><!-- / card -->
 
-					<div class="twitProfile card col s3">
+					<div class="card col s4">
 						<!-- card-content -->
 						<div class="card-content">
 							<h3 class="grey-text center">
-								listed <br /> {{Profile.listed_count}} times
+								<a href="https://twitter.com/the_lonely_seo">listed <br />
+									{{Profile.listed_count}} times<br />
+									<i class="material-icons">star</i>
+								</a>
 							</h3>
 						</div><!-- / card-content -->
 					</div><!-- / card -->
 				</div>
 
+				<div class="ender"></div>
+
 			</section><!-- / tileBoard -->
+
+
+			<section class="container">
+				<div class="row center">
+					<h3 class="white-text">{{Profile.name}}</h3>
+					<h4 class="white-text">{{Profile.screen_name}}</h4>
+					<h4 class="white-text">{{Profile.description}}</h4>
+					<br />
+					<a class="chip" href="https://twitter.com/the_lonely_seo">
+						<img v-bind:src="Profile.profile_image_url_https" />
+					</a>
+				</div><!-- /row -->
+			</section><!-- / container -->
+
+
 		</div><!-- / tweets -->
 
 
@@ -362,7 +407,7 @@
 
 		var boardScroll = function () {
 			var tileBoardTop = $('#SearchBoard').offset();
-			$('#SearchBoard').animate({
+			$('.tileBoard').not('#WordCloud').animate({
 				scrollLeft: 0
 			}, 'slow');
 			$('html, body').animate({
@@ -400,6 +445,7 @@
 			el: '#TwitoluApp',
 			data: function () {
 				return {
+					loading: true,
 					searching: false,
 					searchTerm: '',
 					Favorites: {},
@@ -462,7 +508,6 @@
 					});
 				},
 				switchClass: function (tileStatus, faveStatus, tag) {
-
 					if (tileStatus === 'active' && faveStatus === 'active') {
 						return 'bounce active';
 					} else if (tileStatus === 'active' && faveStatus === 'inactive') {
@@ -505,6 +550,7 @@
 			computed: {
 				filteredTiles: function () {
 					var self = this;
+					this.loading = false;
 					return this.Tiles.filter(function (tile) {
 						return tile.fullText.toLowerCase().indexOf(self.searchTerm
 							.toLowerCase()) >= 0;
@@ -548,6 +594,17 @@
 		$('.card').on('animationend', function () {
 			console.log('done')
 		})
+
+		$('.meScroll').click(function (event) {
+			var $_meBoard = $(this).closest('.tileBoard'),
+				meLoc = $_meBoard.width();
+			$_meBoard.animate({
+				scrollLeft: meLoc * 2
+			}, 'slow');
+			//console.log('meLoc',meLoc);
+		});
+
+
 
 		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
 		$('.collapsible').collapsible();
