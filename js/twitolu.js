@@ -36,7 +36,7 @@ var Twitolu = (function () {
 		//Use AJAX to get the latest tweets
 		$.ajax({
 			//REAL DATA
-			// url: "/_projects/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
+			//url: "/_projects/Twitolu/tmhOAuth-master/tweets_json.php?count=200",
 			//TEST DATA
 			url: "/_projects/Twitolu/tmhOAuth-master/test-data.json",
 			type: "GET",

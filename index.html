@@ -78,13 +78,24 @@
 					</li>
 					<!-- ******** end LOADING ******** -->
 					<!-- ******** CARD ******** -->
-					<JANItwitCard 
+					<janitwitcard 
 						v-for="(tile, index, $event) in Tiles" 
 						class="card animated waves-effect" 
 						v-if="tile.media"
-						v-bind:key="tile" v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
-					</JANItwitCard>
+						v-bind:key="tile"
+						v-bind:tile="tile"
+						v-bind:text="tile.text" 
+						v-bind:media="tile.media"
+						v-bind:id="tile.id"
+						v-bind:url="tile.url"
+						v-bind:tilestatus="tile.tilestatus"
+						v-bind:favestatus="tile.favestatus"
+						v-bind:tag="tile.tag"
+						v-bind:retweet="tile.retweet"
+						v-bind:color="tile.color" 					
+						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+					</janitwitcard>
 					<!-- ******** end CARD ******** -->
 				</ul>
 			</section><!-- / TileBoard -->
@@ -147,15 +158,15 @@
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
 						v-show="tile.text" v-bind:key="tile"
-						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 
 						<!-- card-content -->
 						<div class="card-content">
 							<span v-if="tile.retweet" class="new badge waves-effect"
 								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
 							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+								<a v-bind:href="tile.url" class="flow-text" target="_blank">{{ tile.text }}</a>
 							</p>
 						</div><!-- / card-content -->
 
@@ -169,7 +180,7 @@
 							</div>
 							<div class="right right-align">
 								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+								<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
 									class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
@@ -192,7 +203,7 @@
 									close
 								</i>
 							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
 						</div>
 					</li>
 					<!-- ******** end CARD ******** -->
@@ -210,15 +221,15 @@
 					<!-- ******** CARD ******** -->
 					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
 						v-show="tile.text && tile.popularity" v-bind:key="tile"
-						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 
 						<!-- card-content -->
 						<div class="card-content">
 							<span v-if="tile.retweet" class="new badge waves-effect"
 								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
 							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+								<a v-bind:href="tile.url" class="flow-text" target="_blank">{{ tile.text }}</a>
 							</p>
 						</div><!-- / card-content -->
 
@@ -232,7 +243,7 @@
 							</div>
 							<div class="right right-align">
 								<!-- FAVE button -->
-								<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+								<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
 									class="material-icons waves-effect waves-light">
 									favorite_border
 								</button>
@@ -255,7 +266,7 @@
 									close
 								</i>
 							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
 						</div>
 					</li>
 					<!-- ******** end CARD ******** -->
@@ -270,41 +281,24 @@
 	<!-- ******** CARD TEMPLATE ******** -->
 	<script type="text/x-template" id="twitCard">
 		<!--  CARD  -->
-		<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
-			v-show="tile.text && tile.popularity" v-bind:key="tile"
-			v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-			v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
+		<li class="card animated waves-effect animate active">
 
 			<!-- card-content -->
 			<div class="card-content">
-				<span v-if="tile.retweet" class="new badge waves-effect"
-					@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
+				<span class="new badge waves-effect">{{ retweet }}</span>
 				<p class="link">
-					<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+					<a href="#" class="flow-text" target="_blank">{{ text }}</a>
 				</p>
 			</div><!-- / card-content -->
 
 			<!-- card action -->
 			<div class="card-action">
 				<div class="left left-align">
-					<a href="#!" v-if="tile.tag" class="tag chip waves-effect" @click.prevent="searchByTag(tile.tag)">
-						{{ tile.tag }}
-					</a>
+					<a href="#!" class="tag chip waves-effect">{{ tag }}</a>
 				</div>
 				<div class="right right-align">
-					<!-- FAVE button -->
-					<button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-						class="material-icons waves-effect waves-light">
-						favorite_border
-					</button>
-					<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-						class="material-icons red-text glow waves-effect waves-red">
-						favorite
-					</button>
-					<!-- / FAVE button -->
 					<!-- SHARE button -->
-					<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-						@click="addFave(), share($event)">
+					<button class="activator material-icons waves-effect">
 						share
 					</button>
 					<!-- /SHARE button -->
@@ -316,7 +310,7 @@
 						close
 					</i>
 				</span>
-				<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
+				<textarea @click="textSelect($event.target)">{{ text }} {{ url }}</textarea>
 			</div>
 		</li>
 		<!--  end CARD  -->
@@ -382,7 +376,18 @@
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
 
-		var twitCardTemplate = Vue.component('JANItwitCard', {
+		var twitCardTemplate = Vue.component('janitwitcard', {
+			props: [
+				'text',
+				'id',
+				'media',
+				'url',
+				'tilestatus',
+				'favestatus',
+				'tag',
+				'retweet',
+				'color'
+			],
 			template: '#twitCard'
 		})
 
@@ -401,16 +406,16 @@
 			},
 			methods: {
 				addFave: function () {
-					this.faveStatus = 'active';
+					this.favestatus = 'active';
 				},
 				removeFave: function () {
-					this.faveStatus = 'inactive';
+					this.favestatus = 'inactive';
 				},
 				onlyFaves: function () {
 					$(this).sideNav('hide');
 					Tiles.forEach(function (tile) {
-						if (tile.faveStatus !== 'active') {
-							tile.tileStatus = 'inactive';
+						if (tile.favestatus !== 'active') {
+							tile.tilestatus = 'inactive';
 						}
 					})
 				},
@@ -439,7 +444,7 @@
 					boardScroll();
 					this.searching = false;
 					Tiles.forEach(function (tile) {
-						tile.tileStatus = 'active'
+						tile.tilestatus = 'active'
 					});
 				},
 				resetAll: function () {
@@ -448,41 +453,41 @@
 					topScroll();
 					this.searching = false;
 					Tiles.forEach(function (tile) {
-						tile.tileStatus = 'active'
+						tile.tilestatus = 'active'
 					});
 				},
-				switchClass: function (tileStatus, faveStatus, tag) {
+				switchClass: function (tilestatus, favestatus, tag) {
 
-					if (tileStatus === 'active' && faveStatus === 'active') {
+					if (tilestatus === 'active' && favestatus === 'active') {
 						return 'bounce active';
-					} else if (tileStatus === 'active' && faveStatus === 'inactive') {
+					} else if (tilestatus === 'active' && favestatus === 'inactive') {
 						return 'active';
-					} else if (tileStatus === 'active') {
+					} else if (tilestatus === 'active') {
 						return 'flipInY active';
-					} else if (tileStatus === 'inactive') {
+					} else if (tilestatus === 'inactive') {
 						return 'inactive';
-					} else if (faveStatus === 'active') {
+					} else if (favestatus === 'active') {
 						return 'faved'
 					}
 				},
-				switchStyle: function (tileStatus, faveStatus, index, color) {
+				switchStyle: function (tilestatus, favestatus, index, color) {
 					var delay = (index * 100) + 'ms';
 					var norm = {
 						animationDelay: '0ms',
 						backgroundColor: '#' + color
 					};
-					if (tileStatus === 'active' && faveStatus === 'active') {
+					if (tilestatus === 'active' && favestatus === 'active') {
 						return norm;
-					} else if (tileStatus === 'active' && faveStatus === 'inactive') {
+					} else if (tilestatus === 'active' && favestatus === 'inactive') {
 						return norm;
-					} else if (tileStatus === 'active') {
+					} else if (tilestatus === 'active') {
 						return {
 							animationDelay: delay,
 							backgroundColor: '#' + color
 						};
-					} else if (tileStatus === 'inactive') {
+					} else if (tilestatus === 'inactive') {
 						return norm;
-					} else if (faveStatus === 'active') {
+					} else if (favestatus === 'active') {
 						return {
 							borderColor: '#ccc'
 						}
