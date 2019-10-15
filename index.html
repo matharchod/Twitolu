@@ -70,34 +70,21 @@
 			</section><!-- / container -->
 
 			<section id="TileBoard" class="tileBoard">
-				<ul class="row">
-					<!-- ******** LOADING ******** -->
-					<li class="card animated waves-effect" v-bind:key="Tiles">
+				<div class="row">
+					<!--  LOADING  -->
+					<div class="card animated waves-effect" v-bind:key="Tiles">
 						<p>Loading graphic...</p>
 						<p>{{ Tiles.count }}</p>
-					</li>
-					<!-- ******** end LOADING ******** -->
-					<!-- ******** CARD ******** -->
-					<janitwitcard 
-						v-for="(tile, index, $event) in Tiles" 
-						class="card animated waves-effect" 
-						v-if="tile.media"
-						v-bind:key="tile"
-						v-bind:tile="tile"
-						v-bind:text="tile.text" 
-						v-bind:media="tile.media"
-						v-bind:id="tile.id"
-						v-bind:url="tile.url"
-						v-bind:tilestatus="tile.tilestatus"
-						v-bind:favestatus="tile.favestatus"
-						v-bind:tag="tile.tag"
-						v-bind:retweet="tile.retweet"
-						v-bind:color="tile.color" 					
+					</div>
+					<!--  end LOADING  -->
+					<!--  CARD  -->
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-if="tile.media" v-bind:tile="tile"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
-					<!-- ******** end CARD ******** -->
-				</ul>
+					<!--  end CARD  -->
+				</div>
 			</section><!-- / TileBoard -->
 
 			<section id="SearchBoard">
@@ -153,61 +140,21 @@
 				</div>
 			</section><!-- / container -->
 
-			<section id="" class="tileBoard">
-				<ul class="row">
-					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-show="tile.text" v-bind:key="tile"
-						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+			<section id="FilterBoard" class="tileBoard">
+				<div class="row">
+					<!-- LOADING -->
+					<div class="card animated waves-effect" v-bind:key="Tiles">
+						<p>Loading graphic...</p>
+						<p>{{ Tiles.count }}</p>
+					</div>
+					<!-- end LOADING -->
+					<!-- CARD -->
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-bind:tile="tile" v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
-
-						<!-- card-content -->
-						<div class="card-content">
-							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
-							<p class="link">
-								<a v-bind:href="tile.url" class="flow-text" target="_blank">{{ tile.text }}</a>
-							</p>
-						</div><!-- / card-content -->
-
-						<!-- card action -->
-						<div class="card-action">
-							<div class="left left-align">
-								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-									@click.prevent="searchByTag(tile.tag)">
-									{{ tile.tag }}
-								</a>
-							</div>
-							<div class="right right-align">
-								<!-- FAVE button -->
-								<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-									class="material-icons waves-effect waves-light">
-									favorite_border
-								</button>
-								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-									class="material-icons red-text glow waves-effect waves-red">
-									favorite
-								</button>
-								<!-- / FAVE button -->
-								<!-- SHARE button -->
-								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(), share($event)">
-									share
-								</button>
-								<!-- /SHARE button -->
-							</div>
-						</div><!-- / card-action -->
-						<div class="card-reveal">
-							<span class="card-title">
-								<i class="material-icons right grey-text text-lighten-1">
-									close
-								</i>
-							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
-						</div>
-					</li>
-					<!-- ******** end CARD ******** -->
-				</ul>
+					</janitwitcard>
+					<!-- end CARD -->
+				</div>
 			</section><!-- / tileBoard -->
 
 			<section class="container">
@@ -216,61 +163,22 @@
 				</div><!-- /row -->
 			</section><!-- / container -->
 
-			<section class="tileBoard">
-				<ul class="row">
-					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
-						v-show="tile.text && tile.popularity" v-bind:key="tile"
+			<section id="FameBoard" class="tileBoard">
+				<div class="row">
+					<!-- LOADING -->
+					<div class="card animated waves-effect" v-bind:key="Tiles">
+						<p>Loading graphic...</p>
+						<p>{{ Tiles.count }}</p>
+					</div>
+					<!-- end LOADING -->
+					<!-- CARD -->
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-if="tile.text && tile.popularity" v-bind:tile="tile"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
-
-						<!-- card-content -->
-						<div class="card-content">
-							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
-							<p class="link">
-								<a v-bind:href="tile.url" class="flow-text" target="_blank">{{ tile.text }}</a>
-							</p>
-						</div><!-- / card-content -->
-
-						<!-- card action -->
-						<div class="card-action">
-							<div class="left left-align">
-								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-									@click.prevent="searchByTag(tile.tag)">
-									{{ tile.tag }}
-								</a>
-							</div>
-							<div class="right right-align">
-								<!-- FAVE button -->
-								<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-									class="material-icons waves-effect waves-light">
-									favorite_border
-								</button>
-								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-									class="material-icons red-text glow waves-effect waves-red">
-									favorite
-								</button>
-								<!-- / FAVE button -->
-								<!-- SHARE button -->
-								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(), share($event)">
-									share
-								</button>
-								<!-- /SHARE button -->
-							</div>
-						</div><!-- / card-action -->
-						<div class="card-reveal">
-							<span class="card-title">
-								<i class="material-icons right grey-text text-lighten-1">
-									close
-								</i>
-							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
-						</div>
-					</li>
-					<!-- ******** end CARD ******** -->
-				</ul>
+					</janitwitcard>
+					<!-- end CARD -->
+				</div>
 			</section><!-- / tileBoard -->
 
 		</div><!-- / tweets -->
@@ -278,27 +186,46 @@
 
 	</div><!-- / main -->
 
-	<!-- ******** CARD TEMPLATE ******** -->
+	<!-- CARD TEMPLATE -->
 	<script type="text/x-template" id="twitCard">
-		<!--  CARD  -->
-		<li class="card animated waves-effect animate active">
-
+		<!-- card -->
+		<div>
 			<!-- card-content -->
 			<div class="card-content">
-				<span class="new badge waves-effect">{{ retweet }}</span>
+				<span v-if="tile.media" class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
+					<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
+				</span>
+				<span v-if="tile.retweet" class="new badge waves-effect"
+					@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
 				<p class="link">
-					<a href="#" class="flow-text" target="_blank">{{ text }}</a>
+					<a v-bind:href="tile.url" class="flow-text" target="_blank">{{ tile.text }}</a>
 				</p>
-			</div><!-- / card-content -->
+			</div>
 
 			<!-- card action -->
 			<div class="card-action">
 				<div class="left left-align">
-					<a href="#!" class="tag chip waves-effect">{{ tag }}</a>
+					<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
+						:style="{ backgroundColor: '#' + tile.color, borderColor: '#' + tile.color }"
+						v-on:click="$emit('search-by-tag', tile.tag)"
+						v-on:search-by-tag="searchByTag(tile.tag)">
+						{{ tile.tag }}
+					</a>
 				</div>
 				<div class="right right-align">
+					<!-- FAVE button -->
+					<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+						class="material-icons waves-effect waves-light">
+						favorite_border
+					</button>
+					<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
+						class="material-icons red-text glow waves-effect waves-red">
+						favorite
+					</button>
+					<!-- / FAVE button -->
 					<!-- SHARE button -->
-					<button class="activator material-icons waves-effect">
+					<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
+						@click="addFave(), share($event)">
 						share
 					</button>
 					<!-- /SHARE button -->
@@ -310,11 +237,12 @@
 						close
 					</i>
 				</span>
-				<textarea @click="textSelect($event.target)">{{ text }} {{ url }}</textarea>
+				<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
 			</div>
-		</li>
-		<!--  end CARD  -->
-	</script><!-- ******** end CARD TEMPLATE ******** -->
+		</div>
+
+		<!-- end CARD -->
+	</script><!-- end CARD TEMPLATE -->
 
 </body>
 <!-- The SCRIPTS -->
@@ -377,17 +305,7 @@
 		var Profile = Twitolu.User();
 
 		var twitCardTemplate = Vue.component('janitwitcard', {
-			props: [
-				'text',
-				'id',
-				'media',
-				'url',
-				'tilestatus',
-				'favestatus',
-				'tag',
-				'retweet',
-				'color'
-			],
+			props: ['tile'],
 			template: '#twitCard'
 		})
 
@@ -482,8 +400,8 @@
 						return norm;
 					} else if (tilestatus === 'active') {
 						return {
-							animationDelay: delay,
-							backgroundColor: '#' + color
+							animationDelay: delay
+							//backgroundColor: '#' + color
 						};
 					} else if (tilestatus === 'inactive') {
 						return norm;

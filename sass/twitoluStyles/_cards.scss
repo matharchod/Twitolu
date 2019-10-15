@@ -49,7 +49,7 @@
         }
 
         a {
-			opacity: 0.5;
+			opacity: 0.9;
 			font-size: 9px;
 			padding: 0 2em;
 			letter-spacing: 1px;
@@ -100,6 +100,9 @@
         display: inline-block;
         float: none;
         margin: 0 0 1em 0;
+        position: absolute;
+        top: 0;
+        right: 0;
 
         &:after {
             content: '' !important;
@@ -138,8 +141,8 @@
             background-color: $trans-gray;
             background-position: center;
             background-size: cover;
-			text-align: center;
-			
+            text-align: center;
+
 			a {
 				display: block;
 				height: 100%;

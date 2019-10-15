@@ -51,7 +51,7 @@
 }
 
 .card .card-action a {
-  opacity: 0.5;
+  opacity: 0.9;
   font-size: 9px;
   padding: 0 2em;
   letter-spacing: 1px;
@@ -100,6 +100,9 @@
   display: inline-block;
   float: none;
   margin: 0 0 1em 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .card .badge:after {
@@ -313,6 +316,16 @@ button.retweet {
 
 #TileBoard .card {
   height: 28em;
+}
+
+#FilterBoard .card .img-contain, #FameBoard .card .img-contain {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: inline-block;
+  top: 1em;
+  left: 2em;
+  margin-bottom: 0.5em;
 }
 
 #WordCloud {
