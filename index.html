@@ -78,7 +78,7 @@
 					</div>
 					<!--  end LOADING  -->
 					<!--  CARD  -->
-					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+					<janitwitcard v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
 						v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
@@ -121,7 +121,8 @@
 						<div class="searchBox">
 							<form>
 								<div class="input-field">
-									<input v-model="searchterm" type="search" @focus="searching = true" @blur="searching = false">
+									<input v-model="searchterm" type="search" @focus="searching = true"
+										@blur="searching = false">
 									<template v-if="!searching">
 										<label class="label-icon" for="search" @click="reset()">
 											<i class="material-icons">search</i>
@@ -142,14 +143,14 @@
 			<section id="FilterBoard" class="tileBoard">
 				<div class="row">
 					<!-- LOADING -->
-					<div class="card animated waves-effect" v-bind:key="Tiles" v-if="loading">
+					<div class="card animated waves-effect" v-if="loading">
 						<p>Loading graphic...</p>
 						<p>{{ Tiles.count }}</p>
 					</div>
 					<!-- end LOADING -->
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-bind:tile="tile" v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:tile="tile" v-bind:key="tile.index" v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
 					<!-- end CARD -->
@@ -172,7 +173,7 @@
 					<!-- end LOADING -->
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-if="tile.text && tile.popularity" v-bind:tile="tile"
+						v-if="tile.text && tile.popularity" v-bind:tile="tile" v:bind:key="tile.index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
@@ -206,7 +207,7 @@
 				<div class="left left-align">
 					<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
 						:style="{ backgroundColor: '#' + tile.color, borderColor: '#' + tile.color }"
-						v-on:click="$emit('search-by-tag', tile.tag)">
+						v-on:click="searchbytag(tile.tag)">
 						{{ tile.tag }}
 					</a>
 				</div>
@@ -301,10 +302,109 @@
 		var Tiles = Twitolu.TileFactory(colors);
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
+		var TileMethods = {
+			tester: function () {
+				//this.$root.searchterm = "testing"
+				console.log('heyo!');
+			},
+			addFave: function () {
+				this.favestatus = 'active';
+			},
+			removeFave: function () {
+				this.favestatus = 'inactive';
+			},
+			onlyFaves: function () {
+				$(this).sideNav('hide');
+				Tiles.forEach(function (tile) {
+					if (tile.favestatus !== 'active') {
+						tile.tilestatus = 'inactive';
+					}
+				})
+			},
+			onlyMedia: function () {
+				this.searchterm = '*hasMedia';
+				$(this).sideNav('hide');
+				boardScroll();
+			},
+			onlyRetweets: function () {
+				this.searchterm = 'rt @';
+				$(this).sideNav('hide');
+				boardScroll();
+			},
+			searchbytag: function (tag) {
+				this.$root.searchterm = tag.toLowerCase();
+				this.$root.searching = true;
+				boardScroll();
+			},
 
-		var twitCardTemplate = Vue.component('janitwitcard', {
+			share: function () {
+				var Faves = this.Favorites;
+			},
+			reset: function () {
+				this.searchterm = '';
+				$(this).sideNav('hide');
+				boardScroll();
+				this.searching = false;
+				Tiles.forEach(function (tile) {
+					tile.tilestatus = 'active'
+				});
+			},
+			resetAll: function () {
+				this.searchterm = '';
+				$(this).sideNav('hide');
+				topScroll();
+				this.searching = false;
+				Tiles.forEach(function (tile) {
+					tile.tilestatus = 'active'
+				});
+			},
+			switchClass: function (tilestatus, favestatus, tag) {
+
+				if (tilestatus === 'active' && favestatus === 'active') {
+					return 'bounce active';
+				} else if (tilestatus === 'active' && favestatus === 'inactive') {
+					return 'active';
+				} else if (tilestatus === 'active') {
+					return 'flipInY active';
+				} else if (tilestatus === 'inactive') {
+					return 'inactive';
+				} else if (favestatus === 'active') {
+					return 'faved'
+				}
+			},
+			switchStyle: function (tilestatus, favestatus, index, color) {
+				var delay = (index * 100) + 'ms';
+				var norm = {
+					animationDelay: '0ms',
+					backgroundColor: '#' + color
+				};
+				if (tilestatus === 'active' && favestatus === 'active') {
+					return norm;
+				} else if (tilestatus === 'active' && favestatus === 'inactive') {
+					return norm;
+				} else if (tilestatus === 'active') {
+					return {
+						animationDelay: delay
+						//backgroundColor: '#' + color
+					};
+				} else if (tilestatus === 'inactive') {
+					return norm;
+				} else if (favestatus === 'active') {
+					return {
+						borderColor: '#ccc'
+					}
+				}
+			},
+			textSelect: function (target) {
+				$(target).select();
+			}
+		}
+
+		Vue.component('janitwitcard', {
 			props: ['tile'],
-			template: '#twitCard'
+			template: '#twitCard',
+			methods: TileMethods
+
 		})
 
 		var TileBoard = new Vue({
@@ -319,101 +419,6 @@
 					Tiles,
 					WordCloud,
 					Profile
-				}
-			},
-			methods: {
-				tester: function () {
-					this.$root.searchterm = "testing"
-				},
-				addFave: function () {
-					this.favestatus = 'active';
-				},
-				removeFave: function () {
-					this.favestatus = 'inactive';
-				},
-				onlyFaves: function () {
-					$(this).sideNav('hide');
-					Tiles.forEach(function (tile) {
-						if (tile.favestatus !== 'active') {
-							tile.tilestatus = 'inactive';
-						}
-					})
-				},
-				onlyMedia: function () {
-					this.searchterm = '*hasMedia';
-					$(this).sideNav('hide');
-					boardScroll();
-				},
-				onlyRetweets: function () {
-					this.searchterm = 'rt @';
-					$(this).sideNav('hide');
-					boardScroll();
-				},
-				searchbytag: function (event) {
-					this.$root.searchterm = event.target.value.toLowerCase();
-					this.$root.searching = true;
-					boardScroll();
-				},
-				share: function () {
-					var Faves = this.Favorites;
-				},
-				reset: function () {
-					this.searchterm = '';
-					$(this).sideNav('hide');
-					boardScroll();
-					this.searching = false;
-					Tiles.forEach(function (tile) {
-						tile.tilestatus = 'active'
-					});
-				},
-				resetAll: function () {
-					this.searchterm = '';
-					$(this).sideNav('hide');
-					topScroll();
-					this.searching = false;
-					Tiles.forEach(function (tile) {
-						tile.tilestatus = 'active'
-					});
-				},
-				switchClass: function (tilestatus, favestatus, tag) {
-
-					if (tilestatus === 'active' && favestatus === 'active') {
-						return 'bounce active';
-					} else if (tilestatus === 'active' && favestatus === 'inactive') {
-						return 'active';
-					} else if (tilestatus === 'active') {
-						return 'flipInY active';
-					} else if (tilestatus === 'inactive') {
-						return 'inactive';
-					} else if (favestatus === 'active') {
-						return 'faved'
-					}
-				},
-				switchStyle: function (tilestatus, favestatus, index, color) {
-					var delay = (index * 100) + 'ms';
-					var norm = {
-						animationDelay: '0ms',
-						backgroundColor: '#' + color
-					};
-					if (tilestatus === 'active' && favestatus === 'active') {
-						return norm;
-					} else if (tilestatus === 'active' && favestatus === 'inactive') {
-						return norm;
-					} else if (tilestatus === 'active') {
-						return {
-							animationDelay: delay
-							//backgroundColor: '#' + color
-						};
-					} else if (tilestatus === 'inactive') {
-						return norm;
-					} else if (favestatus === 'active') {
-						return {
-							borderColor: '#ccc'
-						}
-					}
-				},
-				textSelect: function (target) {
-					$(target).select();
 				}
 			},
 			computed: {
@@ -445,7 +450,8 @@
 				WordCloud_delta: function () {
 					return this.WordCloud.slice(10, (this.WordCloud.length + 1));
 				}
-			}
+			},
+			methods: TileMethods
 		});
 
 
