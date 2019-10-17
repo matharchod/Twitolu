@@ -60,7 +60,7 @@
 }
 
 .card .card-action a {
-  opacity: 0.5;
+  opacity: 0.9;
   font-size: 9px;
   padding: 0 2em;
   letter-spacing: 1px;
@@ -109,6 +109,9 @@
   display: inline-block;
   float: none;
   margin: 0 0 1em 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .card .badge:after {
@@ -201,6 +204,8 @@
   width: 100%;
   display: inline-block;
   position: absolute;
+  top: 0;
+  z-index: 2;
 }
 
 .card .card-reveal .card-title i {
@@ -247,7 +252,10 @@
 }
 
 body {
-  background: #333;
+  background: #111111;
+  background: -webkit-gradient(linear, left top, left bottom, from(#111111), to(#cccccc));
+  background: linear-gradient(180deg, #111111 0%, #cccccc 100%);
+  padding-bottom: 8em;
 }
 
 h1, h2, h3, h4, h5 {
@@ -375,6 +383,16 @@ button.retweet {
 
 #TileBoard .card {
   height: 28em;
+}
+
+#FilterBoard .card .img-contain, #FameBoard .card .img-contain {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: inline-block;
+  top: 1em;
+  left: 2em;
+  margin-bottom: 0.5em;
 }
 
 #WordCloud {

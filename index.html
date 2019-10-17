@@ -61,9 +61,9 @@
 
 			<section id="TileBoard" class="tileBoard">
 				<span class="fader"></span>
-				<ul class="row">
+				<div class="row">
 					<!-- LOADING -->
-					<li class="card loader z-depth-3 animated waves-effect" v-show="loading">
+					<div class="card loader z-depth-3 animated waves-effect" v-show="loading">
 						<div class="card-content">
 							<div class="lds-roller">
 								<div></div>
@@ -77,62 +77,15 @@
 							</div>
 							<p class="center grey-text">Loading...</p>
 						</div>
-					</li>
-					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card z-depth-3 animated waves-effect"
-						v-if="!loading && tile.media" v-bind:key="tile"
-						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
-
-						<!-- card-content -->
-						<div class="card-content">
-							<span class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
-								<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
-							</span>
-							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
-							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
-							</p>
-						</div><!-- / card-content -->
-
-						<!-- card action -->
-						<div class="card-action">
-							<div class="left left-align">
-								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-									@click.prevent="searchByTag(tile.tag)">
-									{{ tile.tag }}
-								</a>
-							</div>
-							<div class="right right-align">
-								<!-- FAVE button -->
-								<!-- <button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-									class="material-icons waves-effect waves-light">
-									favorite_border
-								</button>
-								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-									class="material-icons red-text glow waves-effect waves-red">
-									favorite
-								</button> -->
-								<!-- / FAVE button -->
-								<!-- SHARE button -->
-								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(), share($event)">
-									share
-								</button>
-								<!-- /SHARE button -->
-							</div>
-						</div><!-- / card-action -->
-						<div class="card-reveal">
-							<span class="card-title">
-								<i class="material-icons right grey-text text-lighten-1">
-									close
-								</i>
-							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
-						</div>
-					</li><!-- ******** end CARD ******** -->
-				</ul>
+					</div>
+					<!--  CARD  -->
+					<janitwitcard v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
+						v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.index"
+						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+					</janitwitcard>
+					<!--  end CARD  -->
+				</div>
 			</section><!-- / TileBoard -->
 
 			<section id="SearchBoard">
@@ -142,7 +95,7 @@
 					<!-- TAGS -->
 					<a href="#!" class="chip white-text waves-effect" data-activates="slide-out"
 						v-for="word in WordCloud_alpha" v-bind:style="{ backgroundColor: '#' + word.color }"
-						@click="searchByTag(word.tag)">
+						@click="searchbytag(word.tag)">
 						{{ word.tag }}
 						<b>{{ word.count }}</b>
 					</a>
@@ -160,7 +113,7 @@
 					<!-- ADDITIONAL TAGS -->
 					<a href="#!" class="chip grey darken-3 white-text waves-effect" data-activates="slide-out"
 						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word"
-						@click="searchByTag(word.tag)">
+						@click="searchbytag(word.tag)">
 						{{ word.tag }}
 					</a>
 					<!-- /ADDITIONAL TAGS -->
@@ -170,7 +123,7 @@
 						<div class="searchBox">
 							<form>
 								<div class="input-field">
-									<input v-model="searchTerm" type="search" @focus="searching = true"
+									<input v-model="searchterm" type="search" @focus="searching = true"
 										@blur="searching = false">
 									<template v-if="!searching">
 										<label class="label-icon" for="search" @click="reset()">
@@ -192,64 +145,17 @@
 				</div>
 			</section><!-- / container -->
 
-			<section id="" class="tileBoard">
+			<section id="FilterBoard" class="tileBoard">
 				<span class="fader"></span>
-				<ul class="row">
-					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in filteredTiles" class="card z-depth-3 animated waves-effect"
-						v-if="tile.text" v-bind:key="tile"
-						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
-
-						<!-- card-content -->
-						<div class="card-content">
-							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
-							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
-							</p>
-						</div><!-- / card-content -->
-
-						<!-- card action -->
-						<div class="card-action">
-							<div class="left left-align">
-								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-									@click.prevent="searchByTag(tile.tag)">
-									{{ tile.tag }}
-								</a>
-							</div>
-							<div class="right right-align">
-								<!-- FAVE button -->
-								<!-- <button v-if="tile.faveStatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-									class="material-icons waves-effect waves-light">
-									favorite_border
-								</button>
-								<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-									class="material-icons red-text glow waves-effect waves-red">
-									favorite
-								</button> -->
-								<!-- / FAVE button -->
-								<!-- SHARE button -->
-								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(), share($event)">
-									share
-								</button>
-								<!-- /SHARE button -->
-							</div>
-						</div><!-- / card-action -->
-						<div class="card-reveal">
-							<span class="card-title">
-								<i class="material-icons right grey-text text-lighten-1">
-									close
-								</i>
-							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
-						</div>
-					</li><!-- ******** end CARD ******** -->
-					<li class="card ender card z-depth-0 animated waves-effect flipInY active">
-						<i class="material-icons grey-text">done_all</i>
-					</li>
-				</ul>
+				<div class="row">
+					<!-- CARD -->
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-bind:tile="tile" v-bind:key="tile.index"
+						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+					</janitwitcard>
+					<!-- end CARD -->
+				</div>
 			</section><!-- / tileBoard -->
 
 			<section class="container">
@@ -258,56 +164,17 @@
 				</div><!-- /row -->
 			</section><!-- / container -->
 
-			<section class="tileBoard">
+			<section id="FameBoard" class="tileBoard">
 				<span class="fader"></span>
-				<ul class="row">
-					<!-- ******** CARD ******** -->
-					<li v-for="(tile, index, $event) in Tiles" class="card z-depth-3 animated waves-effect"
-						v-if="tile.text && tile.popularity" v-bind:key="tile"
-						v-bind:style="switchStyle(tile.tileStatus,tile.faveStatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tileStatus,tile.faveStatus)">
-
-						<!-- card-content -->
-						<div class="card-content">
-							<span v-if="tile.retweet" class="new badge waves-effect"
-								@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
-							<p class="link">
-								<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
-							</p>
-						</div><!-- / card-content -->
-
-						<!-- card action -->
-						<div class="card-action">
-							<div class="left left-align">
-								<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-									@click.prevent="searchByTag(tile.tag)">
-									{{ tile.tag }}
-								</a>
-							</div>
-							<div class="right right-align">
-								<!-- Popularity -->
-								<!-- <button v-bind:value="tile.ID" >
-									{{ tile.popularity }}
-								</button> -->
-								<!-- / Popularity -->
-								<!-- SHARE button -->
-								<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-									@click="addFave(), share($event)">
-									share
-								</button>
-								<!-- /SHARE button -->
-							</div>
-						</div><!-- / card-action -->
-						<div class="card-reveal">
-							<span class="card-title">
-								<i class="material-icons right grey-text text-lighten-1">
-									close
-								</i>
-							</span>
-							<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.URL }}</textarea>
-						</div>
-					</li><!-- ******** end CARD ******** -->
-				</ul>
+				<div class="row">
+					<!-- CARD -->
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-if="tile.text && tile.popularity" v-bind:tile="tile" v:bind:key="tile.index"
+						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
+						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+					</janitwitcard>
+					<!-- end CARD -->
+				</div>
 			</section><!-- / tileBoard -->
 
 			<section class="container">
@@ -381,6 +248,63 @@
 
 	</div><!-- / main -->
 
+	<!-- CARD TEMPLATE -->
+	<script type="text/x-template" id="twitCard">
+		<!-- card -->
+		<div>
+			<!-- card-content -->
+			<div class="card-content">
+				<span v-if="tile.media" class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
+					<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
+				</span>
+				<span v-if="tile.retweet" class="new badge waves-effect"
+					@click.prevent="searchbytag(tile.retweet)">{{ tile.retweet }}</span>
+				<p class="link">
+					<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+				</p>
+			</div>
+
+			<!-- card action -->
+			<div class="card-action">
+				<div class="left left-align">
+					<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
+						:style="{ backgroundColor: '#' + tile.color, borderColor: '#' + tile.color }"
+						v-on:click="searchbytag(tile.tag)">
+						{{ tile.tag }}
+					</a>
+				</div>
+				<div class="right right-align">
+					<!-- FAVE button -->
+					<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+						class="material-icons waves-effect waves-light">
+						favorite_border
+					</button>
+					<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
+						class="material-icons red-text glow waves-effect waves-red">
+						favorite
+					</button>
+					<!-- / FAVE button -->
+					<!-- SHARE button -->
+					<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
+						@click="addFave(), share($event)">
+						share
+					</button>
+					<!-- /SHARE button -->
+				</div>
+			</div><!-- / card-action -->
+			<div class="card-reveal">
+				<span class="card-title">
+					<i class="material-icons right grey-text text-lighten-1">
+						close
+					</i>
+				</span>
+				<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
+			</div>
+		</div>
+
+		<!-- end CARD -->
+	</script><!-- end CARD TEMPLATE -->
+
 </body>
 <!-- The SCRIPTS -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -407,7 +331,7 @@
 
 		var boardScroll = function () {
 			var tileBoardTop = $('#SearchBoard').offset();
-			$('.tileBoard').not('#WordCloud').animate({
+			$('.tileBoard:not(#WordCloud)').animate({
 				scrollLeft: 0
 			}, 'slow');
 			$('html, body').animate({
@@ -440,6 +364,109 @@
 		var Tiles = Twitolu.TileFactory(colors);
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
+		var TileMethods = {
+			tester: function () {
+				//this.$root.searchterm = "testing"
+				console.log('heyo!');
+			},
+			addFave: function () {
+				this.favestatus = 'active';
+			},
+			removeFave: function () {
+				this.favestatus = 'inactive';
+			},
+			onlyFaves: function () {
+				$(this).sideNav('hide');
+				Tiles.forEach(function (tile) {
+					if (tile.favestatus !== 'active') {
+						tile.tilestatus = 'inactive';
+					}
+				})
+			},
+			onlyMedia: function () {
+				this.searchterm = '*hasMedia';
+				$(this).sideNav('hide');
+				boardScroll();
+			},
+			onlyRetweets: function () {
+				this.searchterm = 'rt @';
+				$(this).sideNav('hide');
+				boardScroll();
+			},
+			searchbytag: function (tag) {
+				this.$root.searchterm = tag.toLowerCase();
+				this.$root.searching = true;
+				boardScroll();
+			},
+			share: function () {
+				var Faves = this.Favorites;
+			},
+			reset: function () {
+				this.searchterm = '';
+				$(this).sideNav('hide');
+				boardScroll();
+				this.searching = false;
+				Tiles.forEach(function (tile) {
+					tile.tilestatus = 'active'
+				});
+			},
+			resetAll: function () {
+				this.searchterm = '';
+				$(this).sideNav('hide');
+				topScroll();
+				this.searching = false;
+				Tiles.forEach(function (tile) {
+					tile.tilestatus = 'active'
+				});
+			},
+			switchClass: function (tilestatus, favestatus, tag) {
+
+				if (tilestatus === 'active' && favestatus === 'active') {
+					return 'bounce active';
+				} else if (tilestatus === 'active' && favestatus === 'inactive') {
+					return 'active';
+				} else if (tilestatus === 'active') {
+					return 'flipInY active';
+				} else if (tilestatus === 'inactive') {
+					return 'inactive';
+				} else if (favestatus === 'active') {
+					return 'faved'
+				}
+			},
+			switchStyle: function (tilestatus, favestatus, index, color) {
+				var delay = (index * 100) + 'ms';
+				var norm = {
+					animationDelay: '0ms',
+					backgroundColor: '#' + color
+				};
+				if (tilestatus === 'active' && favestatus === 'active') {
+					return norm;
+				} else if (tilestatus === 'active' && favestatus === 'inactive') {
+					return norm;
+				} else if (tilestatus === 'active') {
+					return {
+						animationDelay: delay
+						//backgroundColor: '#' + color
+					};
+				} else if (tilestatus === 'inactive') {
+					return norm;
+				} else if (favestatus === 'active') {
+					return {
+						borderColor: '#ccc'
+					}
+				}
+			},
+			textSelect: function (target) {
+				$(target).select();
+			}
+		}
+
+		Vue.component('janitwitcard', {
+			props: ['tile'],
+			template: '#twitCard',
+			methods: TileMethods
+
+		})
 
 		var TileBoard = new Vue({
 			el: '#TwitoluApp',
@@ -447,7 +474,8 @@
 				return {
 					loading: true,
 					searching: false,
-					searchTerm: '',
+					searchterm: '',
+					loading: true,
 					Favorites: {},
 					showAllTags: false,
 					Tiles,
@@ -455,104 +483,12 @@
 					Profile
 				}
 			},
-			methods: {
-				addFave: function () {
-					this.faveStatus = 'active';
-				},
-				removeFave: function () {
-					this.faveStatus = 'inactive';
-				},
-				onlyFaves: function () {
-					$(this).sideNav('hide');
-					Tiles.forEach(function (tile) {
-						if (tile.faveStatus !== 'active') {
-							tile.tileStatus = 'inactive';
-						}
-					})
-				},
-				onlyMedia: function () {
-					this.searchTerm = '*hasMedia';
-					$(this).sideNav('hide');
-					boardScroll();
-				},
-				onlyRetweets: function () {
-					this.searchTerm = 'rt @';
-					$(this).sideNav('hide');
-					boardScroll();
-				},
-				searchByTag: function (tag, index, event) {
-					this.searchTerm = tag.toLowerCase();
-					this.searching = true;
-					$(this).sideNav('hide');
-					boardScroll();
-				},
-				share: function () {
-					var Faves = this.Favorites;
-				},
-				reset: function () {
-					this.searchTerm = '';
-					$(this).sideNav('hide');
-					boardScroll();
-					this.searching = false;
-					Tiles.forEach(function (tile) {
-						tile.tileStatus = 'active'
-					});
-				},
-				resetAll: function () {
-					this.searchTerm = '';
-					$(this).sideNav('hide');
-					topScroll();
-					this.searching = false;
-					Tiles.forEach(function (tile) {
-						tile.tileStatus = 'active'
-					});
-				},
-				switchClass: function (tileStatus, faveStatus, tag) {
-					if (tileStatus === 'active' && faveStatus === 'active') {
-						return 'bounce active';
-					} else if (tileStatus === 'active' && faveStatus === 'inactive') {
-						return 'active';
-					} else if (tileStatus === 'active') {
-						return 'flipInY active';
-					} else if (tileStatus === 'inactive') {
-						return 'inactive';
-					} else if (faveStatus === 'active') {
-						return 'faved'
-					}
-				},
-				switchStyle: function (tileStatus, faveStatus, index, color) {
-					var delay = (index * 100) + 'ms';
-					var norm = {
-						animationDelay: '0ms',
-						backgroundColor: '#' + color
-					};
-					if (tileStatus === 'active' && faveStatus === 'active') {
-						return norm;
-					} else if (tileStatus === 'active' && faveStatus === 'inactive') {
-						return norm;
-					} else if (tileStatus === 'active') {
-						return {
-							animationDelay: delay,
-							backgroundColor: '#' + color
-						};
-					} else if (tileStatus === 'inactive') {
-						return norm;
-					} else if (faveStatus === 'active') {
-						return {
-							borderColor: '#ccc'
-						}
-					}
-				},
-				textSelect: function (target) {
-					$(target).select();
-				}
-			},
 			computed: {
 				filteredTiles: function () {
 					var self = this;
 					this.loading = false;
 					return this.Tiles.filter(function (tile) {
-						return tile.fullText.toLowerCase().indexOf(self.searchTerm
+						return tile.fullText.toLowerCase().indexOf(self.searchterm
 							.toLowerCase()) >= 0;
 					});
 				},
@@ -577,7 +513,8 @@
 				WordCloud_delta: function () {
 					return this.WordCloud.slice(10, (this.WordCloud.length + 1));
 				}
-			}
+			},
+			methods: TileMethods
 		});
 
 
