@@ -72,14 +72,14 @@
 			<section id="TileBoard" class="tileBoard">
 				<div class="row">
 					<!--  LOADING  -->
-					<div class="card animated waves-effect" v-bind:key="Tiles">
+					<div class="card animated waves-effect" v-bind:key="filteredTiles.index" v-if="loading">
 						<p>Loading graphic...</p>
 						<p>{{ Tiles.count }}</p>
 					</div>
 					<!--  end LOADING  -->
 					<!--  CARD  -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-if="tile.media" v-bind:tile="tile"
+						v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
@@ -93,7 +93,7 @@
 					<!-- TAGS -->
 					<a href="#!" class="chip white-text waves-effect" data-activates="slide-out"
 						v-for="word in WordCloud_alpha" v-bind:style="{ backgroundColor: '#' + word.color }"
-						@click="searchByTag(word.tag)">
+						@click="searchbytag(word.tag)">
 						{{ word.tag }}
 						<b>{{ word.count }}</b>
 					</a>
@@ -111,7 +111,7 @@
 					<!-- ADDITIONAL TAGS -->
 					<a href="#!" class="chip grey darken-3 white-text waves-effect" data-activates="slide-out"
 						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word"
-						@click="searchByTag(word.tag)">
+						@click="searchbytag(word.tag)">
 						{{ word.tag }}
 					</a>
 					<!-- /ADDITIONAL TAGS -->
@@ -121,8 +121,7 @@
 						<div class="searchBox">
 							<form>
 								<div class="input-field">
-									<input v-model="searchTerm" type="search" @focus="searching = true"
-										@blur="searching = false">
+									<input v-model="searchterm" type="search" @focus="searching = true" @blur="searching = false">
 									<template v-if="!searching">
 										<label class="label-icon" for="search" @click="reset()">
 											<i class="material-icons">search</i>
@@ -143,7 +142,7 @@
 			<section id="FilterBoard" class="tileBoard">
 				<div class="row">
 					<!-- LOADING -->
-					<div class="card animated waves-effect" v-bind:key="Tiles">
+					<div class="card animated waves-effect" v-bind:key="Tiles" v-if="loading">
 						<p>Loading graphic...</p>
 						<p>{{ Tiles.count }}</p>
 					</div>
@@ -166,7 +165,7 @@
 			<section id="FameBoard" class="tileBoard">
 				<div class="row">
 					<!-- LOADING -->
-					<div class="card animated waves-effect" v-bind:key="Tiles">
+					<div class="card animated waves-effect" v-bind:key="Tiles" v-if="loading">
 						<p>Loading graphic...</p>
 						<p>{{ Tiles.count }}</p>
 					</div>
@@ -196,7 +195,7 @@
 					<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
 				</span>
 				<span v-if="tile.retweet" class="new badge waves-effect"
-					@click.prevent="searchByTag(tile.retweet)">{{ tile.retweet }}</span>
+					@click.prevent="searchbytag(tile.retweet)">{{ tile.retweet }}</span>
 				<p class="link">
 					<a v-bind:href="tile.url" class="flow-text" target="_blank">{{ tile.text }}</a>
 				</p>
@@ -207,8 +206,7 @@
 				<div class="left left-align">
 					<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
 						:style="{ backgroundColor: '#' + tile.color, borderColor: '#' + tile.color }"
-						v-on:click="$emit('search-by-tag', tile.tag)"
-						v-on:search-by-tag="searchByTag(tile.tag)">
+						v-on:click="$emit('search-by-tag', tile.tag)">
 						{{ tile.tag }}
 					</a>
 				</div>
@@ -314,7 +312,8 @@
 			data: function () {
 				return {
 					searching: false,
-					searchTerm: '',
+					searchterm: '',
+					loading: true,
 					Favorites: {},
 					showAllTags: false,
 					Tiles,
@@ -323,6 +322,9 @@
 				}
 			},
 			methods: {
+				tester: function () {
+					this.$root.searchterm = "testing"
+				},
 				addFave: function () {
 					this.favestatus = 'active';
 				},
@@ -338,26 +340,25 @@
 					})
 				},
 				onlyMedia: function () {
-					this.searchTerm = '*hasMedia';
+					this.searchterm = '*hasMedia';
 					$(this).sideNav('hide');
 					boardScroll();
 				},
 				onlyRetweets: function () {
-					this.searchTerm = 'rt @';
+					this.searchterm = 'rt @';
 					$(this).sideNav('hide');
 					boardScroll();
 				},
-				searchByTag: function (tag, index, event) {
-					this.searchTerm = tag.toLowerCase();
-					this.searching = true;
-					$(this).sideNav('hide');
+				searchbytag: function (event) {
+					this.$root.searchterm = event.target.value.toLowerCase();
+					this.$root.searching = true;
 					boardScroll();
 				},
 				share: function () {
 					var Faves = this.Favorites;
 				},
 				reset: function () {
-					this.searchTerm = '';
+					this.searchterm = '';
 					$(this).sideNav('hide');
 					boardScroll();
 					this.searching = false;
@@ -366,7 +367,7 @@
 					});
 				},
 				resetAll: function () {
-					this.searchTerm = '';
+					this.searchterm = '';
 					$(this).sideNav('hide');
 					topScroll();
 					this.searching = false;
@@ -419,7 +420,7 @@
 				filteredTiles: function () {
 					var self = this;
 					return this.Tiles.filter(function (tile) {
-						return tile.fullText.toLowerCase().indexOf(self.searchTerm
+						return tile.fullText.toLowerCase().indexOf(self.searchterm
 							.toLowerCase()) >= 0;
 					});
 				},
