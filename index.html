@@ -60,10 +60,10 @@
 			</section><!-- / container -->
 
 			<section id="TileBoard" class="tileBoard">
-				<span class="fader"></span>
+				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- LOADING -->
-					<div class="card loader z-depth-3 animated waves-effect" v-show="loading">
+					<div class="card loader z-depth-3 waves-effect" v-show="loading">
 						<div class="card-content">
 							<div class="lds-roller">
 								<div></div>
@@ -79,22 +79,25 @@
 						</div>
 					</div>
 					<!--  CARD  -->
-					<janitwitcard v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
-						v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.index"
+					<janitwitcard v-for="(tile, index, $event) in Tiles" v-if="tile.media" 
+						v-bind:tile="tile"
+						v-bind:key="tile.ID"
+						v-bind:data-index="index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
-					</janitwitcard>
+					</janitwitcard>						
 					<!--  end CARD  -->
+					<div class="ender"></div>
 				</div>
 			</section><!-- / TileBoard -->
 
 			<section id="SearchBoard">
 				<h2 class="center">Choose a topic that interests you:</h2>
 				<div id="WordCloud" class="tileBoard">
-					<span class="fader"></span>
+					<!-- <span class="fader"></span> -->
 					<!-- TAGS -->
 					<a href="#!" class="chip white-text waves-effect" data-activates="slide-out"
-						v-for="word in WordCloud_alpha" v-bind:style="{ backgroundColor: '#' + word.color }"
+						v-for="word in WordCloud_alpha" v-bind:key="word.tag" v-bind:style="{ backgroundColor: '#' + word.color }"
 						@click="searchbytag(word.tag)">
 						{{ word.tag }}
 						<b>{{ word.count }}</b>
@@ -112,49 +115,52 @@
 					<!-- / MORE BUTTON -->
 					<!-- ADDITIONAL TAGS -->
 					<a href="#!" class="chip grey darken-3 white-text waves-effect" data-activates="slide-out"
-						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word"
+						v-for="(word, index, $event) in WordCloud_delta" v-show="showAllTags === true" v-bind:key="word.tag"
 						@click="searchbytag(word.tag)">
 						{{ word.tag }}
 					</a>
 					<!-- /ADDITIONAL TAGS -->
 				</div><!-- / WordCloud -->
-				<div class="row">
-					<div id="SearchBox" class="col s4 offset-s4">
-						<div class="searchBox">
-							<form>
-								<div class="input-field">
-									<input v-model="searchterm" type="search" @focus="searching = true"
-										@blur="searching = false">
-									<template v-if="!searching">
-										<label class="label-icon" for="search" @click="reset()">
-											<i class="material-icons">search</i>
-										</label>
-									</template>
-									<template v-else>
-										<label class="resetBtn" @click="reset()">
-											<i class="material-icons">refresh</i>
-										</label>
-									</template>
-									<div class="chip" v-if="searching">
-										{{ filteredTiles.length }}
+				<div class="container">
+					<div class="row">
+						<div id="SearchBox" class="col s12 m6 offset-m3">
+							<div class="searchBox">
+								<form>
+									<div class="input-field">
+										<input v-model="searchterm" type="search" @focus="searching = true"
+											@blur="searching = false">
+										<template v-if="!searching">
+											<label class="label-icon" for="search" @click="reset()">
+												<i class="material-icons">search</i>
+											</label>
+										</template>
+										<template v-else>
+											<label class="resetBtn" @click="reset()">
+												<i class="material-icons">refresh</i>
+											</label>
+										</template>
+										<div class="chip" v-if="searching">
+											{{ filteredTiles.length }}
+										</div>
 									</div>
-								</div>
-							</form>
-						</div>
-					</div><!-- / SearchBox -->
+								</form>
+							</div>
+						</div><!-- / SearchBox -->
+					</div>	
 				</div>
 			</section><!-- / container -->
 
 			<section id="FilterBoard" class="tileBoard">
-				<span class="fader"></span>
+				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- CARD -->
-					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-bind:tile="tile" v-bind:key="tile.index"
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" v-bind:tile="tile"
+						v-bind:key="tile.ID"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
 					<!-- end CARD -->
+					<div class="ender"></div>
 				</div>
 			</section><!-- / tileBoard -->
 
@@ -165,15 +171,16 @@
 			</section><!-- / container -->
 
 			<section id="FameBoard" class="tileBoard">
-				<span class="fader"></span>
+				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- CARD -->
-					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-if="tile.text && tile.popularity" v-bind:tile="tile" v:bind:key="tile.index"
+					<janitwitcard v-for="(tile, index, $event) in Tiles" v-if="tile.text && tile.popularity"
+						v-bind:tile="tile" v:bind:key="tile.ID"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
 					<!-- end CARD -->
+					<div class="ender"></div>
 				</div>
 			</section><!-- / tileBoard -->
 
@@ -251,7 +258,7 @@
 	<!-- CARD TEMPLATE -->
 	<script type="text/x-template" id="twitCard">
 		<!-- card -->
-		<div>
+		<div class="card waves-effect">
 			<!-- card-content -->
 			<div class="card-content">
 				<span v-if="tile.media" class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
@@ -275,13 +282,9 @@
 				</div>
 				<div class="right right-align">
 					<!-- FAVE button -->
-					<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
-						class="material-icons waves-effect waves-light">
+					<button v-bind:value="tile.ID" @click="tile.tileStatus = 'inactive'"
+						class="material-icons white-text glow waves-effect">
 						favorite_border
-					</button>
-					<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
-						class="material-icons red-text glow waves-effect waves-red">
-						favorite
 					</button>
 					<!-- / FAVE button -->
 					<!-- SHARE button -->
@@ -301,7 +304,6 @@
 				<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
 			</div>
 		</div>
-
 		<!-- end CARD -->
 	</script><!-- end CARD TEMPLATE -->
 
@@ -420,7 +422,6 @@
 				});
 			},
 			switchClass: function (tilestatus, favestatus, tag) {
-
 				if (tilestatus === 'active' && favestatus === 'active') {
 					return 'bounce active';
 				} else if (tilestatus === 'active' && favestatus === 'inactive') {
@@ -428,7 +429,7 @@
 				} else if (tilestatus === 'active') {
 					return 'flipInY active';
 				} else if (tilestatus === 'inactive') {
-					return 'inactive';
+					return 'flipOutY inactive';
 				} else if (favestatus === 'active') {
 					return 'faved'
 				}
