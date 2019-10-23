@@ -7,9 +7,8 @@
   left: 0;
   text-align: left;
   display: inline-block;
-  width: 32%;
+  width: 22rem;
   height: 30rem;
-  max-width: 350px;
   position: relative;
   margin: 1em;
 }
@@ -223,11 +222,11 @@
   padding: 1em;
 }
 
-.card.active {
+.card.visible {
   opacity: 1;
 }
 
-.card.inactive {
+.card.hidden {
   display: none;
 }
 
@@ -365,6 +364,7 @@ button.retweet {
 }
 
 .fader {
+  display: none;
   position: fixed;
   right: 0;
   top: 0;
@@ -438,7 +438,7 @@ button.retweet {
 }
 
 #tweets {
-  padding: 6em;
+  padding: 5%;
 }
 
 #MainNav {
@@ -446,7 +446,7 @@ button.retweet {
   width: 100%;
   background-color: #333;
   z-index: 1;
-  height: auto;
+  height: 5em;
 }
 
 #MainNav .nav-wrapper {

@@ -256,9 +256,9 @@ var Twitolu = (function () {
 				favorite_count: result[i].favorite_count,
 				favorited: result[i].favorited,
 				retweeted: result[i].retweeted,
-				tileStatus: 'active',
-				faveStatus: null,
-				sendStatus: null
+				tilestatus: 'active',
+				favestatus: null,
+				sendstatus: null
 
 			};
 

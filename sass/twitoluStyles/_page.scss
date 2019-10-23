@@ -120,6 +120,7 @@ button.retweet {
 }
 
 .fader {
+    display:none;
     position: fixed;
     right: 0;
     top: 0;
@@ -203,7 +204,7 @@ button.retweet {
 }
 
 #tweets {
-    padding: 6em;
+    padding: 5%;
 }
 
 #MainNav {
@@ -211,7 +212,7 @@ button.retweet {
     width: 100%;
     background-color: $dark-gray;
     z-index: 1;
-    height: auto;
+    height: 5em;
 
     .nav-wrapper {
         padding: 0 1em;

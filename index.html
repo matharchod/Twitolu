@@ -80,7 +80,7 @@
 					</div>
 					<!--  CARD  -->
 					<janitwitcard v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
-						v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.index"
+						v-show="!loading" v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.ID"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
@@ -150,7 +150,7 @@
 				<div class="row">
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-bind:tile="tile" v-bind:key="tile.index"
+						v-show="!loading" v-bind:tile="tile" v-bind:key="tile.index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
@@ -169,7 +169,7 @@
 				<div class="row">
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-if="tile.text && tile.popularity" v-bind:tile="tile" v:bind:key="tile.index"
+						v-show="!loading" v-if="tile.text && tile.popularity" v-bind:tile="tile" v:bind:key="tile.index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
@@ -248,7 +248,7 @@
 
 	</div><!-- / main -->
 
-	<!-- CARD TEMPLATE -->
+	<!-- CARD TEMPLATE --> 
 	<script type="text/x-template" id="twitCard">
 		<!-- card -->
 		<div>
@@ -275,11 +275,11 @@
 				</div>
 				<div class="right right-align">
 					<!-- FAVE button -->
-					<button v-if="tile.favestatus !== 'active'" v-bind:value="tile.ID" @click="addFave()"
+					<button v-if="tile.favestatus !== 'faved'" v-bind:value="tile.ID" v-on:click="addFave(tile)"
 						class="material-icons waves-effect waves-light">
 						favorite_border
 					</button>
-					<button v-else v-bind:value="tile.ID" @click="removeFave(tile.ID)"
+					<button v-else v-bind:value="tile.ID" @click="removeFave(tile)"
 						class="material-icons red-text glow waves-effect waves-red">
 						favorite
 					</button>
@@ -365,20 +365,20 @@
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
 		var TileMethods = {
-			tester: function () {
+			tester: function (el) {
 				//this.$root.searchterm = "testing"
-				console.log('heyo!');
+				console.log(el);
 			},
-			addFave: function () {
-				this.favestatus = 'active';
+			addFave: function (el) {
+				el.favestatus = 'faved';
 			},
-			removeFave: function () {
-				this.favestatus = 'inactive';
+			removeFave: function (el) {
+				el.favestatus = 'unfaved';
 			},
 			onlyFaves: function () {
 				$(this).sideNav('hide');
 				Tiles.forEach(function (tile) {
-					if (tile.favestatus !== 'active') {
+					if (tile.favestatus !== 'faved') {
 						tile.tilestatus = 'inactive';
 					}
 				})
@@ -403,7 +403,6 @@
 			},
 			reset: function () {
 				this.searchterm = '';
-				$(this).sideNav('hide');
 				boardScroll();
 				this.searching = false;
 				Tiles.forEach(function (tile) {
@@ -412,7 +411,6 @@
 			},
 			resetAll: function () {
 				this.searchterm = '';
-				$(this).sideNav('hide');
 				topScroll();
 				this.searching = false;
 				Tiles.forEach(function (tile) {
@@ -420,40 +418,40 @@
 				});
 			},
 			switchClass: function (tilestatus, favestatus, tag) {
-
-				if (tilestatus === 'active' && favestatus === 'active') {
-					return 'bounce active';
-				} else if (tilestatus === 'active' && favestatus === 'inactive') {
-					return 'active';
+				if (tilestatus === 'active' && favestatus === 'faved') {
+					return 'bounce visible faved';
+				}
+				if (tilestatus === 'active' && favestatus === 'unfaved') {
+					return 'shake visible unfaved';
 				} else if (tilestatus === 'active') {
-					return 'flipInY active';
+					return 'flipInY visible';
 				} else if (tilestatus === 'inactive') {
-					return 'inactive';
-				} else if (favestatus === 'active') {
-					return 'faved'
+					return 'flipOutY invisible';
 				}
 			},
 			switchStyle: function (tilestatus, favestatus, index, color) {
-				var delay = (index * 100) + 'ms';
+				var delay = (index * 50) + 'ms';
 				var norm = {
+					animationDelay: '0ms',
+					backgroundColor: 'inherit'
+				};
+				var faved = {
 					animationDelay: '0ms',
 					backgroundColor: '#' + color
 				};
-				if (tilestatus === 'active' && favestatus === 'active') {
-					return norm;
-				} else if (tilestatus === 'active' && favestatus === 'inactive') {
+				var tileActive = {
+					animationDelay: delay,
+					backgroundColor: 'inherit'
+				};
+				if (tilestatus === 'active' && favestatus === 'faved') {
+					return faved;
+				}
+				if (tilestatus === 'active' && favestatus === 'unfaved') {
 					return norm;
 				} else if (tilestatus === 'active') {
-					return {
-						animationDelay: delay
-						//backgroundColor: '#' + color
-					};
+					return tileActive;
 				} else if (tilestatus === 'inactive') {
 					return norm;
-				} else if (favestatus === 'active') {
-					return {
-						borderColor: '#ccc'
-					}
 				}
 			},
 			textSelect: function (target) {

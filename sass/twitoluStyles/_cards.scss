@@ -8,9 +8,8 @@
     left: 0;
     text-align: left;
     display: inline-block;
-    width: 32%;
+    width: 22rem;
     height: 30rem;
-    max-width: 350px;
     position: relative;
     margin: 1em;
 
@@ -237,11 +236,11 @@
     }
 }
 
-.card.active {
+.card.visible {
     opacity: 1;
 }
 
-.card.inactive {
+.card.hidden {
     display: none;
 }
 
