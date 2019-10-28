@@ -79,10 +79,8 @@
 						</div>
 					</div>
 					<!--  CARD  -->
-					<janitwitcard v-for="(tile, index, $event) in Tiles" v-if="tile.media" 
-						v-bind:tile="tile"
-						v-bind:key="tile.ID"
-						v-bind:data-index="index"
+					<janitwitcard v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
+						v-show="loading == false" v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.ID"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>						
@@ -154,10 +152,8 @@
 				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- CARD -->
-					<janitwitcard v-for="(tile, index, $event) in filteredTiles" v-bind:tile="tile"
-						v-bind:key="tile.ID"
-						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-show="loading == false" v-bind:tile="tile" v-bind:key="tile.index">
 					</janitwitcard>
 					<!-- end CARD -->
 					<div class="ender"></div>
@@ -174,8 +170,9 @@
 				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- CARD -->
-					<janitwitcard v-for="(tile, index, $event) in Tiles" v-if="tile.text && tile.popularity"
-						v-bind:tile="tile" v:bind:key="tile.ID"
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+						v-show="loading == false" v-if="tile.text && tile.popularity" v-bind:tile="tile"
+						v:bind:key="tile.index"
 						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
 						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
 					</janitwitcard>
@@ -258,52 +255,59 @@
 	<!-- CARD TEMPLATE -->
 	<script type="text/x-template" id="twitCard">
 		<!-- card -->
-		<div class="card waves-effect">
-			<!-- card-content -->
-			<div class="card-content">
-				<span v-if="tile.media" class="img-contain" :style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
-					<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
-				</span>
-				<span v-if="tile.retweet" class="new badge waves-effect"
-					@click.prevent="searchbytag(tile.retweet)">{{ tile.retweet }}</span>
-				<p class="link">
-					<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
-				</p>
-			</div>
+		<transition-group v-on:enter="enter" v-on:leave="leave">
+			<div :key="tile.ID">
+				<!-- card-content -->
+				<div class="card-content">
+					<span v-if="tile.media" class="img-contain"
+						:style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
+						<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
+					</span>
+					<span v-if="tile.retweet" class="new badge waves-effect"
+						@click.prevent="searchbytag(tile.retweet)">{{ tile.retweet }}</span>
+					<p class="link">
+						<a v-bind:href="tile.URL" class="flow-text" target="_blank">{{ tile.text }}</a>
+					</p>
+				</div>
 
-			<!-- card action -->
-			<div class="card-action">
-				<div class="left left-align">
-					<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
-						:style="{ backgroundColor: '#' + tile.color, borderColor: '#' + tile.color }"
-						v-on:click="searchbytag(tile.tag)">
-						{{ tile.tag }}
-					</a>
+				<!-- card action -->
+				<div class="card-action">
+					<div class="left left-align">
+						<a href="#!" v-if="tile.tag" class="tag chip waves-effect"
+							:style="{ backgroundColor: '#' + tile.color, borderColor: '#' + tile.color }"
+							v-on:click="searchbytag(tile.tag)">
+							{{ tile.tag }}
+						</a>
+					</div>
+					<div class="right right-align">
+						<!-- FAVE button -->
+						<button v-if="tile.favestatus !== 'faved'" v-bind:value="tile.ID" v-on:click="addFave(tile)"
+							class="material-icons waves-effect waves-light">
+							favorite_border
+						</button>
+						<button v-else v-bind:value="tile.ID" @click="removeFave(tile)"
+							class="material-icons red-text glow waves-effect waves-red">
+							favorite
+						</button>
+						<!-- / FAVE button -->
+						<!-- SHARE button -->
+						<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
+							@click="addFave(), share($event)">
+							share
+						</button>
+						<!-- /SHARE button -->
+					</div>
+				</div><!-- / card-action -->
+				<div class="card-reveal">
+					<span class="card-title">
+						<i class="material-icons right grey-text text-lighten-1">
+							close
+						</i>
+					</span>
+					<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
 				</div>
-				<div class="right right-align">
-					<!-- FAVE button -->
-					<button v-bind:value="tile.ID" @click="tile.tileStatus = 'inactive'"
-						class="material-icons white-text glow waves-effect">
-						favorite_border
-					</button>
-					<!-- / FAVE button -->
-					<!-- SHARE button -->
-					<button class="activator material-icons waves-effect" v-bind:value="tile.ID"
-						@click="addFave(), share($event)">
-						share
-					</button>
-					<!-- /SHARE button -->
-				</div>
-			</div><!-- / card-action -->
-			<div class="card-reveal">
-				<span class="card-title">
-					<i class="material-icons right grey-text text-lighten-1">
-						close
-					</i>
-				</span>
-				<textarea @click="textSelect($event.target)">{{ tile.text }} {{ tile.url }}</textarea>
 			</div>
-		</div>
+		</transition-group>
 		<!-- end CARD -->
 	</script><!-- end CARD TEMPLATE -->
 
@@ -398,6 +402,12 @@
 			searchbytag: function (tag) {
 				this.$root.searchterm = tag.toLowerCase();
 				this.$root.searching = true;
+				Tiles.forEach(function (tile) {
+					tile.tilestatus = 'clear';
+					setTimeout(function () {
+						tile.tilestatus = 'active';
+					}, 0);
+				});
 				boardScroll();
 			},
 			share: function () {
@@ -422,10 +432,14 @@
 				});
 			},
 			switchClass: function (tilestatus, favestatus, tag) {
-				if (tilestatus === 'active' && favestatus === 'active') {
-					return 'bounce active';
-				} else if (tilestatus === 'active' && favestatus === 'inactive') {
-					return 'active';
+				if (tilestatus === 'active' && favestatus === 'faved') {
+					return 'bounce visible faved';
+				}
+				if (tilestatus === 'active' && favestatus === 'unfaved') {
+					return 'shake visible unfaved';
+				}
+				if (tilestatus === 'clear') {
+					return '';
 				} else if (tilestatus === 'active') {
 					return 'flipInY active';
 				} else if (tilestatus === 'inactive') {
@@ -457,6 +471,46 @@
 					}
 				}
 			},
+			// --------
+			// ENTERING
+			// --------
+
+			beforeEnter: function (el) {
+				// ...
+			},
+			// the done callback is optional when
+			// used in combination with CSS
+			enter: function (el, done) {
+				done();
+				return 'flipInY visible';
+			},
+			afterEnter: function (el) {
+				// ...
+			},
+			enterCancelled: function (el) {
+				// ...
+			},
+
+			// --------
+			// LEAVING
+			// --------
+
+			beforeLeave: function (el) {
+				// ...
+			},
+			// the done callback is optional when
+			// used in combination with CSS
+			leave: function (el, done) {
+				done();
+				return 'flipOutY invisible';
+			},
+			afterLeave: function (el) {
+				// ...
+			},
+			// leaveCancelled only available with v-show
+			leaveCancelled: function (el) {
+				// ...
+			},
 			textSelect: function (target) {
 				$(target).select();
 			}
@@ -487,7 +541,6 @@
 			computed: {
 				filteredTiles: function () {
 					var self = this;
-					this.loading = false;
 					return this.Tiles.filter(function (tile) {
 						return tile.fullText.toLowerCase().indexOf(self.searchterm
 							.toLowerCase()) >= 0;
@@ -508,6 +561,9 @@
 							}
 
 						} // end for-in
+
+						this.loading = false;
+
 					} // end for
 					return coloredTags;
 				},
@@ -528,10 +584,6 @@
 
 <script type="text/javascript">
 	$(document).ready(function () {
-
-		$('.card').on('animationend', function () {
-			console.log('done')
-		})
 
 		$('.meScroll').click(function (event) {
 			var $_meBoard = $(this).closest('.tileBoard'),
