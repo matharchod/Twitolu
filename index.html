@@ -152,7 +152,7 @@
 				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- CARD -->
-					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
+					<janitwitcard v-for="(tile, index, $event) in filteredTiles"
 						v-show="loading == false" v-bind:tile="tile" v-bind:key="tile.index">
 					</janitwitcard>
 					<!-- end CARD -->
@@ -172,9 +172,7 @@
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
 						v-show="loading == false" v-if="tile.text && tile.popularity" v-bind:tile="tile"
-						v:bind:key="tile.index"
-						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+						v:bind:key="tile.index">
 					</janitwitcard>
 					<!-- end CARD -->
 					<div class="ender"></div>
@@ -255,10 +253,16 @@
 	<!-- CARD TEMPLATE -->
 	<script type="text/x-template" id="twitCard">
 		<!-- card -->
-		<transition-group v-on:enter="enter" v-on:leave="leave">
-			<div :key="tile.ID">
+		<transition-group 
+		enter-active-class="animated active flipInY"
+		leave-active-class="animated inactive flipOutY"
+		v-on:before-enter="beforeEnter"
+		v-on:before-leave="beforeLeave"
+		:style="">
+			<div class="card waves-effect" :key="tile.ID">
 				<!-- card-content -->
 				<div class="card-content">
+					<span>{{ tile.index }}
 					<span v-if="tile.media" class="img-contain"
 						:style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
 						<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
@@ -371,9 +375,13 @@
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
 		var TileMethods = {
-			tester: function () {
-				//this.$root.searchterm = "testing"
-				console.log('heyo!');
+			beforeEnter: function (tile) {
+				//var delay = tile.index * 10000;
+				//tile.style.animationDelay = delay;
+			},
+			beforeLeave: function (tile) {
+				//var delay = tile.index * 10000;
+				//tile.style.animationDelay = delay;
 			},
 			addFave: function () {
 				this.favestatus = 'active';
@@ -470,46 +478,6 @@
 						borderColor: '#ccc'
 					}
 				}
-			},
-			// --------
-			// ENTERING
-			// --------
-
-			beforeEnter: function (el) {
-				// ...
-			},
-			// the done callback is optional when
-			// used in combination with CSS
-			enter: function (el, done) {
-				done();
-				return 'flipInY visible';
-			},
-			afterEnter: function (el) {
-				// ...
-			},
-			enterCancelled: function (el) {
-				// ...
-			},
-
-			// --------
-			// LEAVING
-			// --------
-
-			beforeLeave: function (el) {
-				// ...
-			},
-			// the done callback is optional when
-			// used in combination with CSS
-			leave: function (el, done) {
-				done();
-				return 'flipOutY invisible';
-			},
-			afterLeave: function (el) {
-				// ...
-			},
-			// leaveCancelled only available with v-show
-			leaveCancelled: function (el) {
-				// ...
 			},
 			textSelect: function (target) {
 				$(target).select();
