@@ -153,7 +153,8 @@
 				<div class="row">
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles"
-						v-show="loading == false" v-bind:tile="tile" v-bind:key="tile.index">
+						v-show="loading == false" v-bind:tile="tile" v-bind:key="filteredTiles.indexOf(tile)"
+						v-bind:style="animeDelay(filteredTiles.indexOf(tile))">
 					</janitwitcard>
 					<!-- end CARD -->
 					<div class="ender"></div>
@@ -231,7 +232,6 @@
 
 			</section><!-- / tileBoard -->
 
-
 			<section class="container">
 				<div class="row center">
 					<h3 class="white-text">{{Profile.name}}</h3>
@@ -244,9 +244,7 @@
 				</div><!-- /row -->
 			</section><!-- / container -->
 
-
 		</div><!-- / tweets -->
-
 
 	</div><!-- / main -->
 
@@ -257,12 +255,11 @@
 		enter-active-class="animated active flipInY"
 		leave-active-class="animated inactive flipOutY"
 		v-on:before-enter="beforeEnter"
-		v-on:before-leave="beforeLeave"
-		:style="">
+		v-on:before-leave="beforeLeave">
 			<div class="card waves-effect" :key="tile.ID">
 				<!-- card-content -->
 				<div class="card-content">
-					<span>{{ tile.index }}
+					<span>{{ tile.ID }}</span>
 					<span v-if="tile.media" class="img-contain"
 						:style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
 						<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
@@ -375,13 +372,16 @@
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
 		var TileMethods = {
-			beforeEnter: function (tile) {
-				//var delay = tile.index * 10000;
-				//tile.style.animationDelay = delay;
+			animeDelay: function (delay) {
+				console.log(delay);
 			},
-			beforeLeave: function (tile) {
-				//var delay = tile.index * 10000;
-				//tile.style.animationDelay = delay;
+			beforeEnter: function () {
+				var delay = this.index * 10000;
+				//this.style.transitionDelay = delay;
+			},
+			beforeLeave: function () {
+				var delay = this.index * 10000;
+				//this.style.transitionDelay = delay;
 			},
 			addFave: function () {
 				this.favestatus = 'active';
