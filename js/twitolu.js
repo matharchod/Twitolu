@@ -242,13 +242,13 @@ var Twitolu = (function () {
 
 			//Use the factory to create each tile
 			var tile = {
-
 				fullText: Text_obj,
 				text: Text(),
 				tag: Tag(),
 				URL: URL(),
 				ID: result[i].id_str,
 				date: result[i].created_at,
+				delay: null,
 				media: Media_obj,
 				popularity: result[i].favorite_count,
 				retweet: RT_obj,
@@ -259,7 +259,6 @@ var Twitolu = (function () {
 				tileStatus: 'active',
 				faveStatus: null,
 				sendStatus: null
-
 			};
 
 			TilesCollection.push(tile);

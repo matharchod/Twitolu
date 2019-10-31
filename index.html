@@ -79,10 +79,9 @@
 						</div>
 					</div>
 					<!--  CARD  -->
-					<janitwitcard v-for="(tile, index, $event) in Tiles" class="card animated waves-effect"
-						v-show="loading == false" v-if="tile.media" v-bind:tile="tile" v-bind:key="tile.ID"
-						v-bind:style="switchStyle(tile.tilestatus,tile.favestatus,index,tile.color)"
-						v-bind:class="switchClass(tile.tilestatus,tile.favestatus)">
+					<janitwitcard v-for="(tile, index, $event) in Tiles"
+						v-show="loading == false" v-if="tile.media" v-bind:tile="tile" v-bind:key="Tiles.indexOf(tile)"
+						v-bind:style="animeDelay(tile, Tiles.indexOf(tile))">
 					</janitwitcard>						
 					<!--  end CARD  -->
 					<div class="ender"></div>
@@ -154,7 +153,7 @@
 					<!-- CARD -->
 					<janitwitcard v-for="(tile, index, $event) in filteredTiles"
 						v-show="loading == false" v-bind:tile="tile" v-bind:key="filteredTiles.indexOf(tile)"
-						v-bind:style="animeDelay(filteredTiles.indexOf(tile))">
+						v-bind:style="animeDelay(tile, filteredTiles.indexOf(tile))">
 					</janitwitcard>
 					<!-- end CARD -->
 					<div class="ender"></div>
@@ -171,9 +170,9 @@
 				<!-- <span class="fader"></span> -->
 				<div class="row">
 					<!-- CARD -->
-					<janitwitcard v-for="(tile, index, $event) in filteredTiles" class="card animated waves-effect"
-						v-show="loading == false" v-if="tile.text && tile.popularity" v-bind:tile="tile"
-						v:bind:key="tile.index">
+					<janitwitcard v-for="(tile, index, $event) in Tiles"
+						v-show="loading == false" v-if="tile.text && tile.popularity" v-bind:tile="tile" v-bind:key="Tiles.indexOf(tile)"
+						v-bind:style="animeDelay(tile, Tiles.indexOf(tile))">
 					</janitwitcard>
 					<!-- end CARD -->
 					<div class="ender"></div>
@@ -252,14 +251,12 @@
 	<script type="text/x-template" id="twitCard">
 		<!-- card -->
 		<transition-group 
+		enter-class="active"
 		enter-active-class="animated active flipInY"
-		leave-active-class="animated inactive flipOutY"
-		v-on:before-enter="beforeEnter"
-		v-on:before-leave="beforeLeave">
-			<div class="card waves-effect" :key="tile.ID">
+		leave-active-class="animated inactive flipOutY">
+			<div class="card waves-effect" v-bind:key="tile.ID"	 v-bind:style="tile.delay">
 				<!-- card-content -->
 				<div class="card-content">
-					<span>{{ tile.ID }}</span>
 					<span v-if="tile.media" class="img-contain"
 						:style="{ backgroundImage: 'url(\'' + tile.media + '\')' }">
 						<a v-bind:href="tile.URL" v-bind:title="tile.text" target="_ blank">&nbsp;</a>
@@ -372,16 +369,9 @@
 		var WordCloud = Twitolu.CloudFactory(Tiles);
 		var Profile = Twitolu.User();
 		var TileMethods = {
-			animeDelay: function (delay) {
-				console.log(delay);
-			},
-			beforeEnter: function () {
-				var delay = this.index * 10000;
-				//this.style.transitionDelay = delay;
-			},
-			beforeLeave: function () {
-				var delay = this.index * 10000;
-				//this.style.transitionDelay = delay;
+			animeDelay: function (tile, delay) {
+				var ticker = delay * 100 + 'ms';
+				tile.delay = 'animation-delay:' + ticker + ';';
 			},
 			addFave: function () {
 				this.favestatus = 'active';
@@ -438,46 +428,6 @@
 				Tiles.forEach(function (tile) {
 					tile.tilestatus = 'active'
 				});
-			},
-			switchClass: function (tilestatus, favestatus, tag) {
-				if (tilestatus === 'active' && favestatus === 'faved') {
-					return 'bounce visible faved';
-				}
-				if (tilestatus === 'active' && favestatus === 'unfaved') {
-					return 'shake visible unfaved';
-				}
-				if (tilestatus === 'clear') {
-					return '';
-				} else if (tilestatus === 'active') {
-					return 'flipInY active';
-				} else if (tilestatus === 'inactive') {
-					return 'flipOutY inactive';
-				} else if (favestatus === 'active') {
-					return 'faved'
-				}
-			},
-			switchStyle: function (tilestatus, favestatus, index, color) {
-				var delay = (index * 100) + 'ms';
-				var norm = {
-					animationDelay: '0ms',
-					backgroundColor: '#' + color
-				};
-				if (tilestatus === 'active' && favestatus === 'active') {
-					return norm;
-				} else if (tilestatus === 'active' && favestatus === 'inactive') {
-					return norm;
-				} else if (tilestatus === 'active') {
-					return {
-						animationDelay: delay
-						//backgroundColor: '#' + color
-					};
-				} else if (tilestatus === 'inactive') {
-					return norm;
-				} else if (favestatus === 'active') {
-					return {
-						borderColor: '#ccc'
-					}
-				}
 			},
 			textSelect: function (target) {
 				$(target).select();
@@ -561,26 +511,6 @@
 			}, 'slow');
 			//console.log('meLoc',meLoc);
 		});
-
-
-
-		// Initialize collapsible (uncomment the line below if you use the dropdown variation)
-		$('.collapsible').collapsible();
-
-		$('.slide-out-button').sideNav();
-
-		$('.sidenav-close').click(function () {
-			$('.sidenav').sideNav();
-		})
-
-		$('.collapse').sideNav('hide');
-
-		// 		$(".slide-out-button").click();
-
-		// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-		$('.modal').modal();
-
-		// 		$('.modal').modal('open');
 
 	});
 </script>
